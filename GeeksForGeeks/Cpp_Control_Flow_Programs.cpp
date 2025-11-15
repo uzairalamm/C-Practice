@@ -15,14 +15,14 @@ int main(){
 
 // Largest Among 3
     int num1, num2;
-    num = 0;
+    num = num1 = num2 = 0;
 
     cout << "Enter Three Numbers: ";
     cin >> num >> num1 >> num2;
-    if(num >> num1 && num >> num2){
+    if(num >= num1 && num >= num2){
         cout << num << " is the Largest Number" << endl;
     }
-    else if(num1 >> num && num1 >> num2){
+    else if(num1 >= num && num1 >= num2){
         cout << num1 << " is the Largest Number" << endl;
     }
     else{
@@ -175,4 +175,32 @@ int main(){
         cout << num << " Is not a Neon Number" << endl;
     }
 
+
+// Armstrong Number
+    num = 0, digit = 0, sum = 0;
+    cout << "Enter a number: ";
+    cin >> num;
+    int original = num;
+    while(num != 0){
+        digit = num % 10;
+        sum = sum + digit*digit*digit;
+        num /= 10;
+    }
+    if(sum == original){
+        cout << original << " is a Armstrong Number" << endl;
+    }
+    else{
+        cout << original <<" is not a armstrong Number" << endl;
+    }
+//  All Factors of A Natural Number
+    num = 0;
+    cout << "ENter a number: ";
+    cin >> num;
+
+    for(int i = 1; i<= num; i++){
+        if(num % i == 0){
+            cout << i << " ";
+        }
+    }
+    cout << endl;
 }
