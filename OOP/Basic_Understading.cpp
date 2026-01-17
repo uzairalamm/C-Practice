@@ -249,3 +249,81 @@ using namespace std;
 
 //     Ahmed.display();
 // }
+
+/*
+==================================================
+Program: Student Information Management System
+Concept: Encapsulation in C++
+Problem:
+- Store student roll number and marks
+- Validate marks (0–100)
+- Use private data members
+- Access data using public functions
+==================================================
+*/
+
+class Student
+{
+    string rollNo;
+    double marks;
+
+public:
+    Student()
+    {
+        rollNo = "";
+        marks = 0;
+    }
+    void setRollNo(string roll)
+    {
+        rollNo = roll;
+    }
+    void setMarks(double m)
+    {
+        if (m >= 0 && m <= 100)
+        {
+            marks = m;
+        }
+        else
+        {
+            cout << "Invalid, Enter Only 0-100" << endl;
+        }
+    }
+
+    string getRollNo()
+    {
+        return rollNo;
+    }
+    double getMarks()
+    {
+        return marks;
+    }
+
+    void display()
+    {
+        cout << "==============Student Detail==============" << endl;
+        cout << "Roll No: " << rollNo << endl;
+        cout << "Marks: " << marks << endl;
+    }
+};
+
+int main()
+{
+    Student ahmed;
+    string rollNo;
+    double marks;
+
+    cout << "Enter Your Roll No: ";
+    cin >> rollNo;
+    ahmed.setRollNo(rollNo);
+
+    cout << "Enter Your Marks: ";
+    cin >> marks;
+    ahmed.setMarks(marks);
+
+    cout << "Roll NO: " << ahmed.getRollNo() << endl;
+    cout << "Marks: " << ahmed.getMarks() << endl;
+
+    // OR
+
+    ahmed.display();
+}
