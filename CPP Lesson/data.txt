@@ -1,0 +1,7 @@
+Student Number 3
+Hey Subhai
+Your Class is bakar
+Your Roll No: 23
+Your Address is: udwss
+Vowel Count: 24
+Consonant Count: 42

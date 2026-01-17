@@ -89,32 +89,189 @@ using namespace std;
 
 // =========================Another Method==========================
 
-int main()
-{
-    int middle, temp;
-    int array[5] = {2, 5, 3, 8, 9};
+// int main()
+// {
+//     int middle, temp;
+//     int array[5] = {2, 5, 3, 8, 9};
 
-    // sorting the array
-    for (int i = 0; i < 5; i++)
-    {
-        for (int j = 0; j < 5 - i - 1; j++)
-        {
-            if (array[j] > array[j + 1])
-            {
-                temp = array[j];
-                array[j] = array[j + 1];
-                array[j + 1] = temp;
-            }
-        }
-    }
-    for (int i = 0; i < 5; i++)
-    {
-        cout << array[i] << " ";
-    }
-    cout << endl;
-    middle = array[5 / 2];
-    cout << "Middle = " << middle << endl;
-}
+//     // sorting the array
+//     for (int i = 0; i < 5; i++)
+//     {
+//         for (int j = 0; j < 5 - i - 1; j++)
+//         {
+//             if (array[j] > array[j + 1])
+//             {
+//                 temp = array[j];
+//                 array[j] = array[j + 1];
+//                 array[j + 1] = temp;
+//             }
+//         }
+//     }
+//     for (int i = 0; i < 5; i++)
+//     {
+//         cout << array[i] << " ";
+//     }
+//     cout << endl;
+//     middle = array[5 / 2];
+//     cout << "Middle = " << middle << endl;
+// }
+
+// =========================Find largest/smallest Index==========================
+
+// int main()
+// {
+//     int smallest, largest;
+//     smallest = INT_MAX;
+//     largest = INT_MIN;
+
+//     int value[5] = {5, 32, 53, 44, 20};
+//     for (int i = 0; i < 5; i++)
+//     {
+//         if (value[i] < smallest)
+//         {
+//             smallest = value[i];
+//         }
+//         if (value[i] > largest)
+//         {
+//             largest = value[i];
+//         }
+//     }
+//     // print Smallest and Largest value
+//     cout << "Smallest Value = " << smallest << endl;
+//     cout << "Largest Value = " << largest << endl;
+
+//     // Find Index of Smallest and  Largest value
+//     for (int i = 0; i < 5; i++)
+//     {
+//         if (value[i] == smallest)
+//         {
+//             cout << "Smallest Value at Index: " << i << endl;
+//         }
+//         if (value[i] == largest)
+//         {
+//             cout << "Largest Value at Index: " << i << endl;
+//         }
+//     }
+// }
+
+// A C++ program that inputs the ages of several persons and counts how many of them are between the ages of 30 and 50.
+// =========================Find People ages 30 B/t 50.========================
+
+// int age30TO50(int array[], int size)
+// {
+//     int count = 0;
+//     for (int i = 0; i < size; i++)
+//     {
+//         if (array[i] >= 30 && array[i] <= 50)
+//         {
+//             count++;
+//         }
+//     }
+//     return count;
+// }
+
+// int main()
+// {
+//     int size;
+//     cout << "How Many People Age you want to Enter: ";
+//     cin >> size;
+//     int peopleAge[size];
+
+//     cout << "Enter Their Age: ";
+//     for (int i = 0; i < size; i++)
+//     {
+//         cin >> peopleAge[i];
+//     }
+
+//     int age = age30TO50(peopleAge, size);
+//     cout << age << " People have age between 30-50" << endl;
+// }
+
+// A C++ program that allows a user to enter values into an array and
+// then finds and displays the maximum and minimum values among these entered values.
+// =========================Find Min & Max.========================
+
+// void findMinMax(int array[], int size)
+// {
+//     int minimum, maximum;
+//     minimum = INT_MAX;
+//     maximum = INT_MIN;
+
+//     for (int i = 0; i < size; i++)
+//     {
+//         if (array[i] > maximum)
+//         {
+//             maximum = array[i];
+//         }
+//         if (array[i] < minimum)
+//         {
+//             minimum = array[i];
+//         }
+//     }
+
+//     cout << "Maximum = " << maximum << endl;
+//     cout << "Minimum = " << minimum << endl;
+
+//     for (int i = 0; i < size; i++)
+//     {
+//         if (maximum == array[i])
+//         {
+//             cout << maximum << " is at Index " << i << endl;
+//         }
+//         if (minimum == array[i])
+//         {
+//             cout << minimum << " is at Index " << i << endl;
+//         }
+//     }
+// }
+
+// int main()
+// {
+//     int size;
+//     cout << "How many Integer You want to Enter: ";
+//     cin >> size;
+//     int integer[size];
+
+//     cout << "Enter the Integers: ";
+//     for (int i = 0; i < size; i++)
+//     {
+//         cin >> integer[i];
+//     }
+
+//     findMinMax(integer, size);
+// }
+
+// A C++ program that allows a user to enter values into an array, display the array
+// values then reverse the array, and then display it again.
+// =========================Reverse Array.========================
+
+// int main()
+// {
+//     int size;
+//     cout << "How many Integer You want to Enter: ";
+//     cin >> size;
+//     int integer[size];
+
+//     cout << "Enter the Integers: ";
+//     for (int i = 0; i < size; i++)
+//     {
+//         cin >> integer[i];
+//     }
+
+//     cout << "Array is: ";
+//     for (int j = 0; j < size; j++)
+//     {
+//         cout << integer[j] << " ";
+//     }
+
+//     cout << "\nReverse Array is: ";
+//     for (int k = size - 1; k >= 0; k--)
+//     {
+//         cout << integer[k] << " ";
+//     }
+// }
+
+// ===============================================================
 // // Mean Function
 // double myMean(int userInput[], int size)
 // {
@@ -145,6 +302,86 @@ int main()
 //     }
 // }
 
+// =========================Probility in Numbers========================
+// int main()
+// {
+//     int num, num1, num2;
+//     cout << "How many Number You want to check: ";
+//     cin >> num;
+//     int div1, div2, both;
+//     cout << "Write the two numbers You want to Divide " << num << " form: ";
+//     cin >> num1 >> num2;
+
+//     div1 = 0, div2 = 0, both = 0;
+//     for (int i = 1; i <= num; i++)
+//     {
+//         if (i % num1 == 0)
+//         {
+//             div1++;
+//         }
+//         if (i % num2 == 0)
+//         {
+//             div2++;
+//         }
+//         if (i % num1 == 0 && i % num2 == 0)
+//         {
+//             both++;
+//         }
+//     }
+//     cout << "Divisible by " << num1 << ": " << div1 << "\n"
+//          << "Divisible by " << num2 << ": " << div2 << "\n"
+//          << "Divisible by both: " << both << endl;
+
+//     cout << "Probability of " << num
+//          << " either divisible by " << num1 << " and " << num2
+//          << " is: " << (div1 + div2 - both) << "/" << num;
+// }
+
+// =========================Probility in Dic========================
+// int main()
+// {
+//     int probability, sSDice = 6;
+//     int n;
+//     cout << "How many Dice You Roll: ";
+//     cin >> n;
+//     int nSS = n * sSDice;
+
+//     cout << "Enter which Condition You Want to Chose "
+//          << "\n1. At least one"
+//          << "\n2. Product of Dots"
+//          << "\n3. Sum of Dots"
+//          << "\n4. Abs Difference\n";
+
+//     int op;
+//     cin >> op;
+//     switch (op)
+//     {
+//     case 1:
+//         cout << "==============At Least One==============\n";
+//         cout << "Atleast one What Appear: ";
+//         cin >> probability;
+
+//     }
+// }
+
+// =========================Reverse Array========================
+void reverseArr(int arr[], int size)
+{
+    for (int i = size - 1; i >= 0; i--)
+    {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+
+int main()
+{
+    int arr[] = {2, 4, 5, 6, 3};
+    int size = 5;
+
+    cout << "Reverse array: ";
+    reverseArr(arr, size);
+}
 // // Mode Function
 // double myMode(int userInput[], int size)
 // {

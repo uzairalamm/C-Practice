@@ -1,0 +1,10 @@
+Biryani
+450
+Karahi
+850
+Seekh Kabab
+350
+Tandoori Roti
+50
+Kheer
+150

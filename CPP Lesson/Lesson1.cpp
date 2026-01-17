@@ -3,8 +3,8 @@
 #include <cmath>
 using namespace std;
 
-
-int main() {
+int main()
+{
 
     // string name;
     // name = "Uzair";
@@ -16,22 +16,18 @@ int main() {
     // cout << "insert: " << name.insert(0, "Uza") << endl;
     // cout << "Subtrat: " << name.substr(0, 6);
 
-
-
     // int num, evenCount = 0, oddCount = 0, primeCount = 0;
 
     // for (int i = 1; i<= 10; i++){
     //     cout << "Enter Number " << i << ": ";
     //     cin >> num;
-        
+
     //     if (num % 2 == 0){
     //         evenCount++;
     //     }
     //     else {
     //         oddCount++;
     //     }
-
-
 
     //     bool isPrime = true;
     //     if(num <= 1){
@@ -52,10 +48,8 @@ int main() {
     // }
 
     // cout << "Even Count: " << evenCount << endl;
-    // cout << "Odd Count: " << oddCount << endl; 
+    // cout << "Odd Count: " << oddCount << endl;
     // cout << "Prime Count: " << primeCount << endl;
-
-
 
     // for (int i = 1; i <= 5; i++){
     //     int num;
@@ -73,14 +67,13 @@ int main() {
     //     }
     // }
 
-
     // int num2;
     // cout << "Enter a number: ";
     // cin >> num2;
 
     // for (int i = 1; i <= num2; i++){
     //     bool isPrime = true;
-        
+
     //     if(i <= 1){
     //         isPrime = false;
     //     }
@@ -96,9 +89,9 @@ int main() {
     //     if(isPrime){
     //         cout << i << " ";
     //     }
-    
-    //swapping two numbers
-    // int num1 = 2, num2 = 4;
+
+    // swapping two numbers
+    //  int num1 = 2, num2 = 4;
 
     // cout << "Before Swapping:\n num1 = " << num1 << " num2 = " << num2 << endl;
     // int temp;
@@ -119,10 +112,8 @@ int main() {
 
     // cout << "Before Swapping:\n num1 = " << num1 << " num2 = " << num2 << endl;
 
-
-
     // Compound Interest
-    //formula
+    // formula
     // Amount= P(1 + R/100)^t
     // Compound Interest = Amount - P
 
@@ -140,21 +131,17 @@ int main() {
 
     // cout << "Compound Interest is: "  << compoundIntrest << endl;
 
-
-
-
     // Write a Program to Check Whether a Number Is a Palindrome or Not.
     // For Example,
     // Input: Number to Check = 1231
     // Output: 1231 is not a palindrome number.
-
 
     // int num, digit, palindrome = 0;
 
     // cout << "Enter a number: ";
     // cin >> num;
     // int original = num;
-    
+
     // while(num != 0){
     //     digit = num % 10;
     //     palindrome = palindrome * 10 + digit;
@@ -168,18 +155,19 @@ int main() {
     //     cout << palindrome << " is not Plaindrome" << endl;
     // }
 
-
     // C++ Program For Fibonacci Numbers
     int num, term = 0, nextTerm = 1, temp, sum = 0;
 
     cout << "Enter a number: ";
     cin >> num;
-    
+
     cout << "Fibonacci Numbers Upto N: ";
-    for (int i = 1; i <= num; i++){
+    for (int i = 1; i <= num; i++)
+    {
         cout << term;
         sum += term;
-        if (i < num){
+        if (i < num)
+        {
             cout << " + ";
         }
         temp = term + nextTerm;
@@ -189,151 +177,121 @@ int main() {
 
     cout << "\nSum of these numbers are: " << sum;
 
+    //     // cout << "Hello World" <<endl;
+    //     // cout << "Name: Uzair" <<endl;
+    //     // cout << "City: Muridke" <<endl;
+    //     // cout << "I'm learning C++" <<endl;
 
+    //     // cout << "Name: Uzair\nCity: Muridke\nI'm learning C++\n";
 
+    //     // return 0;
 
+    //     int num;
+    //     bool isPrime = true;
+    //     cout << "ENter a number: ";
+    //     cin >> num;
+    //     if (num <= 1){
+    //         cout << "Number is not Prime";
+    //         isPrime = false;
+    //     }
 
+    //     else{
+    //         for (int i = 2; i <= sqrt(num); i++){
+    //             if (num % i == 0){
+    //                 isPrime = false;
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //     if (isPrime)
+    //     {
+    //         cout << "Number is Prime";
+    //     }
+    //     else{
+    //         cout << "Number is Not Prime";
+    //     }
 
+    //     cout << endl;
+    //     int sum = 0;
+    //     for (int i = 1; i <= num; i++){
+    //         cout << i;
+    //         if(i==num){
+    //         }
+    //         else{
+    //             cout << " + ";
+    //         }
+    //         sum = sum + i;
+    //     }
+    //     cout << " = " << sum << endl;
 
+    //     sum = 0;
+    //     for (int i = 2; i <= num; i+=2){
+    //         cout << i;
+    //         if (i == num){
+    //         }
+    //         else{
+    //             cout << " + ";
+    //         }
+    //         sum += i;
+    //     }
+    //     cout <<  " = " << sum << endl;
 
+    //     sum = 0;
 
+    //     for (int i = 1; i <= num; i+=2){
+    //         cout << i;
+    //         if (i == num || i == num - 1){
+    //         }
+    //         else{
+    //             cout << " + ";
+    //         }
+    //         sum +=i;
+    //     }
 
+    //     cout << " = " << sum << endl;
 
+    //     sum = 0;
+    //     for (int i = 2; i <= num; i++){
+    //         isPrime = true;
 
+    //         for(int j = 2; j <= sqrt(i); j++){
+    //             if (i % j == 0){
+    //                 isPrime = false;
+    //                 break;
+    //             }
+    //         }
+    //         if(isPrime){
+    //             cout << i << " ";
+    //             sum += i;
+    //         }
+    //     }
+    //     cout <<" = " << sum;
 
+    // cout << endl;
 
-
-    
-//     // cout << "Hello World" <<endl;
-//     // cout << "Name: Uzair" <<endl;
-//     // cout << "City: Muridke" <<endl;
-//     // cout << "I'm learning C++" <<endl;
-
-//     // cout << "Name: Uzair\nCity: Muridke\nI'm learning C++\n";
-
-//     // return 0;
-
-
-
-
-//     int num;
-//     bool isPrime = true;
-//     cout << "ENter a number: ";
-//     cin >> num;
-//     if (num <= 1){
-//         cout << "Number is not Prime";
-//         isPrime = false;
-//     }
-
-//     else{
-//         for (int i = 2; i <= sqrt(num); i++){
-//             if (num % i == 0){
-//                 isPrime = false;
-//                 break;
-//             }
-//         }
-//     }
-//     if (isPrime)
-//     {
-//         cout << "Number is Prime";
-//     }
-//     else{
-//         cout << "Number is Not Prime";
-//     }
-
-//     cout << endl;
-//     int sum = 0;
-//     for (int i = 1; i <= num; i++){
-//         cout << i;
-//         if(i==num){
-//         }
-//         else{
-//             cout << " + ";
-//         }
-//         sum = sum + i;
-//     }
-//     cout << " = " << sum << endl;
-
-
-//     sum = 0;
-//     for (int i = 2; i <= num; i+=2){
-//         cout << i;
-//         if (i == num){
-//         }
-//         else{
-//             cout << " + ";
-//         }
-//         sum += i;
-//     }
-//     cout <<  " = " << sum << endl;
-
-
-
-//     sum = 0;
-
-//     for (int i = 1; i <= num; i+=2){
-//         cout << i;
-//         if (i == num || i == num - 1){
-//         }
-//         else{
-//             cout << " + ";
-//         }
-//         sum +=i;
-//     }
-
-//     cout << " = " << sum << endl;
-
-//     sum = 0;
-//     for (int i = 2; i <= num; i++){
-//         isPrime = true;
-
-//         for(int j = 2; j <= sqrt(i); j++){
-//             if (i % j == 0){
-//                 isPrime = false;
-//                 break;
-//             }
-//         }
-//         if(isPrime){
-//             cout << i << " ";
-//             sum += i;
-//         }
-//     }
-//     cout <<" = " << sum;
-
-
-
-
-
-
-
-
-// cout << endl;
-
-
-// // upper
-//     for (int i = 1; i <= 5; i++){
-//         for (int j = 5; j > i; j--){
-//             cout << " ";
-//         }
-//         for(int k = 1; k <=i; k++){
-//             cout << "* ";
-//         }
-//         cout << endl;
-//     }
-// // lower
-//     for (int i = 4; i >= 1; i --){
-//         for (int j = 5; j > i; j--){
-//             cout << " ";
-//         }
-//         for (int k = 1; k <= i; k++){
-//             if (k == 1 || k == i){
-//                 cout << "* ";
-//             }
-//             else {
-//                 cout << "  ";
-//             }
-//         }
-//         cout << endl;
-//     }
-
+    // // upper
+    //     for (int i = 1; i <= 5; i++){
+    //         for (int j = 5; j > i; j--){
+    //             cout << " ";
+    //         }
+    //         for(int k = 1; k <=i; k++){
+    //             cout << "* ";
+    //         }
+    //         cout << endl;
+    //     }
+    // // lower
+    //     for (int i = 4; i >= 1; i --){
+    //         for (int j = 5; j > i; j--){
+    //             cout << " ";
+    //         }
+    //         for (int k = 1; k <= i; k++){
+    //             if (k == 1 || k == i){
+    //                 cout << "* ";
+    //             }
+    //             else {
+    //                 cout << "  ";
+    //             }
+    //         }
+    //         cout << endl;
+    //     }
 }
