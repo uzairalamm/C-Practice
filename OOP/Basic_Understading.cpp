@@ -262,68 +262,287 @@ Problem:
 ==================================================
 */
 
-class Student
+// class Student
+// {
+//     string rollNo;
+//     double marks;
+
+// public:
+//     Student()
+//     {
+//         rollNo = "";
+//         marks = 0;
+//     }
+//     void setRollNo(string roll)
+//     {
+//         rollNo = roll;
+//     }
+//     void setMarks(double m)
+//     {
+//         if (m >= 0 && m <= 100)
+//         {
+//             marks = m;
+//         }
+//         else
+//         {
+//             cout << "Invalid, Enter Only 0-100" << endl;
+//         }
+//     }
+
+//     string getRollNo()
+//     {
+//         return rollNo;
+//     }
+//     double getMarks()
+//     {
+//         return marks;
+//     }
+
+//     void display()
+//     {
+//         cout << "==============Student Detail==============" << endl;
+//         cout << "Roll No: " << rollNo << endl;
+//         cout << "Marks: " << marks << endl;
+//     }
+// };
+
+// int main()
+// {
+//     Student ahmed;
+//     string rollNo;
+//     double marks;
+
+//     cout << "Enter Your Roll No: ";
+//     cin >> rollNo;
+//     ahmed.setRollNo(rollNo);
+
+//     cout << "Enter Your Marks: ";
+//     cin >> marks;
+//     ahmed.setMarks(marks);
+
+//     cout << "Roll NO: " << ahmed.getRollNo() << endl;
+//     cout << "Marks: " << ahmed.getMarks() << endl;
+
+//     // OR
+
+//     ahmed.display();
+// }
+
+// ===== Problem 2: Multiple Students =====
+
+// class Student
+// {
+//     string name;
+//     string rollNo;
+//     double marks;
+//     bool setmarks;
+
+// public:
+//     // Constructor
+//     Student()
+//     {
+//         name = "";
+//         rollNo = "";
+//         marks = 0;
+//         setmarks = false;
+//     }
+
+//     // Setters
+//     void setName(string n)
+//     {
+//         name = n;
+//     }
+//     void setRollNo(string roll)
+//     {
+//         rollNo = roll;
+//     }
+//     void setMarks(double m)
+//     {
+//         if (setmarks == true)
+//         {
+//             cout << "Marks already set";
+//             return;
+//         }
+
+//         if (m >= 0 && m <= 100)
+//         {
+//             marks = m;
+//             setmarks = true;
+//         }
+//         else
+//         {
+//             cout << "Please Enter between(0-100)" << endl;
+//         }
+//     }
+
+//     // Getters
+//     string getName()
+//     {
+//         return name;
+//     }
+//     string getRollNo()
+//     {
+//         return rollNo;
+//     }
+//     double getMarks()
+//     {
+//         return marks;
+//     }
+
+//     bool isPassed()
+//     {
+//         if (marks >= 40)
+//         {
+//             return true;
+//         }
+//         else
+//         {
+//             return false;
+//         }
+//     }
+
+//     // Display
+//     void display()
+//     {
+//         cout << "Name: " << name << endl;
+//         cout << "ROll No: " << rollNo << endl;
+//         cout << "Marks: " << marks << endl;
+//     }
+// };
+
+// int main()
+// {
+//     int numOfStudent;
+//     string name, rollNo;
+//     double marks;
+//     cout << "How many Students Data you want to Enter: ";
+//     cin >> numOfStudent;
+//     cin.ignore();
+//     Student st[numOfStudent];
+
+//     cout << "Enter the Name, Roll No, and Marks of " << numOfStudent << " Students: ";
+//     for (int i = 0; i < numOfStudent; i++)
+//     {
+//         cout << i + 1 << "." << endl;
+//         cout << "Name: ";
+//         getline(cin, name);
+//         st[i].setName(name);
+
+//         cout << "Roll No: ";
+//         cin >> rollNo;
+//         st[i].setRollNo(rollNo);
+
+//         cout << "Marks: ";
+//         cin >> marks;
+//         cin.ignore();
+//         st[i].setMarks(marks);
+//     }
+
+//     cout << "===============Display Result===============" << endl;
+//     for (int i = 0; i < numOfStudent; i++)
+//     {
+//         bool result;
+//         cout << i + 1 << "." << endl;
+//         st[i].display();
+
+//         result = st[i].isPassed();
+//         if (result)
+//         {
+//             cout << "You Pass" << endl;
+//         }
+//         else
+//         {
+//             cout << "You fail, need improvement" << endl;
+//         }
+//     }
+// }
+
+// ==================== Problem 3: Bank Account system. ====================
+
+class Account
 {
-    string rollNo;
-    double marks;
+private:
+    int accountNumber;
+    double balance;
 
 public:
-    Student()
+    Account()
     {
-        rollNo = "";
-        marks = 0;
-    }
-    void setRollNo(string roll)
-    {
-        rollNo = roll;
-    }
-    void setMarks(double m)
-    {
-        if (m >= 0 && m <= 100)
-        {
-            marks = m;
-        }
-        else
-        {
-            cout << "Invalid, Enter Only 0-100" << endl;
-        }
+        accountNumber = 0;
+        balance = 0;
     }
 
-    string getRollNo()
+    void setAccountNumber(int accNo)
     {
-        return rollNo;
+        accountNumber = accNo;
     }
-    double getMarks()
+
+    bool deposit(double amount)
     {
-        return marks;
+        if (amount <= 0)
+            return false;
+
+        balance += amount;
+        return true;
+    }
+
+    bool withdraw(double amount)
+    {
+        if (amount <= 0 || amount > balance)
+            return false;
+
+        balance -= amount;
+        return true;
+    }
+
+    double getBalance()
+    {
+        return balance;
     }
 
     void display()
     {
-        cout << "==============Student Detail==============" << endl;
-        cout << "Roll No: " << rollNo << endl;
-        cout << "Marks: " << marks << endl;
+        cout << "Account Number: " << accountNumber << endl;
+        cout << "Balance: " << balance << endl;
     }
 };
 
 int main()
 {
-    Student ahmed;
-    string rollNo;
-    double marks;
+    Account ahmed;
+    int accNo;
+    double amount;
+    char choice;
 
-    cout << "Enter Your Roll No: ";
-    cin >> rollNo;
-    ahmed.setRollNo(rollNo);
+    cout << "Enter Account Number: ";
+    cin >> accNo;
+    ahmed.setAccountNumber(accNo);
 
-    cout << "Enter Your Marks: ";
-    cin >> marks;
-    ahmed.setMarks(marks);
+    do
+    {
+        cout << "\nDeposit (d) | Withdraw (w) | Exit (e): ";
+        cin >> choice;
+        choice = tolower(choice);
 
-    cout << "Roll NO: " << ahmed.getRollNo() << endl;
-    cout << "Marks: " << ahmed.getMarks() << endl;
+        if (choice == 'd')
+        {
+            cout << "Enter amount to deposit: ";
+            cin >> amount;
 
-    // OR
+            if (!ahmed.deposit(amount))
+                cout << "Invalid deposit amount!" << endl;
+        }
+        else if (choice == 'w')
+        {
+            cout << "Enter amount to withdraw: ";
+            cin >> amount;
+
+            if (!ahmed.withdraw(amount))
+                cout << "Transaction failed!" << endl;
+        }
+
+    } while (choice != 'e');
 
     ahmed.display();
+    cout << "Goodbye!" << endl;
 }
