@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 
 // ========================basic Program=========================
@@ -459,90 +460,162 @@ Problem:
 
 // ==================== Problem 3: Bank Account system. ====================
 
-class Account
-{
-private:
-    int accountNumber;
-    double balance;
+// class Account
+// {
+// private:
+//     int accountNumber;
+//     double balance;
 
-public:
-    Account()
-    {
-        accountNumber = 0;
-        balance = 0;
-    }
+// public:
+//     Account()
+//     {
+//         accountNumber = 0;
+//         balance = 0;
+//     }
 
-    void setAccountNumber(int accNo)
-    {
-        accountNumber = accNo;
-    }
+//     void setAccountNumber(int accNo)
+//     {
+//         accountNumber = accNo;
+//     }
 
-    bool deposit(double amount)
-    {
-        if (amount <= 0)
-            return false;
+//     bool deposit(double amount)
+//     {
+//         if (amount <= 0)
+//             return false;
 
-        balance += amount;
-        return true;
-    }
+//         balance += amount;
+//         return true;
+//     }
 
-    bool withdraw(double amount)
-    {
-        if (amount <= 0 || amount > balance)
-            return false;
+//     bool withdraw(double amount)
+//     {
+//         if (amount <= 0 || amount > balance)
+//             return false;
 
-        balance -= amount;
-        return true;
-    }
+//         balance -= amount;
+//         return true;
+//     }
 
-    double getBalance()
-    {
-        return balance;
-    }
+//     double getBalance()
+//     {
+//         return balance;
+//     }
 
-    void display()
-    {
-        cout << "Account Number: " << accountNumber << endl;
-        cout << "Balance: " << balance << endl;
-    }
-};
+//     void display()
+//     {
+//         cout << "Account Number: " << accountNumber << endl;
+//         cout << "Balance: " << balance << endl;
+//     }
+// };
 
-int main()
-{
-    Account ahmed;
-    int accNo;
-    double amount;
-    char choice;
+// int main()
+// {
+//     Account ahmed;
+//     int accNo;
+//     double amount;
+//     char choice;
 
-    cout << "Enter Account Number: ";
-    cin >> accNo;
-    ahmed.setAccountNumber(accNo);
+//     cout << "Enter Account Number: ";
+//     cin >> accNo;
+//     ahmed.setAccountNumber(accNo);
 
-    do
-    {
-        cout << "\nDeposit (d) | Withdraw (w) | Exit (e): ";
-        cin >> choice;
-        choice = tolower(choice);
+//     do
+//     {
+//         cout << "\nDeposit (d) | Withdraw (w) | Exit (e): ";
+//         cin >> choice;
+//         choice = tolower(choice);
 
-        if (choice == 'd')
-        {
-            cout << "Enter amount to deposit: ";
-            cin >> amount;
+//         if (choice == 'd')
+//         {
+//             cout << "Enter amount to deposit: ";
+//             cin >> amount;
 
-            if (!ahmed.deposit(amount))
-                cout << "Invalid deposit amount!" << endl;
-        }
-        else if (choice == 'w')
-        {
-            cout << "Enter amount to withdraw: ";
-            cin >> amount;
+//             if (!ahmed.deposit(amount))
+//                 cout << "Invalid deposit amount!" << endl;
+//         }
+//         else if (choice == 'w')
+//         {
+//             cout << "Enter amount to withdraw: ";
+//             cin >> amount;
 
-            if (!ahmed.withdraw(amount))
-                cout << "Transaction failed!" << endl;
-        }
+//             if (!ahmed.withdraw(amount))
+//                 cout << "Transaction failed!" << endl;
+//         }
 
-    } while (choice != 'e');
+//     } while (choice != 'e');
 
-    ahmed.display();
-    cout << "Goodbye!" << endl;
-}
+//     ahmed.display();
+//     cout << "Goodbye!" << endl;
+// }
+
+// ==================== Problem 4: student Detail system. ====================
+
+// class Student
+// {
+//     string name;
+//     int rollNo;
+//     float marks[3];
+
+// public:
+//     Student(string n, int r, float m[3])
+//     {
+//         name = n;
+//         rollNo = r;
+//         for (int i = 0; i < 3; i++)
+//         {
+//             marks[i] = m[i];
+//         }
+//     }
+
+//     float getTotal()
+//     {
+//         float total = 0;
+//         for (int i = 0; i < 3; i++)
+//         {
+//             total += marks[i];
+//         }
+//         return total;
+//     }
+
+//     float getAvg()
+//     {
+//         float average = getTotal() / 3;
+//         return average;
+//     }
+
+//     void display()
+//     {
+//         cout << "Name: " << name << endl;
+//         cout << "Roll No: " << rollNo << endl;
+//         for (int i = 0; i < 3; i++)
+//         {
+//             cout << "Subject " << i + 1 << ": " << marks[i] << endl;
+//         }
+
+//         cout << "Total are: " << getTotal() << endl;
+//         cout << "Average is: " << getAvg() << endl;
+//     }
+// };
+
+// int main()
+// {
+//     string name;
+//     float marks[3];
+//     int rollNo;
+
+//     cout << "Enter Your Name: ";
+//     cin >> name;
+//     cout << "Enter Your Roll No: ";
+//     cin >> rollNo;
+
+//     cout << "Enter the marks of three Subjects" << endl;
+//     for (int i = 0; i < 3; i++)
+//     {
+//         cin >> marks[i];
+//     }
+
+//     cout << "================Display Result=====================" << endl;
+
+//     Student st1(name, rollNo, marks);
+//     st1.display();
+// }
