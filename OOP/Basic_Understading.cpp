@@ -658,8 +658,6 @@ int main()
 {
     Counter counter;
     int n;
-    // cout << "What Do You Want?" << endl;
-    // cout << "Increment(i)\nDecrement(d)\nexit(e)" << endl;
 
     cout << "How much You want to increment: ";
     cin >> n;
