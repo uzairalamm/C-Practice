@@ -604,7 +604,7 @@ Problem:
 //     int rollNo;
 
 //     cout << "Enter Your Name: ";
-//     cin >> name;
+//     getline(cin, name);
 //     cout << "Enter Your Roll No: ";
 //     cin >> rollNo;
 
@@ -618,69 +618,70 @@ Problem:
 
 //     Student st1(name, rollNo, marks);
 //     st1.display();
+
 // }
 
 // ==================== Problem 5: Simple Counter ====================
 
-class Counter
-{
-    int count;
+// class Counter
+// {
+//     int count;
 
-public:
-    Counter() : count(0) {};
-    void increment()
-    {
-        count++;
-    }
+// public:
+//     Counter() : count(0) {};
+//     void increment()
+//     {
+//         count++;
+//     }
 
-    bool decrement()
-    {
-        if (count > 0)
-        {
-            count--;
-            return true;
-        }
-        return false;
-    }
+//     bool decrement()
+//     {
+//         if (count > 0)
+//         {
+//             count--;
+//             return true;
+//         }
+//         return false;
+//     }
 
-    int getCount()
-    {
-        return count;
-    }
+//     int getCount()
+//     {
+//         return count;
+//     }
 
-    void display()
-    {
-        cout << "Count is: " << count << endl;
-    }
-};
+//     void display()
+//     {
+//         cout << "Count is: " << count << endl;
+//     }
+// };
 
-int main()
-{
-    Counter counter;
-    int n;
+// int main()
+// {
+//     Counter counter;
+//     int n;
 
-    cout << "How much You want to increment: ";
-    cin >> n;
-    for (int i = 1; i <= n; i++)
-    {
-        counter.increment();
-        cout << counter.getCount() << " ";
-    }
-    cout << endl;
+//     cout << "How much You want to increment: ";
+//     cin >> n;
+//     for (int i = 1; i <= n; i++)
+//     {
+//         counter.increment();
+//         cout << counter.getCount() << " ";
+//     }
+//     cout << endl;
 
-    counter.display();
+//     counter.display();
 
-    cout << "How much You want to decrement: ";
-    cin >> n;
-    for (int i = 1; i <= n; i++)
-    {
-        if (!counter.decrement())
-        {
-            cout << "Cannot Go Any Futher, Count is " << counter.getCount();
-            break;
-        }
-        cout << counter.getCount() << " ";
-    }
-    cout << endl;
-    counter.display();
-}
+//     cout << "How much You want to decrement: ";
+//     cin >> n;
+//     for (int i = 1; i <= n; i++)
+//     {
+//         if (!counter.decrement())
+//         {
+//             cout << "Cannot Go Any Futher, Count is " << counter.getCount();
+//             break;
+//         }
+//         cout << counter.getCount() << " ";
+//     }
+//     cout << endl;
+//     counter.display();
+// }
