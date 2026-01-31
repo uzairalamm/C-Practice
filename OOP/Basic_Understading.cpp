@@ -685,3 +685,54 @@ Problem:
 //     cout << endl;
 //     counter.display();
 // }
+
+// ==================== Problem 5: Wallet ====================
+class Wallet
+{
+    double money;
+
+public:
+    Wallet() : money(0) {};
+    Wallet &deposit(double amount);
+    double getBalance() const;
+    void display();
+};
+
+Wallet &Wallet::deposit(double amount)
+{
+    if (amount > 0)
+    {
+        money += amount;
+    }
+    else
+    {
+        cout << "Invalid deposit amount" << endl;
+    }
+    return *this;
+}
+
+double Wallet::getBalance() const
+{
+    return money;
+}
+
+Wallet bonus(Wallet wallet)
+{
+    wallet.deposit(100);
+    return wallet;
+}
+
+void Wallet::display()
+{
+    cout << "Balance: " << money << endl;
+}
+
+int main()
+{
+    Wallet ali;
+    ali.deposit(90).deposit(90).deposit(90);
+    ali.display();
+    ali = bonus(ali);
+    cout << "After Bonus-------" << endl;
+    ali.display();
+}
