@@ -687,52 +687,232 @@ Problem:
 // }
 
 // ==================== Problem 5: Wallet ====================
-class Wallet
-{
-    double money;
+// class Wallet
+// {
+//     double money;
 
-public:
-    Wallet() : money(0) {};
-    Wallet &deposit(double amount);
-    double getBalance() const;
-    void display();
-};
+// public:
+//     Wallet() : money(0) {};
+//     Wallet &deposit(double amount);
+//     double getBalance() const;
+//     void display();
+// };
 
-Wallet &Wallet::deposit(double amount)
-{
-    if (amount > 0)
-    {
-        money += amount;
-    }
-    else
-    {
-        cout << "Invalid deposit amount" << endl;
-    }
-    return *this;
-}
+// Wallet &Wallet::deposit(double amount)
+// {
+//     if (amount > 0)
+//     {
+//         money += amount;
+//     }
+//     else
+//     {
+//         cout << "Invalid deposit amount" << endl;
+//     }
+//     return *this;
+// }
 
-double Wallet::getBalance() const
-{
-    return money;
-}
+// double Wallet::getBalance() const
+// {
+//     return money;
+// }
 
-Wallet bonus(Wallet wallet)
-{
-    wallet.deposit(100);
-    return wallet;
-}
+// Wallet bonus(Wallet wallet)
+// {
+//     wallet.deposit(100);
+//     return wallet;
+// }
 
-void Wallet::display()
-{
-    cout << "Balance: " << money << endl;
-}
+// void Wallet::display()
+// {
+//     cout << "Balance: " << money << endl;
+// }
 
-int main()
-{
-    Wallet ali;
-    ali.deposit(90).deposit(90).deposit(90);
-    ali.display();
-    ali = bonus(ali);
-    cout << "After Bonus-------" << endl;
-    ali.display();
-}
+// int main()
+// {
+//     Wallet ali;
+//     ali.deposit(90).deposit(90).deposit(90);
+//     ali.display();
+//     ali = bonus(ali);
+//     cout << "After Bonus-------" << endl;
+//     ali.display();
+// }
+
+// Using Getters, Object Passing, Returning Objects &Chaining
+// ==================== Problem 5: Bank Account ====================
+// class Account
+// {
+//     string accNo;
+//     double balance;
+
+// public:
+//     Account(string accNo) : accNo(accNo), balance(0) {};
+//     Account &deposit(double amount);
+//     Account &withdraw(double amount);
+//     string getaccNo();
+//     double getBalance();
+//     void display();
+// };
+
+// Account &Account::deposit(double amount)
+// {
+//     if (amount < 0)
+//     {
+//         cout << "Invalid deposit amount" << endl;
+//     }
+//     else
+//     {
+//         balance += amount;
+//     }
+//     return *this;
+// }
+
+// Account &Account::withdraw(double amount)
+// {
+//     if (amount < 0)
+//     {
+//         cout << "Invalid Withdraw amount" << endl;
+//     }
+//     else if (amount > balance)
+//     {
+//         cout << "Insufficient balance" << endl;
+//     }
+//     else
+//     {
+//         balance -= amount;
+//     }
+//     return *this;
+// }
+
+// string Account::getaccNo()
+// {
+//     return accNo;
+// }
+// double Account::getBalance()
+// {
+//     return balance;
+// }
+
+// void Account::display()
+// {
+//     cout << "Account Number: " << accNo << endl;
+//     cout << "Balance: " << balance << endl;
+// }
+
+// // returning obj from function
+// Account updateBalance(Account account)
+// {
+//     account.deposit(90);
+//     return account;
+// }
+
+// // passing obj to function
+// void show(Account account)
+// {
+//     account.display();
+// }
+
+// int main()
+// {
+
+//     string accNo;
+//     cout << "Enter Account Number: ";
+//     cin >> accNo;
+
+//     Account bankAccount(accNo);
+
+//     bankAccount.deposit(1000).withdraw(200).deposit(300);
+
+//     cout << "\nAccount details (passed to function):\n";
+//     show(bankAccount);
+
+//     bankAccount = updateBalance(bankAccount);
+
+//     cout << "\nFinal Account Details:\n";
+//     bankAccount.display();
+
+//     return 0;
+// }
+
+// ==================== Problem 6: Easy using (Getter + Utility) ====================
+// class student
+// {
+//     string name;
+//     double marks;
+
+// public:
+//     student(string name, double marks) : name(name), marks(marks) {};
+//     void setMarks(double marks)
+//     {
+//         this->marks = marks;
+//     }
+//     string getName();
+//     double getMarks();
+//     void display();
+// };
+
+// string student::getName()
+// {
+//     return name;
+// }
+// double student::getMarks()
+// {
+//     return marks;
+// }
+// void student::display()
+// {
+//     cout << "Name:  " << name << endl;
+//     cout << "Marks: " << marks << endl;
+// }
+
+// int main()
+// {
+//     student st("ali", 89);
+//     st.display();
+//     st.setMarks(90);
+//     cout << "Updated Marks: " << st.getMarks() << endl;
+// }
+
+// ==================== Problem 7: Easy (Pass Object to Function) ====================
+// class Book
+// {
+//     string title;
+//     double price;
+
+// public:
+//     Book(string title, double price) : title(title), price(price) {};
+//     void setName(string title)
+//     {
+//         this->title = title;
+//     }
+//     void setPrice(double price)
+//     {
+//         this->price = price;
+//     }
+//     string getName()
+//     {
+//         return title;
+//     }
+//     double getPrice()
+//     {
+//         return price;
+//     }
+//     void display()
+//     {
+//         cout << "Title: " << title << endl;
+//         cout << "Price: " << price << endl;
+//     }
+// };
+
+// void show(Book book)
+// {
+//     book.display();
+// }
+
+// int main()
+// {
+//     Book b1("Database System", 900);
+//     cout << "Displaying result outside Function" << endl;
+//     show(b1);
+//     b1.setPrice(890);
+//     cout << "Updated Price: " << b1.getPrice() << endl;
+// }
