@@ -916,3 +916,60 @@ Problem:
 //     b1.setPrice(890);
 //     cout << "Updated Price: " << b1.getPrice() << endl;
 // }
+
+// ==================== Problem 8: Easy (Return Object from Function) ====================
+
+class Wallet
+{
+    string id;
+    double money;
+
+public:
+    Wallet(string id) : id(id), money(0) {};
+    Wallet &deposit(double amount);
+    double getBalance();
+    string getID();
+    void display();
+};
+
+double Wallet::getBalance()
+{
+    return money;
+}
+string Wallet::getID()
+{
+    return id;
+}
+
+Wallet &Wallet::deposit(double amount)
+{
+    if (amount > 0)
+    {
+        money += amount;
+    }
+    else
+    {
+        cout << "invalid Deposit Amount" << endl;
+    }
+    return *this;
+}
+
+Wallet bonus(Wallet person)
+{
+    if (person.getBalance() < 900)
+    {
+        person.deposit(200);
+    }
+    return person;
+}
+
+int main()
+{
+    Wallet person("990hhh");
+    person.deposit(899);
+    cout << "Before Bonus: " << endl;
+    person.display();
+    person = bonus(person);
+    cout << "After Bonus: " << endl;
+    person.display();
+}
