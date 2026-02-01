@@ -963,10 +963,16 @@ Wallet bonus(Wallet person)
     return person;
 }
 
+void Wallet::display()
+{
+
+    cout << "Id:      " << id << endl;
+    cout << "Balance: " << money << endl;
+}
 int main()
 {
     Wallet person("990hhh");
-    person.deposit(899);
+    person.deposit(999);
     cout << "Before Bonus: " << endl;
     person.display();
     person = bonus(person);
