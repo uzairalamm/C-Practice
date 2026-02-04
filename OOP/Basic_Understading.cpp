@@ -919,63 +919,92 @@ Problem:
 
 // ==================== Problem 8: Easy (Return Object from Function) ====================
 
-class Wallet
+// class Wallet
+// {
+//     string id;
+//     double money;
+
+// public:
+//     Wallet(string id) : id(id), money(0) {};
+//     Wallet &deposit(double amount);
+//     double getBalance();
+//     string getID();
+//     void display();
+// };
+
+// double Wallet::getBalance()
+// {
+//     return money;
+// }
+// string Wallet::getID()
+// {
+//     return id;
+// }
+
+// Wallet &Wallet::deposit(double amount)
+// {
+//     if (amount > 0)
+//     {
+//         money += amount;
+//     }
+//     else
+//     {
+//         cout << "invalid Deposit Amount" << endl;
+//     }
+//     return *this;
+// }
+
+// Wallet bonus(Wallet person)
+// {
+//     if (person.getBalance() < 900)
+//     {
+//         person.deposit(200);
+//     }
+//     return person;
+// }
+
+// void Wallet::display()
+// {
+
+//     cout << "Id:      " << id << endl;
+//     cout << "Balance: " << money << endl;
+// }
+// int main()
+// {
+//     Wallet person("990hhh");
+//     person.deposit(999);
+//     cout << "Before Bonus: " << endl;
+//     person.display();
+//     person = bonus(person);
+//     cout << "After Bonus: " << endl;
+//     person.display();
+// }
+
+// ==================== Problem 9: Car ====================
+class Car
 {
-    string id;
-    double money;
+    string brand;
+    float speed;
 
 public:
-    Wallet(string id) : id(id), money(0) {};
-    Wallet &deposit(double amount);
-    double getBalance();
-    string getID();
-    void display();
+    Car()
+    {
+        brand = "Unknown";
+        speed = 0;
+    }
+    Car(string brand, float speed) : brand(brand), speed(speed) {};
+    void display()
+    {
+        cout << "Car Brand: " << brand << endl;
+        cout << "Car Speed: " << speed << endl;
+        cout << "-----------------\n";
+    }
 };
 
-double Wallet::getBalance()
-{
-    return money;
-}
-string Wallet::getID()
-{
-    return id;
-}
-
-Wallet &Wallet::deposit(double amount)
-{
-    if (amount > 0)
-    {
-        money += amount;
-    }
-    else
-    {
-        cout << "invalid Deposit Amount" << endl;
-    }
-    return *this;
-}
-
-Wallet bonus(Wallet person)
-{
-    if (person.getBalance() < 900)
-    {
-        person.deposit(200);
-    }
-    return person;
-}
-
-void Wallet::display()
-{
-
-    cout << "Id:      " << id << endl;
-    cout << "Balance: " << money << endl;
-}
 int main()
 {
-    Wallet person("990hhh");
-    person.deposit(999);
-    cout << "Before Bonus: " << endl;
-    person.display();
-    person = bonus(person);
-    cout << "After Bonus: " << endl;
-    person.display();
+    Car car1;
+    Car car("toyota", 150);
+    car1.display();
+    car.display();
 }
