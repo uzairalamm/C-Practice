@@ -980,31 +980,159 @@ Problem:
 //     person.display();
 // }
 
-// ==================== Problem 9: Car ====================
-class Car
-{
-    string brand;
-    float speed;
+// ==================== Problem 9: Car (constructor overloading concept)====================
+// class Car
+// {
+//     string brand;
+//     float speed;
 
-public:
-    Car()
-    {
-        brand = "Unknown";
-        speed = 0;
-    }
-    Car(string brand, float speed) : brand(brand), speed(speed) {};
-    void display()
-    {
-        cout << "Car Brand: " << brand << endl;
-        cout << "Car Speed: " << speed << endl;
-        cout << "-----------------\n";
-    }
-};
+// public:
+//     Car()
+//     {
+//         brand = "Unknown";
+//         speed = 0;
+//     }
+//     Car(string brand, float speed) : brand(brand), speed(speed) {};
+//     void display()
+//     {
+//         cout << "Car Brand: " << brand << endl;
+//         cout << "Car Speed: " << speed << endl;
+//         cout << "-----------------\n";
+//     }
+// };
 
-int main()
-{
-    Car car1;
-    Car car("toyota", 150);
-    car1.display();
-    car.display();
-}
+// int main()
+// {
+//     Car car1;
+//     Car car("toyota", 150);
+//     car1.display();
+//     car.display();
+// }
+
+// ==================== Problem 9: Car (Destructor basic)====================
+// class Car
+// {
+//     string brand;
+
+// public:
+//     Car(string brand) : brand(brand) { cout << brand << "Car is created" << endl; };
+//     ~Car()
+//     {
+//         cout << brand << "car Ended/destroyed" << endl;
+//     }
+// };
+// int main()
+// {
+//     Car car1("Toyota");
+//     cout << "What You like?" << endl;
+//     Car car2("fast");
+// }
+
+// ==================== Problem 10: Basic Problem====================
+// class Device
+// {
+//     string name;
+//     float price;
+
+// public:
+//     Device() : name("Unknown"), price(0) {};
+//     Device(string name, float price) : name(name), price(price) {};
+//     ~Device()
+//     {
+//         cout << name << " Disconnected" << endl;
+//     }
+
+//     void display();
+// };
+
+// void Device::display()
+// {
+//     cout << "Name:  " << name << endl;
+//     cout << "Price: " << price << endl;
+//     cout << "-----------------\n";
+// }
+
+// int main()
+// {
+//     Device headphone;
+//     Device charger("apple", 900.67);
+//     headphone.display();
+//     charger.display();
+// }
+
+// ==================== Problem 10: Student Record System====================
+// class Student
+// {
+//     int rollNo;
+//     float marks;
+
+// public:
+//     Student() : rollNo(0), marks(0) {};
+//     void setRollNo(int rollNO)
+//     {
+//         this->rollNo = rollNO;
+//     }
+//     bool setMarks(float marks)
+//     {
+//         if (marks < 0 || marks > 100)
+//         {
+//             return false;
+//         }
+//         else
+//         {
+//             this->marks = marks;
+//             return true;
+//         }
+//     }
+//     float getMarks()
+//     {
+//         return marks;
+//     }
+
+//     void display();
+// };
+
+// void Student::display()
+// {
+//     cout << "Roll No: " << rollNo << endl;
+//     cout << "Marks  : " << marks << endl;
+//     cout << "----------------------\n";
+// }
+
+// int main()
+// {
+//     int rollNO;
+
+//     Student student[5];
+//     cout << "Enter Roll and Marks of 5 Students\n";
+//     for (int i = 0; i < 5; i++)
+//     {
+//         float marks;
+//         bool valid = true;
+//         cout << "Student " << i + 1 << endl;
+//         cout << "Roll NO: ";
+//         cin >> rollNO;
+//         student[i].setRollNo(rollNO);
+//         do
+//         {
+//             cout << "Marks: ";
+//             cin >> marks;
+//             if (!student[i].setMarks(marks))
+//             {
+//                 valid = false;
+//                 cout << "Please Enter Between (1-100)" << endl;
+//             }
+//             else
+//             {
+//                 valid = true;
+//             }
+//         } while (!valid);
+//     }
+
+//     cout << "==============Final Result============" << endl;
+//     for (int i = 0; i < 5; i++)
+//     {
+//         cout << "Student " << i + 1 << endl;
+//         student[i].display();
+//     }
+// }
