@@ -1247,102 +1247,161 @@ Problem:
 // }
 
 // ==================== Problem 11.2: Bank Account System (improved Version)====================
-class BankAccount
+// class BankAccount
+// {
+//     string accountNumber;
+//     double balance;
+
+// public:
+//     BankAccount(string accountNumber) : accountNumber(accountNumber), balance(0) {};
+//     bool deposit(double amount)
+//     {
+//         if (amount <= 0)
+//         {
+//             return false;
+//         }
+//         balance += amount;
+//         return true;
+//     }
+
+//     bool withdraw(double amount)
+//     {
+//         if (amount <= 0 || amount > balance)
+//         {
+//             return false;
+//         }
+//         balance -= amount;
+//         return true;
+//     }
+
+//     double getBalance() const
+//     {
+//         return balance;
+//     }
+
+//     void display() const
+//     {
+//         cout << "Account Number: " << accountNumber << endl;
+//         cout << "Balance       : " << balance << endl;
+//         cout << "------------------------------------\n";
+//     }
+// };
+
+// int main()
+// {
+//     char choice;
+//     string accountNumber;
+//     cout << "Enter Account Number: ";
+//     cin >> accountNumber;
+//     BankAccount person(accountNumber);
+
+//     do
+//     {
+//         double amount;
+//         cout << "Want to:\n(d)Deposit\n(w)Withdraw\n(e)Exit" << endl;
+//         cin >> choice;
+//         choice = tolower(choice);
+
+//         switch (choice)
+//         {
+//         case 'd':
+//             cout << "How Much: ";
+//             cin >> amount;
+//             if (!person.deposit(amount))
+//             {
+//                 cout << "Insufficiant Amount" << endl;
+//                 cout << "------------------------------------\n";
+//             }
+//             else
+//             {
+//                 cout << "Account Balance is: " << person.getBalance() << endl;
+//                 cout << "------------------------------------\n";
+//             }
+//             break;
+
+//         case 'w':
+//             cout << "How Much: ";
+//             cin >> amount;
+//             if (!person.withdraw(amount))
+//             {
+//                 cout << "Insufficiant Amount" << endl;
+//                 cout << "------------------------------------\n";
+//             }
+//             else
+//             {
+//                 cout << "Account Balance is: " << person.getBalance() << endl;
+//                 cout << "------------------------------------\n";
+//             }
+//             break;
+
+//         case 'e':
+//             cout << "Exiting.....GoodBye" << endl;
+//             break;
+//         default:
+//             cout << "Please choose only (d, w, e)\n";
+//             cout << "------------------------------------\n";
+//             break;
+//         }
+//     } while (choice != 'e');
+//     cout << "===========FINAL RESULT===============\n";
+//     person.display();
+// }
+
+// ==================== Problem 12: Employee Salary Manager====================
+class Employee
 {
-    string accountNumber;
-    double balance;
+    string id;
+    double salary;
 
 public:
-    BankAccount(string accountNumber) : accountNumber(accountNumber), balance(0) {};
-    bool deposit(double amount)
+    Employee(string id) : id(id), salary(0) {};
+
+    bool addSalary(double amount)
     {
         if (amount <= 0)
         {
             return false;
         }
-        balance += amount;
+        salary += amount;
         return true;
     }
 
-    bool withdraw(double amount)
+    bool deductSalary(double amount)
     {
-        if (amount <= 0 || amount > balance)
+        if (amount <= 0 || amount > salary)
         {
             return false;
         }
-        balance -= amount;
+        salary -= amount;
         return true;
     }
 
-    double getBalance() const
+    double getSalary() const
     {
-        return balance;
+        return salary;
     }
 
     void display() const
     {
-        cout << "Account Number: " << accountNumber << endl;
-        cout << "Balance       : " << balance << endl;
-        cout << "------------------------------------\n";
+        cout << "Employee ID    : " << id << endl;
+        cout << "Employee Salary: " << salary << endl;
+        cout << "-------------------------------\n";
     }
 };
 
+void bonus(Employee &person)
+{
+    person.addSalary(900);
+}
+
 int main()
 {
-    char choice;
-    string accountNumber;
-    cout << "Enter Account Number: ";
-    cin >> accountNumber;
-    BankAccount person(accountNumber);
+    Employee ali("ali0982");
+    ali.addSalary(9000);
+    ali.deductSalary(90);
+    ali.display();
 
-    do
-    {
-        double amount;
-        cout << "Want to:\n(d)Deposit\n(w)Withdraw\n(e)Exit" << endl;
-        cin >> choice;
-        choice = tolower(choice);
-
-        switch (choice)
-        {
-        case 'd':
-            cout << "How Much: ";
-            cin >> amount;
-            if (!person.deposit(amount))
-            {
-                cout << "Insufficiant Amount" << endl;
-                cout << "------------------------------------\n";
-            }
-            else
-            {
-                cout << "Account Balance is: " << person.getBalance() << endl;
-                cout << "------------------------------------\n";
-            }
-            break;
-
-        case 'w':
-            cout << "How Much: ";
-            cin >> amount;
-            if (!person.withdraw(amount))
-            {
-                cout << "Insufficiant Amount" << endl;
-                cout << "------------------------------------\n";
-            }
-            else
-            {
-                cout << "Account Balance is: " << person.getBalance() << endl;
-                cout << "------------------------------------\n";
-            }
-            break;
-
-        case 'e':
-            cout << "Exiting.....GoodBye" << endl;
-            break;
-        default:
-            cout << "Please choose only (d, w, e)\n";
-            cout << "------------------------------------\n";
-            break;
-        }
-    } while (choice != 'e');
-    cout << "===========FINAL RESULT===============\n";
-    person.display();
+    bonus(ali);
+    cout << "After Bonus     " << endl;
+    cout << "Updated Salary: " << ali.getSalary() << endl;
 }
