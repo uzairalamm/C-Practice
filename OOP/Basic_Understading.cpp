@@ -1136,3 +1136,213 @@ Problem:
 //         student[i].display();
 //     }
 // }
+
+// ==================== Problem 11: Bank Account System====================
+// class BankAccount
+// {
+//     string accNo;
+//     double balance;
+
+// public:
+//     BankAccount(string accNo) : accNo(accNo), balance(0) {};
+//     bool deposit(double amount)
+//     {
+//         if (amount < 0)
+//         {
+//             return false;
+//         }
+//         else
+//         {
+//             balance += amount;
+//             return true;
+//         }
+//     }
+
+//     void withdraw(double amount)
+//     {
+//         if (amount < 0)
+//         {
+//             cout << "Invalid withdraw Amount" << endl;
+//         }
+//         else if (amount > balance)
+//         {
+//             cout << "Insufficiant Amount" << endl;
+//         }
+//         else
+//         {
+//             balance -= amount;
+//         }
+//     }
+
+//     double getBalance()
+//     {
+//         return balance;
+//     }
+
+//     void display();
+// };
+
+// void BankAccount::display()
+// {
+//     cout << "Account NO: " << accNo << endl;
+//     cout << "Balance   : " << balance << endl;
+//     cout << "----------------------\n";
+// }
+
+// int main()
+// {
+//     string accNo;
+//     char choice;
+//     cout << "Enter Account Number: ";
+//     cin >> accNo;
+//     BankAccount person(accNo);
+//     do
+//     {
+//         double amount = 0;
+//         cout << "You Want to\n(d)Deposit\n(w)withdraw\n(e)exit\n";
+//         bool valid = false;
+//         cin >> choice;
+//         choice = tolower(choice);
+//         switch (choice)
+//         {
+//         case 'd':
+//             while (!valid)
+//             {
+//                 cout << "How Much: ";
+//                 cin >> amount;
+//                 if (!person.deposit(amount))
+//                 {
+//                     cout << "Invalid Amount -- Try again" << endl;
+//                     valid = false;
+//                 }
+//                 else
+//                 {
+//                     valid = true;
+//                 }
+//             }
+//             cout << "Display Balance: " << person.getBalance() << endl;
+//             cout << "----------------------\n";
+//             break;
+
+//         case 'w':
+//             cout << "How Much: ";
+//             cin >> amount;
+//             person.withdraw(amount);
+//             cout << "Display Balance: " << person.getBalance() << endl;
+//             cout << "----------------------\n";
+//             break;
+
+//         case 'e':
+//             cout << "Exiting --- Goodbye" << endl;
+//             cout << "----------------------\n";
+//             break;
+
+//         default:
+//             cout << "Please Only Choose b/t (d,w,e)" << endl;
+//             break;
+//         }
+//     } while (choice != 'e');
+//     cout << "===========Final Result=============" << endl;
+//     person.display();
+// }
+
+// ==================== Problem 11.2: Bank Account System (improved Version)====================
+class BankAccount
+{
+    string accountNumber;
+    double balance;
+
+public:
+    BankAccount(string accountNumber) : accountNumber(accountNumber), balance(0) {};
+    bool deposit(double amount)
+    {
+        if (amount <= 0)
+        {
+            return false;
+        }
+        balance += amount;
+        return true;
+    }
+
+    bool withdraw(double amount)
+    {
+        if (amount <= 0 || amount > balance)
+        {
+            return false;
+        }
+        balance -= amount;
+        return true;
+    }
+
+    double getBalance() const
+    {
+        return balance;
+    }
+
+    void display() const
+    {
+        cout << "Account Number: " << accountNumber << endl;
+        cout << "Balance       : " << balance << endl;
+        cout << "------------------------------------\n";
+    }
+};
+
+int main()
+{
+    char choice;
+    string accountNumber;
+    cout << "Enter Account Number: ";
+    cin >> accountNumber;
+    BankAccount person(accountNumber);
+
+    do
+    {
+        double amount;
+        cout << "Want to:\n(d)Deposit\n(w)Withdraw\n(e)Exit" << endl;
+        cin >> choice;
+        choice = tolower(choice);
+
+        switch (choice)
+        {
+        case 'd':
+            cout << "How Much: ";
+            cin >> amount;
+            if (!person.deposit(amount))
+            {
+                cout << "Insufficiant Amount" << endl;
+                cout << "------------------------------------\n";
+            }
+            else
+            {
+                cout << "Account Balance is: " << person.getBalance() << endl;
+                cout << "------------------------------------\n";
+            }
+            break;
+
+        case 'w':
+            cout << "How Much: ";
+            cin >> amount;
+            if (!person.withdraw(amount))
+            {
+                cout << "Insufficiant Amount" << endl;
+                cout << "------------------------------------\n";
+            }
+            else
+            {
+                cout << "Account Balance is: " << person.getBalance() << endl;
+                cout << "------------------------------------\n";
+            }
+            break;
+
+        case 'e':
+            cout << "Exiting.....GoodBye" << endl;
+            break;
+        default:
+            cout << "Please choose only (d, w, e)\n";
+            cout << "------------------------------------\n";
+            break;
+        }
+    } while (choice != 'e');
+    cout << "===========FINAL RESULT===============\n";
+    person.display();
+}
