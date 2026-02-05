@@ -1348,60 +1348,60 @@ Problem:
 // }
 
 // ==================== Problem 12: Employee Salary Manager====================
-class Employee
-{
-    string id;
-    double salary;
+// class Employee
+// {
+//     string id;
+//     double salary;
 
-public:
-    Employee(string id) : id(id), salary(0) {};
+// public:
+//     Employee(string id) : id(id), salary(0) {};
 
-    bool addSalary(double amount)
-    {
-        if (amount <= 0)
-        {
-            return false;
-        }
-        salary += amount;
-        return true;
-    }
+//     bool addSalary(double amount)
+//     {
+//         if (amount <= 0)
+//         {
+//             return false;
+//         }
+//         salary += amount;
+//         return true;
+//     }
 
-    bool deductSalary(double amount)
-    {
-        if (amount <= 0 || amount > salary)
-        {
-            return false;
-        }
-        salary -= amount;
-        return true;
-    }
+//     bool deductSalary(double amount)
+//     {
+//         if (amount <= 0 || amount > salary)
+//         {
+//             return false;
+//         }
+//         salary -= amount;
+//         return true;
+//     }
 
-    double getSalary() const
-    {
-        return salary;
-    }
+//     double getSalary() const
+//     {
+//         return salary;
+//     }
 
-    void display() const
-    {
-        cout << "Employee ID    : " << id << endl;
-        cout << "Employee Salary: " << salary << endl;
-        cout << "-------------------------------\n";
-    }
-};
+//     void display() const
+//     {
+//         cout << "Employee ID    : " << id << endl;
+//         cout << "Employee Salary: " << salary << endl;
+//         cout << "-------------------------------\n";
+//     }
+// };
 
-void bonus(Employee &person)
-{
-    person.addSalary(900);
-}
+// void bonus(Employee &person)
+// {
+//     person.addSalary(900);
+// }
 
-int main()
-{
-    Employee ali("ali0982");
-    ali.addSalary(9000);
-    ali.deductSalary(90);
-    ali.display();
+// int main()
+// {
+//     Employee ali("ali0982");
+//     ali.addSalary(9000);
+//     ali.deductSalary(90);
+//     ali.display();
 
-    bonus(ali);
-    cout << "After Bonus     " << endl;
-    cout << "Updated Salary: " << ali.getSalary() << endl;
-}
+//     bonus(ali);
+//     cout << "After Bonus     " << endl;
+//     cout << "Updated Salary: " << ali.getSalary() << endl;
+// }
