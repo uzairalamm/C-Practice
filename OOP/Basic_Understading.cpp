@@ -1405,7 +1405,7 @@ Problem:
 //     cout << "After Bonus     " << endl;
 //     cout << "Updated Salary: " << ali.getSalary() << endl;
 // }
-// ==================== Problem 12: Secure ATM System====================
+// ==================== Problem 13: Secure ATM System====================
 class ATMAccount
 {
     int accountNumber;
@@ -1414,19 +1414,20 @@ class ATMAccount
     bool isAuthenticated;
 
 public:
-    ATMAccount(int accountNumber, int pin) : accountNumber(accountNumber), pin(pin), balance(0) {};
+    ATMAccount(int accountNumber, int pin) : accountNumber(accountNumber), pin(pin), balance(0), isAuthenticated(false) {};
     bool Authenticated(int enteredPin)
     {
-        if (enteredPin != this->pin)
+        if (enteredPin == this->pin)
         {
-            return false;
+            isAuthenticated = true;
+            return true;
         }
-        return true;
+        return false;
     }
 
     bool deposit(double amount)
     {
-        if (amount <= 0)
+        if (isAuthenticated != true || amount <= 0)
         {
             return false;
         }
@@ -1436,7 +1437,7 @@ public:
 
     bool withdraw(double amount)
     {
-        if (amount <= 0 || amount > balance)
+        if (isAuthenticated != true || amount <= 0 || amount > balance)
         {
             return false;
         }
@@ -1449,10 +1450,16 @@ public:
         return balance;
     }
 
+    void logout()
+    {
+        cout << "Exiting.......Goodbye\n";
+        isAuthenticated = false;
+    }
     void display()
     {
         cout << "Account Number: " << accountNumber << endl;
         cout << "Balance       : " << balance << endl;
+        cout << "------------------------------\n";
     }
 };
 
@@ -1483,10 +1490,12 @@ int main()
                 if (!ali.deposit(amount))
                 {
                     cout << "Invalid Amount" << endl;
+                    cout << "------------------------------\n";
                 }
                 else
                 {
                     cout << "Your Current Balance is: " << ali.getBalance() << endl;
+                    cout << "------------------------------\n";
                 }
                 break;
 
@@ -1496,17 +1505,22 @@ int main()
                 if (!ali.withdraw(amount))
                 {
                     cout << "Invalid Amount" << endl;
+                    cout << "------------------------------\n";
                 }
                 else
                 {
                     cout << "Your Current Balance is: " << ali.getBalance() << endl;
+                    cout << "------------------------------\n";
                 }
                 break;
+
             case 'e':
-                cout << "Exiting......Goodbye\n";
+                ali.logout();
                 break;
+
             default:
                 cout << "Please Only Choose 'd' or 'w' or 'e'\n";
+                cout << "------------------------------\n";
                 break;
             }
         } while (choice != 'e');
