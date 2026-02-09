@@ -1405,126 +1405,127 @@ Problem:
 //     cout << "After Bonus     " << endl;
 //     cout << "Updated Salary: " << ali.getSalary() << endl;
 // }
+
 // ==================== Problem 13: Secure ATM System====================
-class ATMAccount
-{
-    int accountNumber;
-    int pin;
-    double balance;
-    bool isAuthenticated;
+// class ATMAccount
+// {
+//     int accountNumber;
+//     int pin;
+//     double balance;
+//     bool isAuthenticated;
 
-public:
-    ATMAccount(int accountNumber, int pin) : accountNumber(accountNumber), pin(pin), balance(0), isAuthenticated(false) {};
-    bool Authenticated(int enteredPin)
-    {
-        if (enteredPin == this->pin)
-        {
-            isAuthenticated = true;
-            return true;
-        }
-        return false;
-    }
+// public:
+//     ATMAccount(int accountNumber, int pin) : accountNumber(accountNumber), pin(pin), balance(0), isAuthenticated(false) {};
+//     bool Authenticated(int enteredPin)
+//     {
+//         if (enteredPin == this->pin)
+//         {
+//             isAuthenticated = true;
+//             return true;
+//         }
+//         return false;
+//     }
 
-    bool deposit(double amount)
-    {
-        if (isAuthenticated != true || amount <= 0)
-        {
-            return false;
-        }
-        balance += amount;
-        return true;
-    }
+//     bool deposit(double amount)
+//     {
+//         if (isAuthenticated != true || amount <= 0)
+//         {
+//             return false;
+//         }
+//         balance += amount;
+//         return true;
+//     }
 
-    bool withdraw(double amount)
-    {
-        if (isAuthenticated != true || amount <= 0 || amount > balance)
-        {
-            return false;
-        }
-        balance -= amount;
-        return true;
-    }
+//     bool withdraw(double amount)
+//     {
+//         if (isAuthenticated != true || amount <= 0 || amount > balance)
+//         {
+//             return false;
+//         }
+//         balance -= amount;
+//         return true;
+//     }
 
-    double getBalance()
-    {
-        return balance;
-    }
+//     double getBalance()
+//     {
+//         return balance;
+//     }
 
-    void logout()
-    {
-        cout << "Exiting.......Goodbye\n";
-        isAuthenticated = false;
-    }
-    void display()
-    {
-        cout << "Account Number: " << accountNumber << endl;
-        cout << "Balance       : " << balance << endl;
-        cout << "------------------------------\n";
-    }
-};
+//     void logout()
+//     {
+//         cout << "Exiting.......Goodbye\n";
+//         isAuthenticated = false;
+//     }
+//     void display()
+//     {
+//         cout << "Account Number: " << accountNumber << endl;
+//         cout << "Balance       : " << balance << endl;
+//         cout << "------------------------------\n";
+//     }
+// };
 
-int main()
-{
-    char choice;
-    int pin;
-    ATMAccount ali(9011243, 1122);
-    cout << "Enter pin: ";
-    cin >> pin;
-    if (!ali.Authenticated(pin))
-    {
-        cout << "Invalid Pin " << endl;
-    }
-    else
-    {
-        do
-        {
-            double amount;
-            cout << "You want to:\n(d)Deposit\n(w)Withdraw\n(e)Exit " << endl;
-            cin >> choice;
-            choice = tolower(choice);
-            switch (choice)
-            {
-            case 'd':
-                cout << "How Much: ";
-                cin >> amount;
-                if (!ali.deposit(amount))
-                {
-                    cout << "Invalid Amount" << endl;
-                    cout << "------------------------------\n";
-                }
-                else
-                {
-                    cout << "Your Current Balance is: " << ali.getBalance() << endl;
-                    cout << "------------------------------\n";
-                }
-                break;
+// int main()
+// {
+//     char choice;
+//     int pin;
+//     ATMAccount ali(9011243, 1122);
+//     cout << "Enter pin: ";
+//     cin >> pin;
+//     if (!ali.Authenticated(pin))
+//     {
+//         cout << "Invalid Pin " << endl;
+//     }
+//     else
+//     {
+//         do
+//         {
+//             double amount;
+//             cout << "You want to:\n(d)Deposit\n(w)Withdraw\n(e)Exit " << endl;
+//             cin >> choice;
+//             choice = tolower(choice);
+//             switch (choice)
+//             {
+//             case 'd':
+//                 cout << "How Much: ";
+//                 cin >> amount;
+//                 if (!ali.deposit(amount))
+//                 {
+//                     cout << "Invalid Amount" << endl;
+//                     cout << "------------------------------\n";
+//                 }
+//                 else
+//                 {
+//                     cout << "Your Current Balance is: " << ali.getBalance() << endl;
+//                     cout << "------------------------------\n";
+//                 }
+//                 break;
 
-            case 'w':
-                cout << "How Much: ";
-                cin >> amount;
-                if (!ali.withdraw(amount))
-                {
-                    cout << "Invalid Amount" << endl;
-                    cout << "------------------------------\n";
-                }
-                else
-                {
-                    cout << "Your Current Balance is: " << ali.getBalance() << endl;
-                    cout << "------------------------------\n";
-                }
-                break;
+//             case 'w':
+//                 cout << "How Much: ";
+//                 cin >> amount;
+//                 if (!ali.withdraw(amount))
+//                 {
+//                     cout << "Invalid Amount" << endl;
+//                     cout << "------------------------------\n";
+//                 }
+//                 else
+//                 {
+//                     cout << "Your Current Balance is: " << ali.getBalance() << endl;
+//                     cout << "------------------------------\n";
+//                 }
+//                 break;
 
-            case 'e':
-                ali.logout();
-                break;
+//             case 'e':
+//                 ali.logout();
+//                 break;
 
-            default:
-                cout << "Please Only Choose 'd' or 'w' or 'e'\n";
-                cout << "------------------------------\n";
-                break;
-            }
-        } while (choice != 'e');
-        cout << "==================Final Result===============" << endl;
-        ali.display();
-    }
-}
+//             default:
+//                 cout << "Please Only Choose 'd' or 'w' or 'e'\n";
+//                 cout << "------------------------------\n";
+//                 break;
+//             }
+//         } while (choice != 'e');
+//         cout << "==================Final Result===============" << endl;
+//         ali.display();
+//     }
+// }
