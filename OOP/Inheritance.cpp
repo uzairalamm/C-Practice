@@ -134,45 +134,105 @@ using namespace std;
 // }
 
 //================Problem 3: Easy (Device Hierarchical Inheritance)================
-class Device
+// class Device
+// {
+//     string brand;
+//     int userExperience;
+
+// public:
+//     Device(string brand, int userExperience) : brand(brand), userExperience(userExperience) {};
+//     void showBrand()
+//     {
+//         cout << "Brand: " << brand << endl;
+//     }
+//     void showExperience()
+//     {
+//         cout << "User Experience: " << userExperience << endl;
+//     }
+// };
+
+// class Laptop : public Device
+// {
+
+// public:
+//     Laptop(string brand, int userExperience) : Device(brand, userExperience) {};
+// };
+
+// class Mobile : public Device
+// {
+// public:
+//     Mobile(string brand, int userExperience) : Device(brand, userExperience) {};
+// };
+
+// int main()
+// {
+//     Laptop lenovo("Lenovo", 10);
+//     lenovo.showBrand();
+//     lenovo.showExperience();
+//     cout << "---------------------------\n";
+//     Mobile vivo("Vivo", 8);
+//     vivo.showBrand();
+//     vivo.showExperience();
+// }
+//================Problem 3: Easy (Device Hierarchical Inheritance)================
+class Person
 {
-    string brand;
-    int userExperience;
+    string name;
 
 public:
-    Device(string brand, int userExperience) : brand(brand), userExperience(userExperience) {};
-    void showBrand()
+    Person(string name) : name(name) {};
+    void showName()
     {
-        cout << "Brand: " << brand << endl;
-    }
-    void showExperience()
-    {
-        cout << "User Experience: " << userExperience << endl;
+        cout << "Name: " << name << endl;
     }
 };
 
-class Laptop : public Device
+class Employee : public Person
 {
+    double salary;
 
 public:
-    Laptop(string brand, int userExperience) : Device(brand, userExperience) {};
+    Employee(string name) : Person(name), salary(0) {};
+    bool setSalary(double amount)
+    {
+        if (amount <= 0)
+        {
+            return false;
+        }
+        salary += amount;
+        return true;
+    }
+
+    double getSalary()
+    {
+        return salary;
+    }
+
+    void showSalary()
+    {
+        cout << "Salary: " << salary << endl;
+    }
 };
 
-class Mobile : public Device
+class Developer : public Employee
 {
+    string programingLanguage;
+
 public:
-    Mobile(string brand, int userExperience) : Device(brand, userExperience) {};
+    Developer(string name, string programingLanguage) : Employee(name), programingLanguage(programingLanguage) {};
+    void showLanguage()
+    {
+        cout << "Programing Language: " << programingLanguage << endl;
+    }
 };
 
 int main()
 {
-    Laptop lenovo("Lenovo", 10);
-    lenovo.showBrand();
-    lenovo.showExperience();
-    cout << "---------------------------\n";
-    Mobile vivo("Vivo", 8);
-    vivo.showBrand();
-    vivo.showExperience();
+    Developer dev("Ali", "C++");
+    dev.setSalary(90000);
+    dev.showName();
+    dev.showSalary();
+    dev.showLanguage();
 }
 
 //================Another Medium Example================
@@ -332,7 +392,6 @@ int main()
 //     }
 // };
 
-// // 7. Bill
 // class Bill
 // {
 //     string billID;
@@ -350,22 +409,17 @@ int main()
 //     }
 // };
 
-// // MAIN
 // int main()
 // {
-//     // Create a Doctor
 //     Doctor doctor("P001", "Ali", "Male", 40, 03001234567,
 //                   "E101", "Cardiology", 80000,
 //                   "Heart Specialist", "MBBS", 2000);
 
-//     // Create a Patient
 //     Patient patient("P002", "Ahmed", "Male", 25, 03001234567,
 //                     "PT201", "Fever", "05-02-2026", 12);
 
-//     // Appointment
 //     Appointment appointment("A001", "05-02-2026", "10:00 AM");
 
-//     // Bill
 //     Bill bill("B001", 5000, 1500);
 
 //     cout << "--- Doctor Details ---" << endl;
