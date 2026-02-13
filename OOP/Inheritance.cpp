@@ -240,9 +240,10 @@ class Item
 {
     string title;
     bool isAvailable;
+    bool isReturn;
 
 public:
-    Item(string title) : title(title), isAvailable(true) {};
+    Item(string title) : title(title), isAvailable(true), isReturn(true) {};
     bool borrowItem(string title)
     {
         if (!isAvailable)
@@ -250,6 +251,7 @@ public:
             return false;
         }
         isAvailable = false;
+        isReturn = false;
         return true;
     }
     string getTitle()
@@ -259,11 +261,12 @@ public:
 
     bool returnItem(string title)
     {
-        if (borrowItem(title) && isAvailable == false)
+        if (isReturn != false && isAvailable != false)
         {
             return false;
         }
         isAvailable = true;
+        isReturn = true;
         return true;
     }
 };
@@ -283,40 +286,46 @@ public:
 int main()
 {
     Book b1("OOP", "Thomas");
+    char choice;
+    cout << "What Do You Want: ";
+    do
+    {
+        cout << "(B) Borrow\n(R) Return \n(e) Exit" << endl;
+        cin >> choice;
+        choice = tolower(choice);
+        switch (choice)
+        {
+        case 'b':
+            if (!b1.borrowItem("OOP"))
+            {
+                cout << "Not Avaliable\n";
+            }
+            else
+            {
+                cout << "You Borrowed: " << b1.getTitle() << endl;
+            }
+            break;
+        case 'r':
+            if (!b1.returnItem("OOP"))
+            {
+                cout << "Someone Already Return this" << endl;
+            }
+            else
+            {
+                cout << "You Return: " << b1.getTitle() << endl;
+            }
+            break;
+        case 'e':
+            cout << "Exiting........." << endl;
+            break;
+        default:
+            cout << "Invalid Choice, Please choose (b,r, or e)" << endl;
+            break;
+        }
+    } while (choice != 'e');
 
-    if (!b1.borrowItem("OOP"))
-    {
-        cout << "Not Avaliable\n";
-    }
-    else
-    {
-        cout << "You Borrowed: " << b1.getTitle() << endl;
-    }
-    if (!b1.borrowItem("OPP"))
-    {
-        cout << "Not Avaliable\n";
-    }
-    else
-    {
-        cout << "You Borrowed: " << b1.getTitle() << endl;
-    }
-    if (!b1.returnItem("OOP"))
-    {
-        cout << "Someone Already Return this" << endl;
-    }
-    else
-    {
-        cout << "You Return: " << b1.getTitle() << endl;
-    }
-
-    if (!b1.borrowItem("OOP"))
-    {
-        cout << "Not Avaliable\n";
-    }
-    else
-    {
-        cout << "You Borrowed: " << b1.getTitle() << endl;
-    }
+    cout << "Final Result" << endl;
+    b1.showDetail();
 }
 //================Another Medium Example================
 // class Person
