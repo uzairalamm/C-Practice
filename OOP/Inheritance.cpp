@@ -240,34 +240,29 @@ class Item
 {
     string title;
     bool isAvailable;
-    bool isReturn;
 
 public:
-    Item(string title) : title(title), isAvailable(true), isReturn(true) {};
-    bool borrowItem(string title)
+    Item(string title) : title(title), isAvailable(true) {}
+
+    bool borrowItem()
     {
         if (!isAvailable)
-        {
             return false;
-        }
         isAvailable = false;
-        isReturn = false;
         return true;
     }
+
+    bool returnItem()
+    {
+        if (isAvailable) // already returned
+            return false;
+        isAvailable = true;
+        return true;
+    }
+
     string getTitle()
     {
         return title;
-    }
-
-    bool returnItem(string title)
-    {
-        if (isReturn != false && isAvailable != false)
-        {
-            return false;
-        }
-        isAvailable = true;
-        isReturn = true;
-        return true;
     }
 };
 class Book : public Item
@@ -275,56 +270,47 @@ class Book : public Item
     string author;
 
 public:
-    Book(string title, string author) : Item(title), author(author) {};
+    Book(string title, string author) : Item(title), author(author) {}
+
     void showDetail()
     {
         cout << "Book Author: " << author << endl;
         cout << "Book Title : " << getTitle() << endl;
     }
 };
-
 int main()
 {
     Book b1("OOP", "Thomas");
     char choice;
-    cout << "What Do You Want: ";
     do
     {
-        cout << "(B) Borrow\n(R) Return \n(e) Exit" << endl;
+        cout << "(B) Borrow\n(R) Return\n(E) Exit" << endl;
         cin >> choice;
         choice = tolower(choice);
+
         switch (choice)
         {
         case 'b':
-            if (!b1.borrowItem("OOP"))
-            {
-                cout << "Not Avaliable\n";
-            }
+            if (!b1.borrowItem())
+                cout << "Not Available\n";
             else
-            {
                 cout << "You Borrowed: " << b1.getTitle() << endl;
-            }
             break;
         case 'r':
-            if (!b1.returnItem("OOP"))
-            {
-                cout << "Someone Already Return this" << endl;
-            }
+            if (!b1.returnItem())
+                cout << "Already Returned\n";
             else
-            {
-                cout << "You Return: " << b1.getTitle() << endl;
-            }
+                cout << "You Returned: " << b1.getTitle() << endl;
             break;
         case 'e':
-            cout << "Exiting........." << endl;
+            cout << "Exiting...\n";
             break;
         default:
-            cout << "Invalid Choice, Please choose (b,r, or e)" << endl;
-            break;
+            cout << "Invalid Choice\n";
         }
     } while (choice != 'e');
 
-    cout << "Final Result" << endl;
+    cout << "Final Result\n";
     b1.showDetail();
 }
 //================Another Medium Example================
