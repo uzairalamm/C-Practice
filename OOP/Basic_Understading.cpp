@@ -1529,3 +1529,160 @@ Problem:
 //         ali.display();
 //     }
 // }
+
+// ==================== Problem 14: Counter Class====================
+// class Counter
+// {
+//     int count;
+
+// public:
+//     Counter() : count(0) {};
+//     Counter &increment()
+//     {
+//         count++;
+//         return *this;
+//     }
+//     Counter &decrement()
+//     {
+//         if (count > 0)
+//         {
+//             count--;
+//         }
+//         else
+//         {
+//             cout << "Count is Zero, can't move downward" << endl;
+//         }
+//         return *this;
+//     }
+
+//      int getCount(){
+//      return count;
+//      }
+//
+//     void showCount() const
+//     {
+//         cout << "Count: " << count << endl;
+//     }
+// };
+
+// int main()
+// {
+//     Counter count;
+//     count.getCount();
+
+//     count.increment().decrement().increment().increment();
+//     count.getCount();
+//     count.decrement().decrement().decrement();
+//     count.getCount();
+// }
+
+// ==================== Problem 15: Bank Account====================
+// class Account
+// {
+//     string accountHolder;
+//     double balance;
+
+// public:
+//     Account(string accountHolder) : accountHolder(accountHolder), balance(0) {};
+
+//     bool deposit(double amount)
+//     {
+//         if (amount <= 0)
+//         {
+//             return false;
+//         }
+//         balance += amount;
+//         return true;
+//     }
+
+//     bool withdraw(double amount)
+//     {
+//         if (amount <= 0 || amount > balance)
+//         {
+//             return false;
+//         }
+//         balance -= amount;
+//         return true;
+//     }
+
+//     double getBalance() const
+//     {
+//         return balance;
+//     }
+
+//     void display() const
+//     {
+//         cout << "Account Holder: " << accountHolder << endl;
+//         cout << "Balance       : " << balance << endl;
+//     }
+// };
+
+// void line()
+// {
+//     cout << "-------------------------\n";
+// }
+
+// int main()
+// {
+//     Account acc("Ali");
+//     char choice;
+//     double amount;
+//     cout << "What DO You want?" << endl;
+
+//     do
+//     {
+//         cout << "(d) Deposit\n(w) Withdraw\n(e) Exit" << endl;
+//         cin >> choice;
+//         choice = tolower(choice);
+
+//         switch (choice)
+//         {
+//         case 'd':
+//             cout << "How Much: ";
+//             cin >> amount;
+//             if (!acc.deposit(amount))
+//             {
+//                 cout << "Invalid Amount" << endl;
+//                 line();
+//             }
+//             else
+//             {
+//                 cout << "You Deposited: " << amount << endl;
+//                 cout << "Your Balance is: " << acc.getBalance() << endl;
+//                 line();
+//             }
+//             break;
+
+//         case 'w':
+//             cout << "How Much: ";
+//             cin >> amount;
+//             if (!acc.withdraw(amount))
+//             {
+//                 cout << "Invalid Amount" << endl;
+//                 line();
+//             }
+//             else
+//             {
+//                 cout << "You Withdraw: " << amount << endl;
+//                 cout << "Your Balance is: " << acc.getBalance() << endl;
+//                 line();
+//             }
+//             break;
+
+//         case 'e':
+//             cout << "Exiting.....Goodbye\n"
+//                  << endl;
+//             break;
+
+//         default:
+//             cout << "Please enter w, d, or e" << endl;
+//             line();
+//             break;
+//         }
+//     } while (choice != 'e');
+
+//     line();
+//     cout << "Final Result" << endl;
+//     line();
+//     acc.display();
+// }

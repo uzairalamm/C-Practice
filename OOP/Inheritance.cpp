@@ -43,7 +43,138 @@ using namespace std;
 //     cat.sound();
 // }
 
-//================Problem 1: Easy (Person–Student Basic Inheritanc)================
+// //================Problem 1: Easy (Person–Student Basic Inheritanc)================
+// // class Person
+// // {
+// //     string name;
+
+// // public:
+// //     Person(string name) : name(name) {};
+// //     void showName()
+// //     {
+// //         cout << "Name: " << name << endl;
+// //     }
+// // };
+
+// // class Student : public Person
+// // {
+// //     int rollNo;
+
+// // public:
+// //     Student(string name, int rollNo) : Person(name), rollNo(rollNo) {};
+// //     void showRollNo()
+// //     {
+// //         cout << "Roll No: " << rollNo << endl;
+// //     }
+// // };
+
+// // int main()
+// // {
+// //     Student s1("Ali", 053);
+// //     s1.showName();
+// //     s1.showRollNo();
+// // }
+
+// //================Problem 2: Easy (Employee–Manager Salary System)================
+// // class Employee
+// // {
+// //     double salary;
+
+// // public:
+// //     Employee() : salary(0) {};
+// //     bool setSalary(double salary)
+// //     {
+// //         if (salary <= 0)
+// //         {
+// //             return false;
+// //         }
+// //         this->salary += salary;
+// //         return true;
+// //     }
+// //     double getSalary()
+// //     {
+// //         return salary;
+// //     }
+
+// //     void Salary()
+// //     {
+// //         cout << "Before Total: " << salary << endl;
+// //     }
+// // };
+
+// // class Manager : public Employee
+// // {
+// //     double bonus;
+
+// // public:
+// //     Manager() : bonus(0) {};
+// //     void setBonus(double amount)
+// //     {
+// //         bonus += amount;
+// //     }
+
+// //     double Total()
+// //     {
+// //         return bonus + getSalary();
+// //     }
+
+// //     void totalSalary()
+// //     {
+// //         cout << "After Bonus: " << Total() << endl;
+// //     }
+// // };
+
+// // int main()
+// // {
+// //     Manager manager;
+// //     manager.setSalary(9000);
+// //     manager.Salary();
+// //     manager.setBonus(100);
+// //     manager.totalSalary();
+// // }
+
+// //================Problem 3: Easy (Device Hierarchical Inheritance)================
+// // class Device
+// // {
+// //     string brand;
+// //     int userExperience;
+
+// // public:
+// //     Device(string brand, int userExperience) : brand(brand), userExperience(userExperience) {};
+// //     void showBrand()
+// //     {
+// //         cout << "Brand: " << brand << endl;
+// //     }
+// //     void showExperience()
+// //     {
+// //         cout << "User Experience: " << userExperience << endl;
+// //     }
+// // };
+
+// // class Laptop : public Device
+// // {
+
+// // public:
+// //     Laptop(string brand, int userExperience) : Device(brand, userExperience) {};
+// // };
+
+// // class Mobile : public Device
+// // {
+// // public:
+// //     Mobile(string brand, int userExperience) : Device(brand, userExperience) {};
+// // };
+
+// // int main()
+// // {
+// //     Laptop lenovo("Lenovo", 10);
+// //     lenovo.showBrand();
+// //     lenovo.showExperience();
+// //     cout << "---------------------------\n";
+// //     Mobile vivo("Vivo", 8);
+// //     vivo.showBrand();
+// //     vivo.showExperience();
+// // }
+// //================Problem 3: Easy (Device Hierarchical Inheritance)================
 // class Person
 // {
 //     string name;
@@ -56,185 +187,137 @@ using namespace std;
 //     }
 // };
 
-// class Student : public Person
-// {
-//     int rollNo;
-
-// public:
-//     Student(string name, int rollNo) : Person(name), rollNo(rollNo) {};
-//     void showRollNo()
-//     {
-//         cout << "Roll No: " << rollNo << endl;
-//     }
-// };
-
-// int main()
-// {
-//     Student s1("Ali", 053);
-//     s1.showName();
-//     s1.showRollNo();
-// }
-
-//================Problem 2: Easy (Employee–Manager Salary System)================
-// class Employee
+// class Employee : public Person
 // {
 //     double salary;
 
 // public:
-//     Employee() : salary(0) {};
-//     bool setSalary(double salary)
+//     Employee(string name) : Person(name), salary(0) {};
+//     bool setSalary(double amount)
 //     {
-//         if (salary <= 0)
+//         if (amount <= 0)
 //         {
 //             return false;
 //         }
-//         this->salary += salary;
+//         salary += amount;
 //         return true;
 //     }
+
 //     double getSalary()
 //     {
 //         return salary;
 //     }
 
-//     void Salary()
+//     void showSalary()
 //     {
-//         cout << "Before Total: " << salary << endl;
+//         cout << "Salary: " << salary << endl;
 //     }
 // };
 
-// class Manager : public Employee
+// class Developer : public Employee
 // {
-//     double bonus;
+//     string programingLanguage;
 
 // public:
-//     Manager() : bonus(0) {};
-//     void setBonus(double amount)
+//     Developer(string name, string programingLanguage) : Employee(name), programingLanguage(programingLanguage) {};
+//     void showLanguage()
 //     {
-//         bonus += amount;
-//     }
-
-//     double Total()
-//     {
-//         return bonus + getSalary();
-//     }
-
-//     void totalSalary()
-//     {
-//         cout << "After Bonus: " << Total() << endl;
+//         cout << "Programing Language: " << programingLanguage << endl;
 //     }
 // };
 
 // int main()
 // {
-//     Manager manager;
-//     manager.setSalary(9000);
-//     manager.Salary();
-//     manager.setBonus(100);
-//     manager.totalSalary();
+//     Developer dev("Ali", "C++");
+//     dev.setSalary(90000);
+//     dev.showName();
+//     dev.showSalary();
+//     dev.showLanguage();
 // }
 
-//================Problem 3: Easy (Device Hierarchical Inheritance)================
-// class Device
-// {
-//     string brand;
-//     int userExperience;
-
-// public:
-//     Device(string brand, int userExperience) : brand(brand), userExperience(userExperience) {};
-//     void showBrand()
-//     {
-//         cout << "Brand: " << brand << endl;
-//     }
-//     void showExperience()
-//     {
-//         cout << "User Experience: " << userExperience << endl;
-//     }
-// };
-
-// class Laptop : public Device
-// {
-
-// public:
-//     Laptop(string brand, int userExperience) : Device(brand, userExperience) {};
-// };
-
-// class Mobile : public Device
-// {
-// public:
-//     Mobile(string brand, int userExperience) : Device(brand, userExperience) {};
-// };
-
-// int main()
-// {
-//     Laptop lenovo("Lenovo", 10);
-//     lenovo.showBrand();
-//     lenovo.showExperience();
-//     cout << "---------------------------\n";
-//     Mobile vivo("Vivo", 8);
-//     vivo.showBrand();
-//     vivo.showExperience();
-// }
-//================Problem 3: Easy (Device Hierarchical Inheritance)================
-class Person
+//================Problem 6 — Library System (Inheritance + Validation)================
+class Item
 {
-    string name;
+    string title;
+    bool isAvailable;
 
 public:
-    Person(string name) : name(name) {};
-    void showName()
+    Item(string title) : title(title), isAvailable(true) {};
+    bool borrowItem(string title)
     {
-        cout << "Name: " << name << endl;
-    }
-};
-
-class Employee : public Person
-{
-    double salary;
-
-public:
-    Employee(string name) : Person(name), salary(0) {};
-    bool setSalary(double amount)
-    {
-        if (amount <= 0)
+        if (!isAvailable)
         {
             return false;
         }
-        salary += amount;
+        isAvailable = false;
         return true;
     }
-
-    double getSalary()
+    string getTitle()
     {
-        return salary;
+        return title;
     }
 
-    void showSalary()
+    bool returnItem(string title)
     {
-        cout << "Salary: " << salary << endl;
+        if (borrowItem(title) && isAvailable == false)
+        {
+            return false;
+        }
+        isAvailable = true;
+        return true;
     }
 };
-
-class Developer : public Employee
+class Book : public Item
 {
-    string programingLanguage;
+    string author;
 
 public:
-    Developer(string name, string programingLanguage) : Employee(name), programingLanguage(programingLanguage) {};
-    void showLanguage()
+    Book(string title, string author) : Item(title), author(author) {};
+    void showDetail()
     {
-        cout << "Programing Language: " << programingLanguage << endl;
+        cout << "Book Author: " << author << endl;
+        cout << "Book Title : " << getTitle() << endl;
     }
 };
 
 int main()
 {
-    Developer dev("Ali", "C++");
-    dev.setSalary(90000);
-    dev.showName();
-    dev.showSalary();
-    dev.showLanguage();
-}
+    Book b1("OOP", "Thomas");
 
+    if (!b1.borrowItem("OOP"))
+    {
+        cout << "Not Avaliable\n";
+    }
+    else
+    {
+        cout << "You Borrowed: " << b1.getTitle() << endl;
+    }
+    if (!b1.borrowItem("OPP"))
+    {
+        cout << "Not Avaliable\n";
+    }
+    else
+    {
+        cout << "You Borrowed: " << b1.getTitle() << endl;
+    }
+    if (!b1.returnItem("OOP"))
+    {
+        cout << "Someone Already Return this" << endl;
+    }
+    else
+    {
+        cout << "You Return: " << b1.getTitle() << endl;
+    }
+
+    if (!b1.borrowItem("OOP"))
+    {
+        cout << "Not Avaliable\n";
+    }
+    else
+    {
+        cout << "You Borrowed: " << b1.getTitle() << endl;
+    }
+}
 //================Another Medium Example================
 // class Person
 // {
