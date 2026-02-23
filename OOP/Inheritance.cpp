@@ -236,163 +236,164 @@ using namespace std;
 // }
 
 //================Problem 6 — Library System (Inheritance + Validation)================
-class Item
-{
-    string title;
-    bool isAvailable;
+// class Item
+// {
+//     string title;
+//     bool isAvailable;
 
-public:
-    Item() : title("Unknown"), isAvailable(true) {};
-    Item(string title) : title(title), isAvailable(true) {}
+// public:
+//     Item() : title("Unknown"), isAvailable(true) {};
+//     Item(string title) : title(title), isAvailable(true) {}
 
-    bool borrowItem()
-    {
-        if (!isAvailable)
-            return false;
-        isAvailable = false;
-        return true;
-    }
+//     bool borrowItem()
+//     {
+//         if (!isAvailable)
+//             return false;
+//         isAvailable = false;
+//         return true;
+//     }
 
-    bool returnItem()
-    {
-        if (isAvailable) // already returned
-            return false;
-        isAvailable = true;
-        return true;
-    }
-    void setTitle(string title)
-    {
-        this->title = title;
-    }
+//     bool returnItem()
+//     {
+//         if (isAvailable) // already returned
+//             return false;
+//         isAvailable = true;
+//         return true;
+//     }
+//     void setTitle(string title)
+//     {
+//         this->title = title;
+//     }
 
-    string getTitle() const
-    {
-        return title;
-    }
-};
-class Book : public Item
-{
-    string author;
+//     string getTitle() const
+//     {
+//         return title;
+//     }
+// };
+// class Book : public Item
+// {
+//     string author;
 
-public:
-    Book() : author("Unknown") {};
-    Book(string title, string author) : Item(title), author(author) {};
-    void setAuthor(string author)
-    {
-        this->author = author;
-    }
+// public:
+//     Book() : author("Unknown") {};
+//     Book(string title, string author) : Item(title), author(author) {};
+//     void setAuthor(string author)
+//     {
+//         this->author = author;
+//     }
 
-    void showDetail()
-    {
-        cout << "Book Author: " << author << endl;
-        cout << "Book Title : " << getTitle() << endl;
-    }
-};
-int main()
-{
-    string ourBooks[5] = {"OOP", "DMBS", "DISCRETE STRUCTURE", "APPLIED PHYSICS", "SOFTWARE ENGINEERING"};
-    string author[5] = {"Ali", "Hassan", "Usman", "Abdullah", "Asad"};
-    Book library[5];
-    int bookNo;
-    char choice;
-    string name;
-    cout << "===============Welcome To Our Library===============\n";
-    cout << "We Have Books\n";
+//     void showDetail()
+//     {
+//         cout << "Book Author: " << author << endl;
+//         cout << "Book Title : " << getTitle() << endl;
+//     }
+// };
+// int main()
+// {
+//     string ourBooks[5] = {"OOP", "DMBS", "DISCRETE STRUCTURE", "APPLIED PHYSICS", "SOFTWARE ENGINEERING"};
+//     string author[5] = {"Ali", "Hassan", "Usman", "Abdullah", "Asad"};
+//     Book library[5];
+//     int bookNo;
+//     char choice;
+//     string name;
+//     cout << "===============Welcome To Our Library===============\n";
+//     cout << "We Have Books\n";
 
-    for (int i = 0; i < 5; i++)
-    {
-        cout << i + 1 << ". " << ourBooks[i] << endl;
-    }
+//     for (int i = 0; i < 5; i++)
+//     {
+//         cout << i + 1 << ". " << ourBooks[i] << endl;
+//     }
 
-    for (int i = 0; i < 5; i++)
-    {
-        library[i].setTitle(ourBooks[i]);
-        library[i].setAuthor(author[i]);
-    }
+//     for (int i = 0; i < 5; i++)
+//     {
+//         library[i].setTitle(ourBooks[i]);
+//         library[i].setAuthor(author[i]);
+//     }
 
-    do
-    {
-        cout << "Enter the Book Number You Want: ";
-        cin >> bookNo;
-        if (bookNo <= 0 || bookNo > 5)
-        {
-            cout << "Invalid Input " << endl;
-        }
-        else
-        {
-            cout << "\n---------------------------\n";
-            cout << "Book Detail\n";
-            library[bookNo - 1].showDetail();
-            cout << "\n---------------------------\n";
-            do
-            {
-                cout << "(B) Borrow\n(R) Return\n(E) Exit" << endl;
-                cin >> choice;
-                choice = tolower(choice);
+//     do
+//     {
+//         cout << "Enter the Book Number You Want: ";
+//         cin >> bookNo;
+//         if (bookNo <= 0 || bookNo > 5)
+//         {
+//             cout << "Invalid Input " << endl;
+//         }
+//         else
+//         {
+//             cout << "\n---------------------------\n";
+//             cout << "Book Detail\n";
+//             library[bookNo - 1].showDetail();
+//             cout << "\n---------------------------\n";
+//             do
+//             {
+//                 cout << "(B) Borrow\n(R) Return\n(E) Exit" << endl;
+//                 cin >> choice;
+//                 choice = tolower(choice);
 
-                switch (choice)
-                {
-                case 'b':
-                    if (!library[bookNo - 1].borrowItem())
-                    {
-                        cout << "---------------------------\n";
-                        cout << "Not Available\n";
-                        cout << "---------------------------\n";
-                    }
+//                 switch (choice)
+//                 {
+//                 case 'b':
+//                     if (!library[bookNo - 1].borrowItem())
+//                     {
+//                         cout << "---------------------------\n";
+//                         cout << "Not Available\n";
+//                         cout << "---------------------------\n";
+//                     }
 
-                    else
-                    {
-                        cout << "---------------------------\n";
-                        cout << "You Borrowed: " << library[bookNo - 1].getTitle() << endl;
-                        cout << "---------------------------\n";
-                    }
-                    break;
+//                     else
+//                     {
+//                         cout << "---------------------------\n";
+//                         cout << "You Borrowed: " << library[bookNo - 1].getTitle() << endl;
+//                         cout << "---------------------------\n";
+//                     }
+//                     break;
 
-                case 'r':
-                    if (!library[bookNo - 1].returnItem())
-                    {
-                        cout << "---------------------------\n";
-                        cout << "Already Returned\n";
-                        cout << "---------------------------\n";
-                    }
-                    else
-                    {
-                        cout << "---------------------------\n";
-                        cout << "You Returned: " << library[bookNo - 1].getTitle() << endl;
-                        cout << "---------------------------\n";
-                    }
-                    break;
+//                 case 'r':
+//                     if (!library[bookNo - 1].returnItem())
+//                     {
+//                         cout << "---------------------------\n";
+//                         cout << "Already Returned\n";
+//                         cout << "---------------------------\n";
+//                     }
+//                     else
+//                     {
+//                         cout << "---------------------------\n";
+//                         cout << "You Returned: " << library[bookNo - 1].getTitle() << endl;
+//                         cout << "---------------------------\n";
+//                     }
+//                     break;
 
-                case 'e':
-                    cout << "\n---------------------------\n\n";
-                    cout << "Exiting...\n";
-                    break;
+//                 case 'e':
+//                     cout << "\n---------------------------\n\n";
+//                     cout << "Exiting...\n";
+//                     break;
 
-                default:
-                    cout << "Invalid Choice\n";
-                    cout << "---------------------------\n";
-                }
-            } while (choice != 'e');
-        }
-        cout << "\n---------------------------\n";
-        do
-        {
-            cout << "Any other Book You want (y/n): ";
-            cin >> choice;
-            choice = tolower(choice);
+//                 default:
+//                     cout << "Invalid Choice\n";
+//                     cout << "---------------------------\n";
+//                 }
+//             } while (choice != 'e');
+//         }
+//         cout << "\n---------------------------\n";
+//         do
+//         {
+//             cout << "Any other Book You want (y/n): ";
+//             cin >> choice;
+//             choice = tolower(choice);
 
-            if (choice != 'y' && choice != 'n')
-            {
-                cout << "\n---------------------------\n";
-                cout << "Invalid input. Enter y or n.\n";
-                cout << "---------------------------\n";
-            }
-        } while (choice != 'y' && choice != 'n');
+//             if (choice != 'y' && choice != 'n')
+//             {
+//                 cout << "\n---------------------------\n";
+//                 cout << "Invalid input. Enter y or n.\n";
+//                 cout << "---------------------------\n";
+//             }
+//         } while (choice != 'y' && choice != 'n');
 
-        cout << "---------------------------\n\n";
-    } while (choice != 'n');
-    cout << "GoodBye\n";
-}
+//         cout << "---------------------------\n\n";
+//     } while (choice != 'n');
+//     cout << "GoodBye\n";
+// }
+
 //================Another Medium Example================
 // class Person
 // {

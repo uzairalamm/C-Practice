@@ -1686,3 +1686,106 @@ Problem:
 //     line();
 //     acc.display();
 // }
+
+//================Vehicle Rental ================
+
+class Vehicle
+{
+    string brand;
+    float rentPerDay;
+
+public:
+    Vehicle(string brand = "Unknown", float rentPerDay = 0.00f) : brand(brand), rentPerDay(rentPerDay) {};
+
+    float calculateRent(int days)
+    {
+        float totalRent = 1;
+        totalRent = rentPerDay * days;
+        return totalRent;
+    }
+
+    void setBrand(string brand)
+    {
+        this->brand = brand;
+    }
+    string getBrand()
+    {
+        return brand;
+    }
+
+    bool setRent(float rent)
+    {
+        if (rent <= 0)
+        {
+            return false;
+        }
+        rentPerDay = rent;
+        return true;
+    }
+    void display()
+    {
+        cout << "Brand       : " << brand << endl;
+        cout << "Rent Per Day: " << rentPerDay << endl;
+    }
+};
+void line()
+{
+    cout << "-------------------------------\n";
+}
+
+int main()
+{
+    string brands[4] = {"Toyota", "Suzuki", "Honda", "alto"};
+    float rent[4] = {45.22f, 90.11f, 88.22f, 40.99f};
+    int choice, days;
+    bool valid = true;
+    Vehicle rentVehicle[4];
+    line();
+    cout << "Welcome TO Our Shop\n";
+
+    cout << "\nCheck Our Vehicles\n";
+    line();
+
+    for (int i = 0; i < 4; i++)
+    {
+        rentVehicle[i].setBrand(brands[i]);
+        rentVehicle[i].setRent(rent[i]);
+    }
+
+    for (int i = 0; i < 4; i++)
+    {
+        cout << i + 1 << endl;
+        cout << "Brand Name  : " << brands[i] << endl;
+        cout << "Rent per Day: " << rent[i] << endl;
+        line();
+    }
+
+    do
+    {
+        cout << "Which One You want: ";
+        cin >> choice;
+
+        if (choice >= 1 && choice <= 4)
+        {
+            valid = true;
+            cout << "\nVehicle Detail\n";
+            line();
+            rentVehicle[choice - 1].display();
+            line();
+
+            cout << "How many Days: ";
+            cin >> days;
+
+            line();
+            cout << "Final Result\n";
+            cout << "You rented   : " << rentVehicle[choice - 1].getBrand() << endl;
+            cout << "Total Days   : " << days << endl;
+            cout << "Total Rent is: " << rentVehicle[choice - 1].calculateRent(days) << endl;
+        }
+        else
+        {
+            valid = false;
+            cout << "Invalid Choice, Please Choose Between 1-4\n";
+        }
+    } while (!valid);
+}
