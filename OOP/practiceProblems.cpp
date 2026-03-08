@@ -128,10 +128,14 @@ class Car
     string make;
     int speed;
     static constexpr int MAX_SPEED = 220; // or if you donot want to make this..
-    static constexpr int MIN_SPEED = 0;
+    static constexpr int MIN_SPEED = 0;   // as for this, all car start from 0, so this value is for all Car Obj
+    // another way to do it, and i think this is better
+    int maxSpeed; // if we use this, then we donot have static constexpr int MAX_SPEED
+    // in short you can comment it out...
 
 public:
     Car(int yearModel, string make) : yearModel(yearModel), make(make), speed(0) {};
+    Car(int yearModel, string make, int maxSpeed) : yearModel(yearModel), make(make), speed(0), maxSpeed(maxSpeed) {}; // for max speed, all cars have different max Speed
 
     int getModelYear() const
     {
@@ -150,7 +154,14 @@ public:
 
     void accelerate()
     {
-        speed = min(speed + 5, MAX_SPEED); // you can simply put here your max speed like this min(speed + 5, 220) it will still work
+        speed = min(speed + 5, maxSpeed); // you can simply put here your max speed like this min(speed + 5, 220) it will still work
+        // here is another one, and better
+
+        // speed = min(speed + 5, maxSpeed);
+        // ok, so what min function will do,
+        // if speed + 5 exceed 220 or whatever max speed is,
+        // it will give use the minimum of them which is in that case will be 220..
+        // inshort it will not exceed 220 or whatever max speed will be...
     }
 
     void brake()
@@ -167,7 +178,7 @@ public:
 
 int main()
 {
-    Car toyota(2019, "Totoya");
+    Car toyota(2019, "Totoya", 250);
     toyota.showDetail();
 
     cout << toyota.getMake() << " is Getting Started\n";
@@ -177,6 +188,8 @@ int main()
         cout << "Curent Speed: " << toyota.getSpeed() << endl;
         cout << "---------------------------------\n";
     }
+
+    cout << "\nHit the Break\n";
     for (int i = 1; i <= 6; i++)
     {
         toyota.brake();
@@ -184,3 +197,4 @@ int main()
         cout << "---------------------------------\n";
     }
 }
+// I maybe wrong, I am just learning... all those comments
