@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <vector>
+#include <cmath>
 using namespace std;
 
 // Programming Challenges
@@ -202,6 +203,7 @@ using namespace std;
 // I maybe wrong, I am just learning... all those comments
 
 // ======================Problem 4 ---- Chapter 13======================
+
 // class BroadcastStation
 // {
 //     string stationName;
@@ -210,44 +212,26 @@ using namespace std;
 //     string genre;
 
 // public:
-//     BroadcastStation(string stationName, float frequency,
-//                      string brandType, string genre) : stationName(stationName),
-//                                                        brandType(brandType),
-//                                                        frequency(frequency),
-//                                                        genre(genre) {};
+//     BroadcastStation() : stationName("Unknown"), frequency(0.0f), brandType("FM"), genre("None") {}
+//     BroadcastStation(string name, float freq, string brand, string genre)
+//         : stationName(name), frequency(freq), brandType(brand), genre(genre) {}
 
-//     void setStation(string stationName)
-//     {
-//         this->stationName = stationName;
-//     }
-//     void setFrequency(float frequency)
-//     {
-//         this->frequency = frequency;
-//     }
-//     void setBrand(string brandType)
-//     {
-//         this->brandType = brandType;
-//     }
-//     void setGenre(string genre)
-//     {
-//         this->genre = genre;
-//     }
+//     void setStation(string name) { stationName = name; }
+//     void setFrequency(float freq) { frequency = freq; }
+//     void setBrand(string brand) { brandType = brand; }
+//     void setGenre(string g) { genre = g; }
 
-//     string getBrand() const
+//     string getStation() const { return stationName; }
+//     float getFrequency() const { return frequency; }
+//     string getBrand() const { return brandType; }
+//     string getGenre() const { return genre; }
+
+//     void display() const
 //     {
-//         return brandType;
-//     }
-//     string getStation() const
-//     {
-//         return stationName;
-//     }
-//     string getGenre() const
-//     {
-//         return genre;
-//     }
-//     float getFrequency()
-//     {
-//         return frequency;
+//         cout << "Station: " << stationName
+//              << " | Frequency: " << frequency
+//              << " | Brand: " << brandType
+//              << " | Genre: " << genre << endl;
 //     }
 // };
 
@@ -255,23 +239,66 @@ using namespace std;
 // {
 //     float volume;
 //     BroadcastStation currentStation;
-//     BroadcastStation preset1, preset2;
+//     vector<BroadcastStation> presets;
 
 // public:
-//     RadioReceiver() : currentStation("Unknown", 0.00f, "FM", "NONE"),
-//                       preset1("Unknown", 0.00f, "FM", "NONE"),
-//                       preset2("Unknown", 0.00f, "FM", "NONE"), volume(0.00f) {};
+//     RadioReceiver()
+//         : volume(5.0f),
+//           currentStation("Default FM", 99.5f, "FM", "Music")
+//     {
+//         presets.push_back(BroadcastStation("News One", 101.2f, "FM", "News"));
+//         presets.push_back(BroadcastStation("Rock FM", 98.3f, "FM", "Rock"));
+//     }
 
-//     void increaseVolume()
+//     void increaseVolume() { volume = min(volume + 1.0f, 10.0f); }
+//     void decreaseVolume() { volume = max(volume - 1.0f, 0.0f); }
+
+//     void frequencyUp() { currentStation.setFrequency(currentStation.getFrequency() + 0.1f); }
+//     void frequencyDown() { currentStation.setFrequency(currentStation.getFrequency() - 0.1f); }
+
+//     void selectPreset(int presetNumber)
 //     {
-//         volume = min(volume + 1, 100.00f);
+//         if (presetNumber < 1 || presetNumber > presets.size())
+//         {
+//             cout << "Invalid preset number!\n";
+//             return;
+//         }
+//         currentStation = presets[presetNumber - 1];
 //     }
-//     void decreaseVolume()
+
+//     void display() const
 //     {
-//         volume = max(volume - 1, 0.00f);
+//         cout << fixed << setprecision(1);
+//         cout << "\n================ RADIO STATE ================\n";
+//         cout << "Volume: " << volume << endl;
+//         cout << "Current Station: \n";
+//         currentStation.display();
+//         cout << "\nPresets: \n";
+//         for (int i = 0; i < presets.size(); i++)
+//         {
+//             cout << i + 1 << ". ";
+//             presets[i].display();
+//         }
+//         cout << "============================================\n";
 //     }
-//     void storePreset1() {}
-// }; // -----------------I will do this later----------------
+// };
+
+// int main()
+// {
+//     RadioReceiver radio;
+
+//     radio.display();
+//     radio.increaseVolume();
+//     radio.frequencyUp();
+//     cout << "\nAfter increasing volume and frequency:\n";
+//     radio.display();
+
+//     radio.selectPreset(2);
+//     cout << "\nAfter selecting preset 2:\n";
+//     radio.display();
+// }
+
+// ======================Problem 5 ---- Chapter 13======================
 
 // class RetailItem
 // {
@@ -339,10 +366,10 @@ using namespace std;
 //     }
 // };
 
-// void line()
-// {
-//     cout << "--------------------------------------\n";
-// }
+void line()
+{
+    cout << "--------------------------------------------------------------------\n";
+}
 // int main()
 // {
 //     RetailItem item1("Eggs", 2, 90.12f);
@@ -434,4 +461,252 @@ using namespace std;
 //         items[i].displayShopItems();
 //     }
 
-// } // not good, have logical error. i have to fix them...
+// }
+// ======================Problem 6 ---- Chapter 13======================
+
+// class Inventory
+// {
+//     string name;
+//     int itemNumber;
+//     int quantity;
+//     double cost;
+
+// public:
+//     Inventory() : name("Unknown"), itemNumber(0), quantity(0), cost(0) {}
+
+//     Inventory(string name, int number, int quantity, double cost)
+//         : name(name), itemNumber(number), quantity(quantity), cost(cost) {}
+
+//     void setName(const string &n) { name = n; }
+//     void setNumber(int n) { itemNumber = n; }
+//     void setQuantity(int q) { quantity = q; }
+//     void setCost(double c) { cost = c; }
+
+//     string getName() const { return name; }
+//     int getItemNumber() const { return itemNumber; }
+//     int getQuantity() const { return quantity; }
+//     double getCost() const { return cost; }
+
+//     double getTotalCost() const
+//     {
+//         return quantity * cost;
+//     }
+
+//     void reduceStock(int q)
+//     {
+//         quantity -= q;
+//     }
+
+//     void display() const
+//     {
+//         cout << left
+//              << setw(10) << itemNumber
+//              << setw(20) << name
+//              << setw(10) << quantity
+//              << setw(10) << cost
+//              << endl;
+//     }
+// };
+
+// int main()
+// {
+//     vector<Inventory> items;
+//     vector<Inventory> cart;
+
+//     int products;
+
+//     cout << "How many products to stock: ";
+//     cin >> products;
+
+//     for (int i = 0; i < products; i++)
+//     {
+//         string name;
+//         int quantity;
+//         double cost;
+
+//         cout << "\nProduct " << i + 1 << endl;
+
+//         cout << "Name: ";
+//         cin >> name;
+
+//         cout << "Quantity: ";
+//         cin >> quantity;
+
+//         cout << "Cost: ";
+//         cin >> cost;
+
+//         Inventory item(name, i + 1, quantity, cost);
+
+//         items.push_back(item);
+//     }
+
+//     line();
+//     cout << "Available Products\n";
+//     line();
+
+//     for (const auto &item : items)
+//         item.display();
+
+//     char choice = 'y';
+
+//     while (choice == 'y')
+//     {
+//         int number, quantity;
+
+//         cout << "\nEnter item number to buy: ";
+//         cin >> number;
+
+//         if (number < 1 || number > items.size())
+//         {
+//             cout << "Invalid item number\n";
+//             continue;
+//         }
+
+//         Inventory &selected = items[number - 1];
+
+//         cout << "How many: ";
+//         cin >> quantity;
+
+//         if (quantity > selected.getQuantity())
+//         {
+//             cout << "Not enough stock\n";
+//             continue;
+//         }
+
+//         Inventory purchase(
+//             selected.getName(),
+//             selected.getItemNumber(),
+//             quantity,
+//             selected.getCost());
+
+//         cart.push_back(purchase);
+
+//         selected.reduceStock(quantity);
+
+//         cout << "Buy more? (y/n): ";
+//         cin >> choice;
+//     }
+
+//     line();
+//     cout << "Receipt\n";
+//     line();
+
+//     double total = 0;
+
+//     for (const auto &p : cart)
+//     {
+//         p.display();
+//         total += p.getTotalCost();
+//     }
+
+//     line();
+//     cout << "Grand Total: " << total << endl;
+// }
+
+// ======================Problem 7 ---- Chapter 13======================
+// class Lenght
+// {
+//     float meter;
+//     float centimeter;
+
+// public:
+//     Lenght(float meter, float centimeter) : meter(meter), centimeter(centimeter) {};
+
+//     void setCentimeter(int centimeter)
+//     {
+//         this->centimeter = centimeter;
+//     }
+//     void setMeter(float meter)
+//     {
+//         this->meter = meter;
+//     }
+
+//     float getLenghtinCM() const
+//     {
+//         return (meter * 100) + centimeter;
+//     }
+
+//     float getLenghtinM() const
+//     {
+//         return meter + (centimeter / 100);
+//     }
+
+//     void displayLenghtInCM() const
+//     {
+//         cout << "Lenght in Centimeter: " << getLenghtinCM() << "cm" << endl;
+//     }
+
+//     void displayLenghtInM() const
+//     {
+//         cout << "Lenght In Meter: " << fixed << setprecision(2) << getLenghtinM() << "m" << endl;
+//     }
+// };
+
+// int main()
+// {
+//     Lenght l1(132, 142);
+//     Lenght l2(12, 32);
+
+//     if (l1.getLenghtinCM() > l2.getLenghtinCM())
+//     {
+//         l1.displayLenghtInCM();
+//         l1.displayLenghtInM();
+//     }
+//     else
+//     {
+//         l2.displayLenghtInCM();
+//         l2.displayLenghtInM();
+//     }
+// }
+
+// ======================Problem 8 ---- Chapter 13======================
+// class Cricle
+// {
+//     double radius;
+//     const float PI = 3.14;
+
+// public:
+//     Cricle() : radius(0) {};
+//     Cricle(double radius) : radius(radius) {};
+
+//     void setRadius(double radius)
+//     {
+//         if (radius <= 0)
+//             return;
+//         this->radius = radius;
+//     }
+
+//     double getRadius() const
+//     {
+//         return radius;
+//     }
+
+//     double getArea() const
+//     {
+//         return PI * pow(radius, 2);
+//     }
+
+//     double getDiameter() const
+//     {
+//         return radius * 2;
+//     }
+
+//     double getCircumference() const
+//     {
+//         return 2 * PI * radius;
+//     }
+
+//     void display() const
+//     {
+//         cout << fixed;
+//         cout << "Area of Circle         : " << setprecision(2) << getArea() << endl;
+//         cout << "Diameter of Circle     : " << setprecision(2) << getDiameter() << endl;
+//         cout << "Circumference of Circle: " << setprecision(2) << getCircumference() << endl;
+//     }
+// };
+
+// int main()
+// {
+//     Cricle cricle(3.21);
+//     cricle.display();
+// }
