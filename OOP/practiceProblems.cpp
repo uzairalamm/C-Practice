@@ -710,3 +710,255 @@ void line()
 //     Cricle cricle(3.21);
 //     cricle.display();
 // }
+// ..............Before we move forward, there are some problem i extended,
+// because i was learning how certain function can do..............
+// ======================Problem 9 ---- Chapter 13======================
+// class VisitorCounter
+// {
+//     int currentVisitor;
+//     int maxVisitor;
+
+// public:
+//     VisitorCounter(int maxVisitor) : maxVisitor(maxVisitor), currentVisitor(0) {
+//                                      };
+
+//     bool addVisitor()
+//     {
+//         if (currentVisitor < maxVisitor)
+//         {
+//             currentVisitor++;
+//             return true;
+//         }
+//         else
+//             return false;
+//     }
+
+//     bool removeVisitor()
+//     {
+//         if (currentVisitor > 0)
+//         {
+//             currentVisitor--;
+//             return true;
+//         }
+//         else
+//             return false;
+//     }
+
+//     void visitorInc()
+//     {
+//         if (!addVisitor())
+//             cout << "Sorry the Maximum Limit has Reached\n";
+//     }
+
+//     void visitorDec()
+//     {
+//         if (!removeVisitor())
+//             cout << "Its Empty~!\n";
+//     }
+
+//     void display() const
+//     {
+//         cout << "Current Visitors : " << currentVisitor << endl;
+//         cout << "Maximum Capacity : " << maxVisitor << endl;
+//         cout << "Available Space  : " << maxVisitor - currentVisitor << endl;
+//     }
+// };
+
+// int main()
+// {
+//     VisitorCounter club(5);
+//     club.visitorInc();
+//     club.visitorDec();
+//     club.display();
+// }
+
+// ======================Problem 9 ---- Chapter 13======================
+// class NumberArray
+// {
+//     float *numbers;
+//     int size;
+
+// public:
+//     NumberArray(int size) : numbers(nullptr), size(size)
+//     {
+//         numbers = new float[size];
+//     }
+
+//     ~NumberArray()
+//     {
+//         delete[] numbers;
+//     }
+
+//     void storeNumber(int index, float num)
+//     {
+//         if (index >= 0 && index < size)
+//             numbers[index] = num;
+//         else
+//             cout << "Invalid Index\n";
+//     }
+
+//     float getNumber(int index)
+//     {
+//         if (index >= 0 && index < size)
+//             return numbers[index];
+//         else
+//         {
+//             cout << "Invalid Index\n";
+//             return 0;
+//         }
+//     }
+
+//     float highestNum()
+//     {
+//         float highest = numbers[0];
+//         for (int i = 1; i < size; i++)
+//         {
+//             if (highest < numbers[i])
+//                 highest = numbers[i];
+//         }
+
+//         return highest;
+//     }
+//     float lowestNum()
+//     {
+//         float lowest = numbers[0];
+//         for (int i = 1; i < size; i++)
+//         {
+//             if (lowest > numbers[i])
+//                 lowest = numbers[i];
+//         }
+
+//         return lowest;
+//     }
+
+//     float average()
+//     {
+//         float sum = 0;
+//         for (int i = 1; i < size; i++)
+//         {
+//             sum += numbers[i];
+//         }
+
+//         return sum / size;
+//     }
+
+//     void display()
+//     {
+//         line();
+//         cout << "Elements in Array : ";
+//         for (int i = 0; i < size; i++)
+//         {
+//             cout << getNumber(i) << " ";
+//         }
+//         cout << fixed << "\n";
+//         cout << "Highest Num       : " << setprecision(2) << highestNum() << endl;
+//         cout << "Lowest Num        : " << setprecision(2) << lowestNum() << endl;
+//         cout << "Average           : " << setprecision(2) << average() << endl;
+//         line();
+//     }
+// };
+
+// int main()
+// {
+//     NumberArray number(4);
+//     float num;
+//     cout << "Enter Element in Array\n";
+//     for (int i = 0; i < 4; i++)
+//     {
+//         cout << "Enter Number " << i + 1 << ": ";
+//         cin >> num;
+//         number.storeNumber(i, num);
+//     }
+
+//     number.display();
+// }
+
+// ======================Problem 10 ---- Chapter 13======================
+// class Ball
+// {
+//     float radius;
+//     string color;
+//     const float PI = 3.14;
+
+// public:
+//     Ball() : radius(0), color("Unknown") {};
+//     Ball(float radius, string color) : radius(radius), color(color) {};
+//     void setRadius(float radius)
+//     {
+//         this->radius = radius;
+//     }
+
+//     void setColor(string color)
+//     {
+//         this->color = color;
+//     }
+
+//     string getColor() const
+//     {
+//         return color;
+//     }
+
+//     float getRadius() const
+//     {
+//         return radius;
+//     }
+
+//     float getVolume() const
+//     {
+//         return (4 * PI * pow(radius, 3)) / 3;
+//     }
+
+//     void display() const
+//     {
+//         cout << fixed;
+//         cout << "Color Of Ball  : " << setprecision(2) << color << endl;
+//         cout << "Radius Of Ball : " << setprecision(2) << radius << endl;
+//         cout << "Volume Of Ball : " << setprecision(2) << getVolume() << endl;
+//     }
+// };
+
+// int main()
+// {
+//     vector<Ball> balls;
+//     int quantity;
+//     float radius;
+//     string color;
+
+//     cout << "How many Ball You Want to Store: ";
+//     cin >> quantity;
+
+//     cout << "Enter the Color and Radius of the Balls\n";
+//     for (int i = 0; i < quantity; i++)
+//     {
+//         cout << "Ball #" << i + 1 << ":\n";
+//         cout << "Color: ";
+//         cin >> color;
+
+//         cout << "Radius: ";
+//         cin >> radius;
+
+//         Ball ball(radius, color);
+//         balls.push_back(ball);
+//     }
+//     cout << '\n';
+
+//     line();
+//     cout << "Detail of Ball With Highest Volume\n";
+//     line();
+
+//     float highestRadius = balls[0].getRadius();
+//     int index = 0;
+
+//     for (int i = 1; i < balls.size(); i++)
+//     {
+//         if (highestRadius < balls[i].getRadius())
+//         {
+//             highestRadius = balls[i].getRadius();
+//             index = i;
+//         }
+//     }
+
+//     balls[index].display();
+
+//     return 0;
+// }
