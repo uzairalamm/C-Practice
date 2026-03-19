@@ -1,4 +1,4 @@
-class Pair
+// class Pair
 // {
 // public:
 //     int a, b;

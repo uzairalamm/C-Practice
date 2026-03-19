@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <vector>
+#include <ctime>
 #include <cmath>
 using namespace std;
 
@@ -14,9 +15,57 @@ using namespace std;
 //     int day, month, year;
 
 // public:
-//     Date(int day, int month, int year) : day((day >= 1 && day <= 31) ? day : 1),
-//                                          month((month >= 1 && month <= 12) ? month : 1),
-//                                          year(year) {}; // I will improve it later
+//     Date(int day, int month, int year) : month((month >= 1 && month <= 12) ? month : 1), year(year)
+//     {
+//         // if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
+//         // {
+//         //     if (day <= 31)
+//         //         this->day = day;
+//         //     else
+//         //         this->day = 1;
+//         // }
+
+//         // else if (month == 4 || month == 6 || month == 9 || month == 11)
+//         // {
+//         //     if (day <= 30)
+//         //         this->day = day;
+//         //     else
+//         //         this->day = 1;
+//         // }
+
+//         // else if (month == 2)
+//         // {
+//         //     if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0)
+//         //     {
+//         //         if (day <= 29)
+//         //             this->day = day;
+//         //         else
+//         //             this->day = 1;
+//         //     }
+//         //     else
+//         //     {
+//         //         if (day <= 28)
+//         //             this->day = day;
+//         //         else
+//         //             this->day = 1;
+//         //     }
+//         // }
+
+//         // ......A much Cleaner Code
+//         int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+//         if (month == 2 && (year % 4 == 0 && year % 100 != 0 || year % 400 == 0))
+//         {
+//             daysInMonth[month - 1] = 29;
+//         }
+
+//         if (day >= 1 && day <= daysInMonth[month - 1])
+//         {
+//             this->day = day;
+//         }
+//         else
+//             this->day = daysInMonth[month - 1];
+//     }
 
 //     int getDay() const
 //     {
@@ -48,7 +97,7 @@ using namespace std;
 
 // int main()
 // {
-//     Date today(04, 03, 2026);
+//     Date today(28, 2, 2025);
 //     cout << "Date Formate is (DD/MM/YY)\n";
 //     today.showDate();
 
@@ -64,9 +113,20 @@ using namespace std;
 //     string department, position;
 
 // public:
-//     Employee() : name(""), id(0), department(""), position("") {};
-//     Employee(string name, int id, string department) : name(name), id(id), department(department), position("") {};
-//     Employee(string name, int id, string department, string position) : name(name), id(id), department(department), position(position) {};
+// Employee() : name(""),
+//              id(0),
+//              department(""),
+//              position(""){};
+
+// Employee(string name, int id, string department) : name(name),
+//                                                    id(id),
+//                                                    department(department),
+//                                                    position(""){};
+
+// Employee(string name, int id, string department, string position) : name(name),
+//                                                                     id(id),
+//                                                                     department(department),
+//                                                                     position(position){}; // these are the requirements
 
 //     void setName(string name)
 //     {
@@ -212,9 +272,9 @@ using namespace std;
 //     string genre;
 
 // public:
-//     BroadcastStation() : stationName("Unknown"), frequency(0.0f), brandType("FM"), genre("None") {}
+//     BroadcastStation() : stationName("Unknown"), frequency(0.0f), brandType("FM"), genre("None") {};
 //     BroadcastStation(string name, float freq, string brand, string genre)
-//         : stationName(name), frequency(freq), brandType(brand), genre(genre) {}
+//         : stationName(name), frequency(freq), brandType(brand), genre(genre) {};
 
 //     void setStation(string name) { stationName = name; }
 //     void setFrequency(float freq) { frequency = freq; }
@@ -487,7 +547,7 @@ void line()
 //     int getQuantity() const { return quantity; }
 //     double getCost() const { return cost; }
 
-//     double getTotalCost() const
+//     double getTotalItemCost() const
 //     {
 //         return quantity * cost;
 //     }
@@ -510,35 +570,38 @@ void line()
 
 // int main()
 // {
-//     vector<Inventory> items;
+//     vector<Inventory> items = {
+//         Inventory("Eggs", 1, 23, 3.43),
+//         Inventory("Bread", 2, 45, 4.53),
+//         Inventory("Butter", 3, 32, 4.12)};
 //     vector<Inventory> cart;
 
-//     int products;
+//     // int products;
 
-//     cout << "How many products to stock: ";
-//     cin >> products;
+//     // cout << "How many products to stock: ";
+//     // cin >> products;
 
-//     for (int i = 0; i < products; i++)
-//     {
-//         string name;
-//         int quantity;
-//         double cost;
+//     // for (int i = 0; i < products; i++)
+//     // {
+//     //     string name;
+//     //     int quantity;
+//     //     double cost;
 
-//         cout << "\nProduct " << i + 1 << endl;
+//     //     cout << "\nProduct " << i + 1 << endl;
 
-//         cout << "Name: ";
-//         cin >> name;
+//     //     cout << "Name: ";
+//     //     cin >> name;
 
-//         cout << "Quantity: ";
-//         cin >> quantity;
+//     //     cout << "Quantity: ";
+//     //     cin >> quantity;
 
-//         cout << "Cost: ";
-//         cin >> cost;
+//     //     cout << "Cost: ";
+//     //     cin >> cost;
 
-//         Inventory item(name, i + 1, quantity, cost);
+//     //     Inventory item(name, i + 1, quantity, cost);
 
-//         items.push_back(item);
-//     }
+//     //     items.push_back(item);
+//     // }
 
 //     line();
 //     cout << "Available Products\n";
@@ -596,7 +659,7 @@ void line()
 //     for (const auto &p : cart)
 //     {
 //         p.display();
-//         total += p.getTotalCost();
+//         total += p.getTotalItemCost();
 //     }
 
 //     line();
@@ -772,7 +835,7 @@ void line()
 //     club.display();
 // }
 
-// ======================Problem 9 ---- Chapter 13======================
+// ======================Problem 10 ---- Chapter 13======================
 // class NumberArray
 // {
 //     float *numbers;
@@ -787,6 +850,7 @@ void line()
 //     ~NumberArray()
 //     {
 //         delete[] numbers;
+//         numbers = nullptr;
 //     }
 
 //     void storeNumber(int index, float num)
@@ -797,7 +861,7 @@ void line()
 //             cout << "Invalid Index\n";
 //     }
 
-//     float getNumber(int index)
+//     float getNumber(int index) const
 //     {
 //         if (index >= 0 && index < size)
 //             return numbers[index];
@@ -808,7 +872,7 @@ void line()
 //         }
 //     }
 
-//     float highestNum()
+//     float highestNum() const
 //     {
 //         float highest = numbers[0];
 //         for (int i = 1; i < size; i++)
@@ -819,7 +883,7 @@ void line()
 
 //         return highest;
 //     }
-//     float lowestNum()
+//     float lowestNum() const
 //     {
 //         float lowest = numbers[0];
 //         for (int i = 1; i < size; i++)
@@ -831,7 +895,7 @@ void line()
 //         return lowest;
 //     }
 
-//     float average()
+//     float average() const
 //     {
 //         float sum = 0;
 //         for (int i = 1; i < size; i++)
@@ -842,7 +906,7 @@ void line()
 //         return sum / size;
 //     }
 
-//     void display()
+//     void display() const
 //     {
 //         line();
 //         cout << "Elements in Array : ";
@@ -873,7 +937,7 @@ void line()
 //     number.display();
 // }
 
-// ======================Problem 10 ---- Chapter 13======================
+// ======================Problem 11 ---- Chapter 13======================
 // class Ball
 // {
 //     float radius;
@@ -961,4 +1025,604 @@ void line()
 //     balls[index].display();
 
 //     return 0;
+// }
+
+// ======================Problem 12-13 ---- Chapter 13======================
+// class CardDeck
+// {
+//     vector<string> allCards;
+//     vector<string> remainingCards;
+
+// public:
+//     CardDeck()
+//     {
+//         vector<string> suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
+//         vector<string> ranks = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
+
+//         for (const string &suit : suits)
+//         {
+//             for (const string &rank : ranks)
+//             {
+//                 allCards.push_back(rank + " of " + suit);
+//             }
+//         }
+
+//         remainingCards = allCards;
+//     }
+
+//     void deal()
+//     {
+//         remainingCards = allCards;
+//     }
+
+//     int getRemainingCards() const
+//     {
+//         return remainingCards.size();
+//     }
+
+//     string drawCard()
+//     {
+//         if (remainingCards.empty())
+//         {
+//             cout << "Deck is Empty. Reseting......\n";
+//             deal();
+//         }
+
+//         int i = rand() % remainingCards.size();
+//         string card = remainingCards[i];
+//         remainingCards.erase(remainingCards.begin() + i);
+//         return card;
+//     }
+
+//     void
+//     display()
+//     {
+//         int i = 0;
+//         for (const string &card : remainingCards)
+//         {
+//             cout << ++i << ": " << card << endl;
+//         }
+//     }
+// };
+
+// int getRankValue(string card)
+// {
+//     string rank = card.substr(0, card.find(" "));
+//     if (rank == "Ace")
+//         return 14;
+//     if (rank == "King")
+//         return 13;
+//     if (rank == "Queen")
+//         return 12;
+//     if (rank == "Jack")
+//         return 11;
+
+//     return stoi(rank);
+// }
+// int main()
+// {
+//     srand(time(0));
+
+//     CardDeck cards;
+//     // cards.display();
+//     vector<string> drawCards;
+
+//     // Problem 12
+//     //  line();
+//     //  cout << "Two Random Cards are  Drawn\n";
+//     //  for (int i = 0; i < 2; i++)
+//     //  {
+//     //      cout << cards.drawCard() << endl;
+//     //  }
+//     //  line();
+
+//     // cout << "Remaining Cards: " << endl;
+//     // cards.display();
+
+//     // problem 13
+//     for (int i = 0; i < 7; i++)
+//     {
+//         drawCards.push_back(cards.drawCard());
+//         cout << drawCards[i] << endl;
+//     }
+
+//     cout << "Game of 7 Cards\n";
+//     cout << "First Card: " << drawCards[0] << endl;
+
+//     for (int i = 1; i < 7; i++)
+//     {
+//         char guess;
+//         bool correct = false;
+
+//         cout << "Will the next card be Higher(h) or Lower(l): ";
+//         cin >> guess;
+
+//         guess = tolower(guess);
+//         int prev = getRankValue(drawCards[i - 1]);
+//         int cur = getRankValue(drawCards[i]);
+
+//         if ((guess == 'h' && cur > prev) || (guess == 'l' && cur < prev))
+//         {
+//             correct = true;
+//         }
+//         else
+//             correct = false;
+
+//         cout << "Next Card: " << drawCards[i] << endl;
+
+//         if (!correct)
+//         {
+//             cout << "Wrong! Game Over!\n";
+//             return 0;
+//         }
+//         cout << "Correct Guess\n";
+//     }
+
+//     cout << "\nCongratulations! You guessed all cards correctly!\n";
+// }
+
+// ======================Problem 14 ---- Chapter 13======================
+// class Dice
+// {
+//     int die;
+
+// public:
+//     Dice() { rollDie(); }
+
+//     void rollDie()
+//     {
+//         die = rand() % 6 + 1;
+//     }
+
+//     int getDice() const
+//     {
+//         return die;
+//     }
+// };
+
+// class Fishing
+// {
+//     int points, totalPoints;
+
+// public:
+//     Fishing() : points(0), totalPoints(0) {}
+
+//     int setPoints(int diceValue)
+//     {
+//         int point[] = {10, 2, 5, 8, 15, 20};
+
+//         points = point[diceValue - 1];
+//         totalPoints += points;
+
+//         return points;
+//     }
+
+//     int getTotal() const
+//     {
+//         return totalPoints;
+//     }
+// };
+
+// int main()
+// {
+//     srand(time(0));
+
+//     Dice die;
+//     Fishing fish;
+
+//     string items[] = {
+//         "Huge Fish",
+//         "Old Shoe",
+//         "Little Fish",
+//         "Boot",
+//         "Big Fish",
+//         "Golden Fish"};
+
+//     char choice = 'y';
+//     int count = 0;
+
+//     cout << "Fishing Game\n";
+//     cout << "Try your luck!\n";
+
+//     while (choice == 'y')
+//     {
+//         line();
+//         cout << "Rolling...\n";
+
+//         die.rollDie();
+//         int diceValue = die.getDice();
+
+//         int earned = fish.setPoints(diceValue);
+
+//         cout << "You caught: " << items[diceValue - 1] << endl;
+//         cout << "Points earned: " << earned << endl;
+
+//         count++;
+
+//         cout << "\nFish again? (y/n): ";
+//         cin >> choice;
+//         choice = tolower(choice);
+//     }
+
+//     // Final result
+//     line();
+//     cout << "Final Result\n";
+//     line();
+
+//     cout << "Total Rolls: " << count << endl;
+//     cout << "Total Points: " << fish.getTotal() << endl;
+
+//     // Result message
+//     if (fish.getTotal() < 10)
+//         cout << "Bad luck! Better next time.\n";
+//     else if (fish.getTotal() < 30)
+//         cout << "Not bad! You caught some fish.\n";
+//     else if (fish.getTotal() < 50)
+//         cout << "Good job! Nice fishing.\n";
+//     else
+//         cout << "Excellent! You're a pro fisherman!\n";
+
+//     return 0;
+// }
+
+// ======================Problem 15 ---- Chapter 13======================
+// class MortgagePayment
+// {
+//     double loan, rate;
+//     int year;
+
+// public:
+//     MortgagePayment() : loan(0.00), rate(0.00), year(0) {};
+
+//     MortgagePayment(double loan, double rate, int year) : loan((loan > 0) ? loan : 0),
+//                                                           rate((rate > 0) ? rate / 100 : 0.01),
+//                                                           year((year > 0) ? year : 1) {};
+
+//     void setLoanAmount(double loan)
+//     {
+//         this->loan = (loan > 0) ? loan : 0;
+//     }
+
+//     void setInterestRate(double rate)
+//     {
+//         this->rate = (rate > 0) ? rate / 100 : 0.01;
+//     }
+
+//     void setNumberOfYears(int year)
+//     {
+//         this->year = (year > 0) ? year : 1;
+//     }
+
+//     double getMonthlyPayment() const
+//     {
+//         if (loan > 0 && year > 0 && rate >= 0)
+//         {
+//             int months = year * 12;
+//             double monthlyRate = rate / 12;
+
+//             double term = pow(1 + monthlyRate, months);
+
+//             return (loan * monthlyRate * term) / (term - 1);
+//         }
+//         else
+//             return 0;
+//     }
+
+//     double getTotalPayment() const
+//     {
+//         return getMonthlyPayment() * year * 12;
+//     }
+
+//     void display() const
+//     {
+//         if (loan > 0 && year > 0 && rate >= 0)
+//         {
+//             double payment = getMonthlyPayment();
+//             double totalPayment = getTotalPayment();
+
+//             cout << "Monthly Payment is: " << payment << endl;
+//             cout << "Total Payment is: " << totalPayment << endl;
+//         }
+//         else
+//         {
+//             cout << "Invalid input values!\n";
+//         }
+//     }
+// };
+
+// int main()
+// {
+//     MortgagePayment payment(4500.78, 21.21, 2);
+//     payment.display();
+//     MortgagePayment payment1;
+//     payment1.display();
+// }
+
+// ======================Problem 15 ---- Chapter 13======================
+// class Temperature
+// {
+//     float temperature;
+
+// public:
+//     Temperature(float temp) : temperature(temp) {};
+
+//     void setTemp(float temp)
+//     {
+//         temperature = temp;
+//     }
+
+//     float getTemp()
+//     {
+//         return temperature;
+//     }
+
+//     bool isEthylFreezing()
+//     {
+//         if (temperature <= -173)
+//             return true;
+//         else
+//             return false;
+//     }
+
+//     bool isEthylBoiling()
+//     {
+//         if (temperature >= 172)
+//             return true;
+//         else
+//             return false;
+//     }
+
+//     bool isOxygenFreezing()
+//     {
+//         if (temperature <= -362)
+//             return true;
+//         else
+//             return false;
+//     }
+
+//     bool isOxygenBoiling()
+//     {
+//         if (temperature >= -306)
+//             return true;
+//         else
+//             return false;
+//     }
+
+//     bool isWaterFreezing()
+//     {
+//         if (temperature <= 32)
+//             return true;
+//         else
+//             return false;
+//     }
+
+//     bool isWaterBoiling()
+//     {
+//         if (temperature >= 212)
+//             return true;
+//         else
+//             return false;
+//     }
+
+//     void pointChecker()
+//     {
+//         if (isEthylFreezing())
+//             cout << "Etyle is Freezing at: " << temperature << endl;
+
+//         if (isEthylBoiling())
+//             cout << "Etyle is Boiling at: " << temperature << endl;
+
+//         if (isOxygenFreezing())
+//             cout << "Oxygen is Freezing at: " << temperature << endl;
+
+//         if (isOxygenBoiling())
+//             cout << "Oxygen is Boiling at: " << temperature << endl;
+
+//         if (isWaterFreezing())
+//             cout << "Water is Freezing at: " << temperature << endl;
+
+//         if (isWaterBoiling())
+//             cout << "Water is Boiling at: " << temperature << endl;
+//     }
+// };
+// // this is working, but its very redundant
+// int main()
+// {
+//     Temperature temp(-307);
+//     temp.pointChecker();
+// }
+
+// ======================Problem 15.1 ---- Chapter 13======================
+// Improve version, litle bit
+
+// struct Substance
+// {
+//     string name;
+//     float freezing;
+//     float boiling;
+// };
+
+// class Temperature
+// {
+//     float temp;
+//     static vector<Substance> substances;
+
+// public:
+//     Temperature(float t) : temp(t) {}
+
+//     void setTemp(float t) { temp = t; }
+//     float getTemp() const { return temp; }
+
+//     static void addSubstances(const string &name, float freezing, float boiling)
+//     {
+//         substances.push_back({name, freezing, boiling});
+//     }
+
+//     static void showSubstance()
+//     {
+//         for (auto &s : substances)
+//         {
+//             cout << "Name: " << s.name << "\n"
+//                  << "Freezing Point: " << s.freezing << "\n"
+//                  << "Boiling Point: " << s.boiling << endl;
+//             line();
+//         }
+//     }
+
+//     void pointChecker() const
+//     {
+//         cout << "At temperature " << temp << "F:\n";
+
+//         cout << "Freezing substances: ";
+//         bool anyFreezing = false;
+
+//         for (auto s : substances)
+//         {
+//             if (temp <= s.freezing)
+//             {
+//                 cout << s.name << " ";
+//                 anyFreezing = true;
+//             }
+//         }
+
+//         if (!anyFreezing)
+//             cout << "None";
+//         cout << endl;
+
+//         cout << "Boiling substances: ";
+//         bool anyBoiling = false;
+
+//         for (auto s : substances)
+//         {
+//             if (temp >= s.boiling)
+//             {
+//                 cout << s.name << " ";
+//                 anyBoiling = true;
+//             }
+//         }
+//         if (!anyBoiling)
+//             cout << "None";
+//         cout << endl;
+//     }
+// };
+
+// vector<Substance> Temperature::substances = {
+//     {"Ethyl", -173, 172},
+//     {"Oxygen", -362, -306},
+//     {"Water", 32, 212}};
+
+// int main()
+// {
+//     Temperature temp(-306);
+//     temp.pointChecker();
+//     line();
+
+//     Temperature::addSubstances("Mercury", -38.83, 674);
+//     Temperature::showSubstance();
+// } // a more scalable program
+
+// ======================Problem 16 ---- Chapter 13======================
+// class Time
+// {
+//     int hours, minutes, seconds;
+//     string am_pm;
+
+// public:
+//     Time() : hours(0), minutes(0), seconds(0), am_pm("am") {};
+
+//     void setAmPM(string am_pm)
+//     {
+//         this->am_pm = am_pm;
+//     }
+
+//     bool setHours(int hour)
+//     {
+//         if (hours >= 0 && hours <= 12)
+//         {
+//             hours = hour;
+//             return true;
+//         }
+//         return false;
+//     }
+
+//     bool setMinutes(int minutes)
+//     {
+//         if (minutes >= 0 && minutes <= 59)
+//         {
+//             this->minutes = minutes;
+//             return true;
+//         }
+//         return false;
+//     }
+
+//     bool setSeconds(int seconds)
+//     {
+//         if (seconds >= 0 && seconds <= 59)
+//         {
+//             this->seconds = seconds;
+//             return true;
+//         }
+//         return false;
+//     }
+
+//     void display12Hours() const
+//     {
+//         cout << setprecision(2) << setfill('0') << hours << ": "
+//              << setprecision(2) << setfill('0') << minutes << ": "
+//              << setprecision(2) << setfill('0') << seconds << ": " << endl;
+//     }
+
+//     void display24Hours() const
+//     {
+//         int h = hours;
+//         if (am_pm == "am")
+//         {
+//             if (h == 12)
+//             {
+//                 h = 0;
+//             }
+//         }
+//         else
+//         {
+//             if (h != 12)
+//             {
+//                 h += 12;
+//             }
+//         }
+
+//         cout << setprecision(2) << setfill('0') << h << ": "
+//              << setprecision(2) << setfill('0') << minutes << ": "
+//              << setprecision(2) << setfill('0') << seconds << ": " << endl;
+//     }
+// };
+
+// int main()
+// {
+//     Time watch;
+//     int hours, minutes, second;
+//     string am_pm;
+//     do
+//     {
+//         cout << "Enter Hours: ";
+//         cin >> hours;
+//     } while (!watch.setHours(hours));
+
+//     do
+//     {
+//         cout << "Enter Minutes: ";
+//         cin >> minutes;
+//     } while (!watch.setMinutes(minutes));
+
+//     do
+//     {
+//         cout << "Enter Seconds: ";
+//         cin >> hours;
+//     } while (!watch.setSeconds(second));
+
+//     cout << "Am or Pm: ";
+//     cin >> am_pm;
+//     watch.setAmPM(am_pm);
+
+//     watch.display12Hours();
+//     watch.display24Hours();
 // }
