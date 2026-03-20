@@ -1675,28 +1675,45 @@ using namespace std;
 
 // Another Mehtod
 
+// int main()
+// {
+//     int num1, num2;
+//     cout << "Enter Two integers: ";
+//     cin >> num1 >> num2;
+
+//     int a = num1, b = num2;
+
+//     while (a != b)
+//     {
+//         if (a > b)
+//         {
+//             a = a - b;
+//         }
+//         else
+//         {
+//             b = b - a;
+//         }
+//     }
+
+//     int gcd = a;
+//     cout << "GCD is:  " << gcd << endl;
+//     int lcm = (num1 * num2) / gcd;
+//     cout << "LCM is: " << lcm << endl;
+// }
+
+int fibonacci(int num)
+{
+    if (num == 0)
+        return 0;
+    if (num == 1)
+        return 1;
+
+    else
+        return fibonacci(num - 1) + fibonacci(num - 2);
+}
+
 int main()
 {
-    int num1, num2;
-    cout << "Enter Two integers: ";
-    cin >> num1 >> num2;
-
-    int a = num1, b = num2;
-
-    while (a != b)
-    {
-        if (a > b)
-        {
-            a = a - b;
-        }
-        else
-        {
-            b = b - a;
-        }
-    }
-
-    int gcd = a;
-    cout << "GCD is:  " << gcd << endl;
-    int lcm = (num1 * num2) / gcd;
-    cout << "LCM is: " << lcm << endl;
+    for (int i = 0; i <= 7; i++)
+        cout << fibonacci(i) << " ";
 }

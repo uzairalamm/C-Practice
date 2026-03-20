@@ -180,6 +180,7 @@ using namespace std;
 //     Employee::showMemberName();
 //     Employee emp1("ALI", 21, "Accounting", "Vice President");
 //     emp1.displayValues();
+
 //     Employee emp2("ALI2", 21, "Accounting", "Vice President");
 //     emp1.displayValues();
 // }
@@ -1532,14 +1533,21 @@ void line()
 
 //     void setAmPM(string am_pm)
 //     {
-//         this->am_pm = am_pm;
+//         for (auto &c : am_pm)
+//             c = tolower(c);
+
+//         if (am_pm == "am" || am_pm == "pm")
+//             this->am_pm = am_pm;
+
+//         else
+//             this->am_pm = "am";
 //     }
 
-//     bool setHours(int hour)
+//     bool setHours(int hours)
 //     {
 //         if (hours >= 0 && hours <= 12)
 //         {
-//             hours = hour;
+//             this->hours = hours;
 //             return true;
 //         }
 //         return false;
@@ -1565,11 +1573,19 @@ void line()
 //         return false;
 //     }
 
+//     void handle12Rule()
+//     {
+//         if (hours == 12)
+//             am_pm = "pm";
+//     }
+
 //     void display12Hours() const
 //     {
-//         cout << setprecision(2) << setfill('0') << hours << ": "
-//              << setprecision(2) << setfill('0') << minutes << ": "
-//              << setprecision(2) << setfill('0') << seconds << ": " << endl;
+
+//         cout << setfill('0')
+//              << setprecision(2) << hours << ": "
+//              << setprecision(2) << minutes << ": "
+//              << setprecision(2) << seconds << " " << am_pm << endl;
 //     }
 
 //     void display24Hours() const
@@ -1578,51 +1594,76 @@ void line()
 //         if (am_pm == "am")
 //         {
 //             if (h == 12)
-//             {
 //                 h = 0;
-//             }
 //         }
+
 //         else
 //         {
 //             if (h != 12)
-//             {
 //                 h += 12;
-//             }
 //         }
 
-//         cout << setprecision(2) << setfill('0') << h << ": "
-//              << setprecision(2) << setfill('0') << minutes << ": "
-//              << setprecision(2) << setfill('0') << seconds << ": " << endl;
+//         cout << setfill('0')
+//              << setprecision(2) << h << ": "
+//              << setprecision(2) << minutes << ": "
+//              << setprecision(2) << seconds << endl;
 //     }
 // };
+
+// void inputValidation(int &input) // validation for int datatype
+// {
+//     if (!cin.fail())
+//         return;
+
+//     while (true)
+//     {
+//         cin >> input;
+//         if (!cin.fail())
+//             break;
+
+//         cin.clear();
+//         cin.ignore(numeric_limits<streamsize>::max(), '\n');
+//         cout << "Invalid input, try again: ";
+//     }
+// }
 
 // int main()
 // {
 //     Time watch;
 //     int hours, minutes, second;
 //     string am_pm;
+
 //     do
 //     {
 //         cout << "Enter Hours: ";
 //         cin >> hours;
+//         inputValidation(hours);
+
 //     } while (!watch.setHours(hours));
 
 //     do
 //     {
 //         cout << "Enter Minutes: ";
 //         cin >> minutes;
+//         inputValidation(minutes);
+
 //     } while (!watch.setMinutes(minutes));
 
 //     do
 //     {
 //         cout << "Enter Seconds: ";
-//         cin >> hours;
+//         cin >> second;
+//         inputValidation(second);
+
 //     } while (!watch.setSeconds(second));
 
-//     cout << "Am or Pm: ";
-//     cin >> am_pm;
-//     watch.setAmPM(am_pm);
+//     if (hours != 12)
+//     {
+//         cout << "Am or Pm: ";
+//         cin >> am_pm;
+//     }
 
+//     watch.handle12Rule();
 //     watch.display12Hours();
 //     watch.display24Hours();
 // }
