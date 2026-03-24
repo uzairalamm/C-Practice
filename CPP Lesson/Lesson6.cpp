@@ -365,23 +365,23 @@ using namespace std;
 // }
 
 // =========================Reverse Array========================
-void reverseArr(int arr[], int size)
-{
-    for (int i = size - 1; i >= 0; i--)
-    {
-        cout << arr[i] << " ";
-    }
-    cout << endl;
-}
+// void reverseArr(int arr[], int size)
+// {
+//     for (int i = size - 1; i >= 0; i--)
+//     {
+//         cout << arr[i] << " ";
+//     }
+//     cout << endl;
+// }
 
-int main()
-{
-    int arr[] = {2, 4, 5, 6, 3};
-    int size = 5;
+// int main()
+// {
+//     int arr[] = {2, 4, 5, 6, 3};
+//     int size = 5;
 
-    cout << "Reverse array: ";
-    reverseArr(arr, size);
-}
+//     cout << "Reverse array: ";
+//     reverseArr(arr, size);
+// }
 // // Mode Function
 // double myMode(int userInput[], int size)
 // {
@@ -680,3 +680,118 @@ int main()
 //     // calling maxColSUm Function
 //     cout << "Max Column Sum is: " << maxColSum(my2dArray, rows, cols) << endl;
 // }
+
+// ====================Quiz=====================
+
+// int main()
+// {
+
+//     string questions[] = {"1. What is the correct syntax to declare a variable in C++?: ",
+//                           "2. Which of the following is used to take input in C++?: ",
+//                           "3. What is the correct file extension for C++ files?: ",
+//                           "4. Which symbol is used for single-line comments in C++?: ",
+//                           "5. What will be the output? int x = 5; cout << x++; : ",
+//                           "6. Which data type is used to store decimal numbers?: ",
+//                           "7. What does return 0; indicate in main()?: ",
+//                           "8. Which operator is used for comparison?: ",
+//                           "9. What is the size of int (commonly)?: ",
+//                           "10. Which loop executes at least once?: "};
+
+//     string options[][4] = {{"A) int = x;", "B) x int;", "C) int x;", "D) declare int x;"},
+//                            {"A) cout", "B) cin", "C) input", "D) scanf"},
+//                            {"A) .c", "B) .cpp", "C) .java", "D) .py"},
+//                            {"A) /* */", "B) #", "C) //", "D) --"},
+//                            {"A) 6", "B) 5", "C) Error", "D) 0"},
+//                            {"A) int", "B) char", "C) float", "D) bool"},
+//                            {"A) Error occurred", "B) Program will repeat", "C) Successful execution", "D) Stop compilation"},
+//                            {"A) =", "B) ==", "C) !=", "D) Both B and C"},
+//                            {"A) 2 bytes", "B) 4 bytes", "C) 8 bytes", "D) Depends on compiler"},
+//                            {"A) for", "B) while", "C) do-while", "D) None"}
+
+//     };
+
+//     char answerKey[] = {'C', 'B', 'B', 'C', 'B', 'C', 'C', 'D', 'D', 'C'};
+
+//     int size = sizeof(questions) / sizeof(questions[0]);
+//     char guess;
+//     int score = 0;
+
+//     cout << "**************************************\n";
+//     cout << "***            C++ Quiz            ***\n";
+//     cout << "**************************************\n";
+
+//     for (int i = 0; i < size; i++)
+//     {
+//         cout << questions[i];
+//         cout << endl;
+
+//         for (int j = 0; j < 4; j++)
+//         {
+//             cout << options[i][j] << endl;
+//         }
+
+//         do
+//         {
+//             cout << "Answer: ";
+//             cin >> guess;
+//             guess = toupper(guess);
+//         } while (guess != 'A' && guess != 'B' && guess != 'C' && guess != 'D');
+
+//         cout << "**************************************\n";
+//         if (guess == answerKey[i])
+//         {
+//             cout << "Correct\n";
+//             score++;
+//         }
+
+//         else
+//         {
+//             cout << "Wrong!\nCorrect Answer: " << answerKey[i] << endl;
+//         }
+//         cout << "**************************************\n";
+//     }
+
+//     cout << "**************************************\n";
+//     cout << "***            Result             ***\n";
+//     cout << "**************************************\n";
+
+//     cout << "Correct Answers: " << score << endl;
+//     cout << "Total Questions: " << size << endl;
+//     cout << "Score          : " << (score / double(size)) * 100 << "% \n";
+// }
+
+int main()
+{
+    // int n = 7;
+    // int mid = n / 2 + 1;
+
+    // for (int i = 1; i <= n; i++)
+    // {
+    //     for (int j = 1; j <= n; j++)
+    //     {
+    //         if (i == mid || j == mid || (i == 1 && j >= mid) || (i <= mid && j == 1) || (i == n & j <= mid) || (j == n && i >= mid))
+    //         {
+    //             cout << " *";
+    //         }
+    //         else
+    //             cout << "  ";
+    //     }
+    //     cout << endl;
+    // }
+
+    string str = "Hey Uzair, Whats Up!";
+    int lenght = str.length();
+    string reverse = "";
+
+    for (int i = lenght - 1; i >= 0; i--)
+    {
+        reverse += str[i];
+    }
+    cout << reverse << endl;
+    cout << endl;
+
+    for (char &n : str)
+    {
+        cout << n << " ";
+    }
+}

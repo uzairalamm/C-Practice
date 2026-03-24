@@ -112,6 +112,7 @@ void manageBranches()
             string name;
             cout << "Enter branch name to remove: ";
             getline(cin, name);
+
             auto it = remove_if(branches.begin(), branches.end(), [&](Branch &b)
                                 { return b.name == name; });
             if (it != branches.end())

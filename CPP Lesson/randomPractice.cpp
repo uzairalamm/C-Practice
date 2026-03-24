@@ -116,103 +116,112 @@ using namespace std;
 // }
 
 // Rock Paper Scissors
-char playerChoice();
-char computerChoice();
-void showChoice(char choice);
-void showWinner(char player, char computer);
+// char playerChoice();
+// char computerChoice();
 
-int main()
-{
-    char player, computer;
-    char choice;
-    srand(time(NULL));
+// void showChoice(char choice);
+// void showWinner(char player, char computer);
+// void line();
 
-    do
-    {
-        cout << "Rock Paper Scissors\n";
-        cout << "==============================\n";
+// int main()
+// {
+//     char player, computer;
+//     char choice;
+//     srand(time(NULL));
 
-        player = playerChoice();
-        cout << "You Choose: ";
-        showChoice(player);
+//     do
+//     {
+//         cout << "Rock Paper Scissors\n";
+//         cout << "==============================\n";
 
-        computer = computerChoice();
-        cout << "Computer Choose: ";
-        showChoice(computer);
+//         player = playerChoice();
+//         cout << "You Choose: ";
+//         showChoice(player);
 
-        showWinner(player, computer);
+//         computer = computerChoice();
+//         cout << "Computer Choose: ";
+//         showChoice(computer);
 
-        cout << "Want To Try Again(y/n)\n";
-        cin >> choice;
-        choice = tolower(choice);
+//         line();
+//         showWinner(player, computer);
+//         line();
 
-    } while (choice == 'y');
+//         cout << "Want To Try Again(y/n)\n";
+//         cin >> choice;
+//         choice = tolower(choice);
 
-    cout << "==============================\n";
-    return 0;
-}
+//     } while (choice == 'y');
 
-char playerChoice()
-{
-    char choice;
+//     cout << "==============================\n";
+//     return 0;
+// }
 
-    do
-    {
-        cout << "\nChoose:\n";
-        cout << "(r) Rock\n";
-        cout << "(p) Paper\n";
-        cout << "(s) Scissors\n";
-        cout << "Enter choice: ";
-        cin >> choice;
+// void line()
+// {
+//     cout << "-----------------------------\n";
+// }
 
-        choice = tolower(choice);
+// char playerChoice()
+// {
+//     char choice;
 
-    } while (choice != 'r' && choice != 'p' && choice != 's');
+//     do
+//     {
+//         cout << "\nChoose:\n";
+//         cout << "(r) Rock\n";
+//         cout << "(p) Paper\n";
+//         cout << "(s) Scissors\n";
+//         cout << "Enter choice: ";
+//         cin >> choice;
 
-    return choice;
-}
+//         choice = tolower(choice);
 
-char computerChoice()
-{
-    int num = rand() % 3;
-    if (num == 0)
-        return 'r';
+//     } while (choice != 'r' && choice != 'p' && choice != 's');
 
-    else if (num == 1)
-        return 'p';
+//     return choice;
+// }
 
-    else
-        return 's';
-};
-void showChoice(char choice)
-{
-    if (choice == 'r')
-        cout << "Rock\n";
+// char computerChoice()
+// {
+//     int num = rand() % 3;
+//     if (num == 0)
+//         return 'r';
 
-    else if (choice == 'p')
-        cout << "Paper\n";
+//     else if (num == 1)
+//         return 'p';
 
-    else
-        cout << "Scissors\n";
-}
+//     else
+//         return 's';
+// };
+// void showChoice(char choice)
+// {
+//     if (choice == 'r')
+//         cout << "Rock\n";
 
-void showWinner(char player, char computer)
-{
-    if (player == computer)
-    {
-        cout << "Result: It's a tie!\n";
-    }
+//     else if (choice == 'p')
+//         cout << "Paper\n";
 
-    else if (
-        (player == 'r' && computer == 's') ||
-        (player == 's' && computer == 'p') ||
-        (player == 'p' && computer == 'r'))
-    {
-        cout << "Result: You win!\n";
-    }
+//     else
+//         cout << "Scissors\n";
+// }
 
-    else
-    {
-        cout << "Result: Computer wins!\n";
-    }
-}
+// void showWinner(char player, char computer)
+// {
+//     if (player == computer)
+//     {
+//         cout << "Result: It's a tie!\n";
+//     }
+
+//     else if (
+//         (player == 'r' && computer == 's') ||
+//         (player == 's' && computer == 'p') ||
+//         (player == 'p' && computer == 'r'))
+//     {
+//         cout << "Result: You win!\n";
+//     }
+
+//     else
+//     {
+//         cout << "Result: Computer wins!\n";
+//     }
+// }

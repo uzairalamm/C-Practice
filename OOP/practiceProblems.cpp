@@ -1531,21 +1531,22 @@ void line()
 // public:
 //     Time() : hours(0), minutes(0), seconds(0), am_pm("am") {};
 
-//     void setAmPM(string am_pm)
+//     bool setAmPM(string am_pm)
 //     {
 //         for (auto &c : am_pm)
 //             c = tolower(c);
 
 //         if (am_pm == "am" || am_pm == "pm")
+//         {
 //             this->am_pm = am_pm;
-
-//         else
-//             this->am_pm = "am";
+//             return true;
+//         }
+//         return false;
 //     }
 
 //     bool setHours(int hours)
 //     {
-//         if (hours >= 0 && hours <= 12)
+//         if (hours >= 1 && hours <= 12)
 //         {
 //             this->hours = hours;
 //             return true;
@@ -1573,19 +1574,12 @@ void line()
 //         return false;
 //     }
 
-//     void handle12Rule()
-//     {
-//         if (hours == 12)
-//             am_pm = "pm";
-//     }
-
 //     void display12Hours() const
 //     {
-
 //         cout << setfill('0')
-//              << setprecision(2) << hours << ": "
-//              << setprecision(2) << minutes << ": "
-//              << setprecision(2) << seconds << " " << am_pm << endl;
+//              << setw(2) << hours << ": "
+//              << setw(2) << minutes << ": "
+//              << setw(2) << seconds << " " << am_pm << endl;
 //     }
 
 //     void display24Hours() const
@@ -1604,9 +1598,9 @@ void line()
 //         }
 
 //         cout << setfill('0')
-//              << setprecision(2) << h << ": "
-//              << setprecision(2) << minutes << ": "
-//              << setprecision(2) << seconds << endl;
+//              << setw(2) << h << ": "
+//              << setw(2) << minutes << ": "
+//              << setw(2) << seconds << endl;
 //     }
 // };
 
@@ -1615,15 +1609,12 @@ void line()
 //     if (!cin.fail())
 //         return;
 
-//     while (true)
+//     while (cin.fail())
 //     {
-//         cin >> input;
-//         if (!cin.fail())
-//             break;
-
 //         cin.clear();
 //         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 //         cout << "Invalid input, try again: ";
+//         cin >> input;
 //     }
 // }
 
@@ -1657,13 +1648,363 @@ void line()
 
 //     } while (!watch.setSeconds(second));
 
-//     if (hours != 12)
+//     do
 //     {
 //         cout << "Am or Pm: ";
 //         cin >> am_pm;
-//     }
+//     } while (!watch.setAmPM(am_pm));
 
-//     watch.handle12Rule();
+//     cout << "Time In Both Formate\n";
+
+//     line();
 //     watch.display12Hours();
 //     watch.display24Hours();
+//     line();
 // }
+
+// ======================Problem 10 ---- Chapter 13======================
+// let me solve this using vectors
+
+// class NumberArray
+// {
+//     vector<float> numbers;
+
+// public:
+//     void storeNumber(float num)
+//     {
+//         numbers.push_back(num);
+//     }
+
+//     float getNumber(int index) const
+//     {
+//         if (index >= 0 && index < numbers.size())
+//             return numbers[index];
+
+//         else
+//             throw out_of_range("Invalid index");
+//     }
+
+//     float highestNum() const
+//     {
+//         if (numbers.empty())
+//         {
+//             cout << "Array is Empty\n";
+//             return -1;
+//         }
+
+//         float highest = numbers[0];
+//         for (int i = 1; i < numbers.size(); i++)
+//         {
+//             if (highest < numbers[i])
+//                 highest = numbers[i];
+//         }
+
+//         return highest;
+//     }
+
+//     float lowestNum() const
+//     {
+//         if (numbers.empty())
+//         {
+//             cout << "Array is Empty\n";
+//             return -1;
+//         }
+
+//         float lowest = numbers[0];
+//         for (int i = 1; i < numbers.size(); i++)
+//         {
+//             if (lowest > numbers[i])
+//                 lowest = numbers[i];
+//         }
+
+//         return lowest;
+//     }
+
+//     float average() const
+//     {
+//         if (numbers.empty())
+//         {
+//             cout << "Array is Empty\n";
+//             return -1;
+//         }
+
+//         float sum = 0;
+//         for (int i = 0; i < numbers.size(); i++)
+//             sum += numbers[i];
+
+//         return sum / numbers.size();
+//     }
+
+//     void display() const
+//     {
+//         line();
+//         if (numbers.empty())
+//         {
+//             cout << "Array is Empty\n";
+//             line();
+
+//             return;
+//         }
+
+//         cout << "Elements in Array : ";
+//         for (int i = 0; i < numbers.size(); i++)
+//             cout << getNumber(i) << " ";
+
+//         cout << fixed << "\n";
+//         cout << "Highest Num       : " << setprecision(2) << highestNum() << endl;
+//         cout << "Lowest Num        : " << setprecision(2) << lowestNum() << endl;
+//         cout << "Average           : " << setprecision(2) << average() << endl;
+
+//         line();
+//     }
+// };
+
+// int main()
+// {
+//     NumberArray number;
+//     float num;
+//     cout << "Enter Element in Array\n";
+//     for (int i = 0; i < 4; i++)
+//     {
+//         cout << "Enter Number " << i + 1 << ": ";
+//         cin >> num;
+//         number.storeNumber(num);
+//     }
+
+//     number.display();
+// }
+
+// ======================Problem 16 ---- Chapter 13======================
+// class Time
+// {
+//     int hours, minutes, seconds;
+
+// public:
+//     Time() : hours(0), minutes(0), seconds(0) {};
+
+//     Time(int h, int m, int s)
+
+//         : hours((h >= 0 && h <= 23) ? h : 0),
+//           minutes((m >= 0 && m <= 59) ? m : 0),
+
+//           seconds((s >= 0 && s <= 59) ? s : 0) {};
+
+//     bool setHours(int h)
+//     {
+
+//         if (h >= 0 && h <= 23)
+//         {
+//             hours = h;
+//             return true;
+//         }
+//         return false;
+//     }
+
+//     bool setMinutes(int m)
+//     {
+
+//         if (m >= 0 && m <= 59)
+//         {
+//             minutes = m;
+//             return true;
+//         }
+//         return false;
+//     }
+
+//     bool setSeconds(int s)
+//     {
+
+//         if (s >= 0 && s <= 59)
+//         {
+//             seconds = s;
+//             return true;
+//         }
+//         return false;
+//     }
+
+//     void timeIn24Hours() const
+//     {
+//         cout << setfill('0')
+//              << setw(2) << hours << ": "
+//              << setw(2) << minutes << ": "
+//              << setw(2) << seconds << endl;
+//     }
+
+//     void timeIn12Hours() const
+//     {
+//         int h = hours;
+//         string am_pm;
+
+//         if (h == 0)
+//         {
+//             h = 12;
+//             am_pm = "am";
+//         }
+
+//         else if (h < 12)
+//         {
+//             am_pm = "am";
+//         }
+
+//         else if (h == 12)
+//         {
+//             am_pm = "pm";
+//         }
+
+//         else
+//         {
+//             h -= 12;
+//             am_pm = "pm";
+//         }
+
+//         cout << setfill('0')
+//              << setw(2) << h << ": "
+//              << setw(2) << minutes << ": "
+//              << setw(2) << seconds << " "
+//              << am_pm << endl;
+//     }
+
+//     void displayTime() const
+//     {
+//         timeIn12Hours();
+//         timeIn24Hours();
+//     }
+// };
+
+// void inputValidation(int &input)
+// {
+//     while (cin.fail())
+//     {
+//         cin.clear();
+//         cin.ignore(numeric_limits<streamsize>::max(), '\n');
+//         cout << "Invalid Input. Try Again: ";
+//         cin >> input;
+//     }
+// }
+
+// int main()
+// {
+//     Time watch;
+//     int hours, minutes, seconds;
+
+//     do
+//     {
+//         cout << "Enter Hours: ";
+//         cin >> hours;
+//         inputValidation(hours);
+
+//     } while (!watch.setHours(hours));
+
+//     do
+//     {
+//         cout << "Enter Minutes: ";
+//         cin >> minutes;
+//         inputValidation(minutes);
+
+//     } while (!watch.setMinutes(minutes));
+
+//     do
+//     {
+//         cout << "Enter Seconds: ";
+//         cin >> seconds;
+//         inputValidation(seconds);
+
+//     } while (!watch.setSeconds(seconds));
+
+//     watch.displayTime();
+// }
+
+// ======================Problem 18 ---- Chapter 13======================
+class Dice
+{
+    int die;
+
+public:
+    int rollDie()
+    {
+        return die = rand() % 6 + 1;
+    }
+};
+
+class Blackjack
+{
+    int computerScore = 0, playerScore = 0;
+
+public:
+    void addPlayerScore(int score)
+    {
+        playerScore += score;
+    }
+
+    void addComputer(int score)
+    {
+
+        computerScore += score;
+    }
+
+    int getPlayerScore()
+    {
+        return playerScore;
+    }
+
+    int getComputerScore()
+    {
+        return computerScore;
+    }
+
+    void showWinner()
+    {
+        line();
+        cout << "Final Result\n";
+        line();
+
+        cout << "Player Score: " << playerScore << endl;
+        cout << "Computer Score: " << computerScore << endl;
+
+        if (computerScore > 21)
+            cout << "Computer Score busted. You Win\n";
+
+        else if (playerScore > 21)
+            cout << "Your Score busted. Computer Win\n";
+
+        else if (computerScore > playerScore)
+            cout << "Computer Wins\n";
+
+        else
+            cout << "You Wins\n";
+    }
+};
+
+int main()
+{
+    srand(time(0));
+    Dice die;
+    Blackjack game;
+    char choice;
+
+    cout << "==============Game of 21=================\n";
+    do
+    {
+        game.addComputer(die.rollDie());
+        game.addComputer(die.rollDie());
+
+        int d1 = die.rollDie();
+        int d2 = die.rollDie();
+
+        game.addPlayerScore(d1 + d2);
+        cout << "You Roll 2 Dice\n";
+        cout << "Dice 1: " << d1 << "\nDice 2: " << d2 << endl;
+        cout << "Current Score is: " << game.getPlayerScore() << endl;
+
+        if (game.getPlayerScore() > 21)
+        {
+            cout << "Your Score Busted\n";
+            break;
+        }
+
+        cout << "Want to ROll More(y/n): ";
+        cin >> choice;
+    } while (choice == 'y' || choice == 'Y');
+
+    game.showWinner();
+}

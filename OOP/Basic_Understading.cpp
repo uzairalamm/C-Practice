@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
 using namespace std;
 
 // ========================basic Program=========================
@@ -1791,3 +1792,46 @@ Problem:
 // }
 
 //
+class Account
+{
+    string userName, password, email;
+    fstream file;
+
+public:
+    void login();
+    void forgetPassword();
+    void signUp();
+};
+
+int main()
+{
+    Account person;
+    int choice;
+
+    cout << "1.SignUp\n2.Login\n3.Forget Password\nExit\n";
+    cout << "Enter Your Choice: ";
+    cin >> choice;
+
+    switch (choice)
+    {
+    case 1:
+        person.signUp();
+        break;
+
+    case 2:
+        person.login();
+        break;
+
+    case 3:
+        person.forgetPassword();
+        break;
+
+    case 4:
+        cout << "Exiting...............\n";
+        return 0;
+        break;
+
+    default:
+        cout << "Invalid Choice\n";
+    }
+}
