@@ -2024,212 +2024,143 @@ void line()
 
 // ======================Problem 19 ---- Chapter 13======================
 
-// class QuestionBank
-// {
-//     string question;
-//     vector<string> options;
-//     char answer;
-
-// public:
-//     void setQuestion(string q) { question = q; }
-//     void setOption(string op) { options.push_back(op); }
-//     void setAnswer(char ans) { answer = ans; }
-
-//     string getQuestion() const { return question; }
-//     string getOption(int index) const { return options[index]; }
-//     char getAnswer() const { return answer; }
-// };
-
-// int main()
-// {
-//     vector<QuestionBank> Questions;
-
-//     QuestionBank q;
-//     char answer;
-//     string text, option;
-//     do
-//     {
-//         cout << "Enter Question: ";
-//         getline(cin, text);
-//     } while (!text.empty());
-//     q.setQuestion(text);
-
-//     for (int i = 0; i < 4; i++)
-//     {
-//         do
-//         {
-//             cout << "Option #" << i + 1 << ": ";
-//             cin >> option;
-//         } while (!option.empty());
-
-//         q.setOption(option);
-//     }
-
-//     do
-//     {
-//         cout << "Enter Answer(A-D): ";
-//         cin >> answer;
-//         answer == toupper(answer);
-//     } while (answer < 'A' || answer > 'D');
-
-//     q.setAnswer(answer);
-//     Questions.push_back(q);
-
-// }
-
-class Question
+class QuestionBank
 {
-private:
-    string text;
+    string question;
     vector<string> options;
-    char correctAnswer;
+    char answer;
 
 public:
-    void setText(const string &t)
-    {
-        if (!t.empty())
-            text = t;
-    }
+    void setQuestion(string q) { question = q; }
+    void setOption(string op) { options.push_back(op); }
+    void setAnswer(char ans) { answer = ans; }
 
-    void addOption(const string &op)
-    {
-        if (!op.empty() && options.size() < 4)
-            options.push_back(op);
-    }
-
-    void setCorrectAnswer(char ans)
-    {
-        ans = toupper(ans);
-        if (ans >= 'A' && ans <= 'D')
-            correctAnswer = ans;
-    }
-
-    string getText() const
-    {
-        return text;
-    }
-
+    string getQuestion() const { return question; }
     string getOption(int index) const
     {
         if (index >= 0 && index < options.size())
             return options[index];
-        return "";
+        return "Invalid Index";
     }
 
-    char getCorrectAnswer() const
-    {
-        return correctAnswer;
-    }
+    char getAnswer() const { return answer; }
 };
 
-class TriviaGame
+class trivaGame
 {
-private:
-    vector<Question> questions;
+    vector<QuestionBank> questions;
     int score = 0;
 
 public:
     void addQuestion()
     {
-        Question q;
+        QuestionBank q;
 
         string text;
+
         do
         {
-            cout << "Enter question: ";
+            cout << "Enter Question: ";
             getline(cin, text);
         } while (text.empty());
 
-        q.setText(text);
+        cout << endl;
+        q.setQuestion(text);
 
-        // Input options
         for (int i = 0; i < 4; i++)
         {
-            string op;
+            string option;
             do
             {
                 cout << "Option " << char('A' + i) << ": ";
-                getline(cin, op);
-            } while (op.empty());
+                getline(cin, option);
+            } while (option.empty());
 
-            q.addOption(op);
+            q.setOption(option);
         }
+        cout << endl;
 
-        // Input correct answer
-        char ans;
+        char answer;
         do
         {
-            cout << "Correct Answer (A-D): ";
-            cin >> ans;
-            ans = toupper(ans);
-        } while (ans < 'A' || ans > 'D');
+            cout << "Enter Answer(A-D): ";
+            cin >> answer;
+            answer = toupper(answer);
+        } while (answer < 'A' || answer > 'D');
 
-        q.setCorrectAnswer(ans);
-        cin.ignore(); // IMPORTANT
+        cin.ignore();
+        cout << endl;
 
+        q.setAnswer(answer);
         questions.push_back(q);
     }
 
     void play()
     {
-        score = 0;
 
         for (int i = 0; i < questions.size(); i++)
         {
-            cout << "\nQ" << i + 1 << ": " << questions[i].getText() << endl;
+            cout << "Question Number " << i + 1 << "\n";
+            line();
+            cout << questions[i].getQuestion() << endl;
+            line();
 
             for (int j = 0; j < 4; j++)
             {
-                cout << char('A' + j) << ") "
-                     << questions[i].getOption(j) << endl;
+                cout << char('A' + j) << ") " << questions[i].getOption(j) << endl;
             }
 
-            char userAns;
+            char guess;
             do
             {
-                cout << "Your Answer (A-D): ";
-                cin >> userAns;
-                userAns = toupper(userAns);
-            } while (userAns < 'A' || userAns > 'D');
+                cout << "Answer: ";
+                cin >> guess;
+                guess = toupper(guess);
+            } while (guess < 'A' || guess > 'D');
 
-            if (userAns == questions[i].getCorrectAnswer())
+            if (guess == questions[i].getAnswer())
             {
-                cout << "Correct!\n";
+                cout << "***************************************\n";
+                cout << "******         Correct         ********\n";
+                cout << "***************************************\n";
                 score++;
             }
+
             else
             {
-                cout << "Wrong! Correct answer: "
-                     << questions[i].getCorrectAnswer() << endl;
+                cout << "***************************************\n";
+                cout << "****     Wrong! Correct Answer: " << questions[i].getAnswer() << "  ****" << endl;
+                cout << "***************************************\n";
             }
+
+            cin.ignore();
+            cout << endl;
         }
     }
 
-    void displayScore() const
+    void finalScore() const
     {
-        cout << "\nFinal Score: " << score << " / " << questions.size() << endl;
+        cout << "Final Score: " << score << "/" << questions.size() << endl;
     }
 };
 
 int main()
 {
-    TriviaGame game;
+    trivaGame quiz;
+    int numofQuestions;
 
-    int num;
-    cout << "How many questions? ";
-    cin >> num;
-    cin.ignore(); // IMPORTANT
+    cout << "How Many Question?: ";
+    cin >> numofQuestions;
+    cin.ignore();
 
-    for (int i = 0; i < num; i++)
+    for (int i = 0; i < numofQuestions; i++)
     {
-        cout << "\n--- Enter Question " << i + 1 << " ---\n";
-        game.addQuestion();
+        cout << "-----------Question " << i + 1 << " -------------------\n";
+        quiz.addQuestion();
     }
 
-    cout << "\n===== QUIZ START =====\n";
-    game.play();
-
-    game.displayScore();
-
+    cout << "==============Quiz===============\n";
+    quiz.play();
+    quiz.finalScore();
     return 0;
 }
