@@ -1,2 +1,2 @@
 
-    die.rollDie();
+            cout << "Correct\n";

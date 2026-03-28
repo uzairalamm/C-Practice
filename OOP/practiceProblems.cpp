@@ -1183,11 +1183,9 @@ void line()
 
 // class Fishing
 // {
-//     int points, totalPoints;
+//     int points = 0, totalPoints = 0;
 
 // public:
-//     Fishing() : points(0), totalPoints(0) {}
-
 //     int setPoints(int diceValue)
 //     {
 //         int point[] = {10, 2, 5, 8, 15, 20};
@@ -1256,10 +1254,13 @@ void line()
 //     // Result message
 //     if (fish.getTotal() < 10)
 //         cout << "Bad luck! Better next time.\n";
+
 //     else if (fish.getTotal() < 30)
 //         cout << "Not bad! You caught some fish.\n";
+
 //     else if (fish.getTotal() < 50)
 //         cout << "Good job! Nice fishing.\n";
+
 //     else
 //         cout << "Excellent! You're a pro fisherman!\n";
 
@@ -1915,96 +1916,320 @@ void line()
 // }
 
 // ======================Problem 18 ---- Chapter 13======================
-class Dice
+// class Dice
+// {
+//     int die;
+
+// public:
+//     int rollDie()
+//     {
+//         return die = rand() % 6 + 1;
+//     }
+// };
+
+// class Blackjack
+// {
+//     int computerScore = 0, playerScore = 0;
+
+// public:
+//     // Add Score
+//     void addPlayerScore(int score) { playerScore += score; }
+//     void addComputer(int score) { computerScore += score; }
+
+//     // Get Score
+//     int getPlayerScore() const { return playerScore; }
+//     int getComputerScore() const { return computerScore; }
+
+//     void showWinner() const
+//     {
+//         line();
+//         cout << "Final Result\n";
+//         line();
+
+//         cout << "Player Score: " << playerScore << endl;
+//         cout << "Computer Score: " << computerScore << endl;
+
+//         if (computerScore > 21)
+//             cout << "Computer Score busted. You Win\n";
+
+//         else if (playerScore > 21)
+//             cout << "Your Score busted. Computer Win\n";
+
+//         else if (playerScore == computerScore)
+//             cout << "Its a Tie\n";
+
+//         else if (computerScore > playerScore)
+//             cout << "Computer Wins\n";
+
+//         else
+//             cout << "You Wins\n";
+//     }
+// };
+
+// int main()
+// {
+//     srand(time(0));
+//     Dice die;
+//     Blackjack game;
+//     char choice;
+
+//     cout << "==============Game of 21=================\n";
+//     do
+//     {
+//         cout << "Want to ROll(y/n): ";
+//         cin >> choice;
+//         choice = tolower(choice); // to lowercase the user input
+//     } while (choice != 'y' && choice != 'n');
+
+//     if (choice == 'y')
+//     {
+//         do
+//         {
+//             game.addComputer(die.rollDie());
+//             game.addComputer(die.rollDie());
+
+//             int d1 = die.rollDie();
+//             int d2 = die.rollDie();
+
+//             game.addPlayerScore(d1 + d2);
+//             cout << "You Roll 2 Dice\n";
+//             cout << "Dice 1: " << d1 << "\nDice 2: " << d2 << endl;
+//             cout << "Current Score is: " << game.getPlayerScore() << endl;
+
+//             if (game.getPlayerScore() > 21)
+//             {
+//                 cout << "Your Score Busted\n";
+//                 break;
+//             }
+
+//             do
+//             {
+//                 cout << "Want to ROll More(y/n): ";
+//                 cin >> choice;
+//                 choice = tolower(choice);
+//             } while (choice != 'y' && choice != 'n');
+
+//         } while (choice == 'y');
+
+//         game.showWinner();
+//     }
+
+//     else
+//     {
+//         cout << "Have a good day\n";
+//         return 0;
+//     }
+//     return 0;
+// }
+
+// ======================Problem 19 ---- Chapter 13======================
+
+// class QuestionBank
+// {
+//     string question;
+//     vector<string> options;
+//     char answer;
+
+// public:
+//     void setQuestion(string q) { question = q; }
+//     void setOption(string op) { options.push_back(op); }
+//     void setAnswer(char ans) { answer = ans; }
+
+//     string getQuestion() const { return question; }
+//     string getOption(int index) const { return options[index]; }
+//     char getAnswer() const { return answer; }
+// };
+
+// int main()
+// {
+//     vector<QuestionBank> Questions;
+
+//     QuestionBank q;
+//     char answer;
+//     string text, option;
+//     do
+//     {
+//         cout << "Enter Question: ";
+//         getline(cin, text);
+//     } while (!text.empty());
+//     q.setQuestion(text);
+
+//     for (int i = 0; i < 4; i++)
+//     {
+//         do
+//         {
+//             cout << "Option #" << i + 1 << ": ";
+//             cin >> option;
+//         } while (!option.empty());
+
+//         q.setOption(option);
+//     }
+
+//     do
+//     {
+//         cout << "Enter Answer(A-D): ";
+//         cin >> answer;
+//         answer == toupper(answer);
+//     } while (answer < 'A' || answer > 'D');
+
+//     q.setAnswer(answer);
+//     Questions.push_back(q);
+
+// }
+
+class Question
 {
-    int die;
+private:
+    string text;
+    vector<string> options;
+    char correctAnswer;
 
 public:
-    int rollDie()
+    void setText(const string &t)
     {
-        return die = rand() % 6 + 1;
+        if (!t.empty())
+            text = t;
+    }
+
+    void addOption(const string &op)
+    {
+        if (!op.empty() && options.size() < 4)
+            options.push_back(op);
+    }
+
+    void setCorrectAnswer(char ans)
+    {
+        ans = toupper(ans);
+        if (ans >= 'A' && ans <= 'D')
+            correctAnswer = ans;
+    }
+
+    string getText() const
+    {
+        return text;
+    }
+
+    string getOption(int index) const
+    {
+        if (index >= 0 && index < options.size())
+            return options[index];
+        return "";
+    }
+
+    char getCorrectAnswer() const
+    {
+        return correctAnswer;
     }
 };
 
-class Blackjack
+class TriviaGame
 {
-    int computerScore = 0, playerScore = 0;
+private:
+    vector<Question> questions;
+    int score = 0;
 
 public:
-    void addPlayerScore(int score)
+    void addQuestion()
     {
-        playerScore += score;
+        Question q;
+
+        string text;
+        do
+        {
+            cout << "Enter question: ";
+            getline(cin, text);
+        } while (text.empty());
+
+        q.setText(text);
+
+        // Input options
+        for (int i = 0; i < 4; i++)
+        {
+            string op;
+            do
+            {
+                cout << "Option " << char('A' + i) << ": ";
+                getline(cin, op);
+            } while (op.empty());
+
+            q.addOption(op);
+        }
+
+        // Input correct answer
+        char ans;
+        do
+        {
+            cout << "Correct Answer (A-D): ";
+            cin >> ans;
+            ans = toupper(ans);
+        } while (ans < 'A' || ans > 'D');
+
+        q.setCorrectAnswer(ans);
+        cin.ignore(); // IMPORTANT
+
+        questions.push_back(q);
     }
 
-    void addComputer(int score)
+    void play()
     {
+        score = 0;
 
-        computerScore += score;
+        for (int i = 0; i < questions.size(); i++)
+        {
+            cout << "\nQ" << i + 1 << ": " << questions[i].getText() << endl;
+
+            for (int j = 0; j < 4; j++)
+            {
+                cout << char('A' + j) << ") "
+                     << questions[i].getOption(j) << endl;
+            }
+
+            char userAns;
+            do
+            {
+                cout << "Your Answer (A-D): ";
+                cin >> userAns;
+                userAns = toupper(userAns);
+            } while (userAns < 'A' || userAns > 'D');
+
+            if (userAns == questions[i].getCorrectAnswer())
+            {
+                cout << "Correct!\n";
+                score++;
+            }
+            else
+            {
+                cout << "Wrong! Correct answer: "
+                     << questions[i].getCorrectAnswer() << endl;
+            }
+        }
     }
 
-    int getPlayerScore()
+    void displayScore() const
     {
-        return playerScore;
-    }
-
-    int getComputerScore()
-    {
-        return computerScore;
-    }
-
-    void showWinner()
-    {
-        line();
-        cout << "Final Result\n";
-        line();
-
-        cout << "Player Score: " << playerScore << endl;
-        cout << "Computer Score: " << computerScore << endl;
-
-        if (computerScore > 21)
-            cout << "Computer Score busted. You Win\n";
-
-        else if (playerScore > 21)
-            cout << "Your Score busted. Computer Win\n";
-
-        else if (computerScore > playerScore)
-            cout << "Computer Wins\n";
-
-        else
-            cout << "You Wins\n";
+        cout << "\nFinal Score: " << score << " / " << questions.size() << endl;
     }
 };
 
 int main()
 {
-    srand(time(0));
-    Dice die;
-    Blackjack game;
-    char choice;
+    TriviaGame game;
 
-    cout << "==============Game of 21=================\n";
-    do
+    int num;
+    cout << "How many questions? ";
+    cin >> num;
+    cin.ignore(); // IMPORTANT
+
+    for (int i = 0; i < num; i++)
     {
-        game.addComputer(die.rollDie());
-        game.addComputer(die.rollDie());
+        cout << "\n--- Enter Question " << i + 1 << " ---\n";
+        game.addQuestion();
+    }
 
-        int d1 = die.rollDie();
-        int d2 = die.rollDie();
+    cout << "\n===== QUIZ START =====\n";
+    game.play();
 
-        game.addPlayerScore(d1 + d2);
-        cout << "You Roll 2 Dice\n";
-        cout << "Dice 1: " << d1 << "\nDice 2: " << d2 << endl;
-        cout << "Current Score is: " << game.getPlayerScore() << endl;
+    game.displayScore();
 
-        if (game.getPlayerScore() > 21)
-        {
-            cout << "Your Score Busted\n";
-            break;
-        }
-
-        cout << "Want to ROll More(y/n): ";
-        cin >> choice;
-    } while (choice == 'y' || choice == 'Y');
-
-    game.showWinner();
+    return 0;
 }
