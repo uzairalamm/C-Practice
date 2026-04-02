@@ -1792,46 +1792,88 @@ Problem:
 // }
 
 //
-class Account
+// class Account
+// {
+//     string userName, password, email;
+//     fstream file;
+
+// public:
+//     void login();
+//     void forgetPassword();
+//     void signUp();
+// };
+
+// int main()
+// {
+//     Account person;
+//     int choice;
+
+//     cout << "1.SignUp\n2.Login\n3.Forget Password\nExit\n";
+//     cout << "Enter Your Choice: ";
+//     cin >> choice;
+
+//     switch (choice)
+//     {
+//     case 1:
+//         person.signUp();
+//         break;
+
+//     case 2:
+//         person.login();
+//         break;
+
+//     case 3:
+//         person.forgetPassword();
+//         break;
+
+//     case 4:
+//         cout << "Exiting...............\n";
+//         return 0;
+//         break;
+
+//     default:
+//         cout << "Invalid Choice\n";
+//     }
+// }
+
+class Student
 {
-    string userName, password, email;
-    fstream file;
+    string name;
+    int rollNumber;
 
 public:
-    void login();
-    void forgetPassword();
-    void signUp();
+    Student() : name("Unknown"), rollNumber(0) {};
+    Student(string name, int rollNO) : name(name), rollNumber(rollNO) {};
+
+    bool setName(string n)
+    {
+        if (!n.empty())
+            name = n;
+        else
+            return;
+    }
+
+    void setRollNo(int rollNo)
+    {
+        if (rollNo > 0)
+            rollNumber = rollNo;
+        else
+            return;
+    }
+
+    string getName() const
+    {
+        return name;
+    }
+    int getRollNo() const { return rollNumber; }
 };
 
 int main()
 {
-    Account person;
-    int choice;
+    Student s1("Harami", 213);
+    Student s2(s1);
 
-    cout << "1.SignUp\n2.Login\n3.Forget Password\nExit\n";
-    cout << "Enter Your Choice: ";
-    cin >> choice;
+    cout << "Name " << s2.getName() << "\nRoll No: " << s2.getRollNo() << endl;
 
-    switch (choice)
-    {
-    case 1:
-        person.signUp();
-        break;
-
-    case 2:
-        person.login();
-        break;
-
-    case 3:
-        person.forgetPassword();
-        break;
-
-    case 4:
-        cout << "Exiting...............\n";
-        return 0;
-        break;
-
-    default:
-        cout << "Invalid Choice\n";
-    }
+    return 0;
 }

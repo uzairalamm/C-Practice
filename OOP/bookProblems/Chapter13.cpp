@@ -51,7 +51,7 @@ using namespace std;
 //         //     }
 //         // }
 
-//         // ......A much Cleaner Code
+// ......A much Cleaner Code
 //         int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 //         if (month == 2 && (year % 4 == 0 && year % 100 != 0 || year % 400 == 0))
@@ -976,7 +976,7 @@ void line()
 //     void display() const
 //     {
 //         cout << fixed;
-//         cout << "Color Of Ball  : " << setprecision(2) << color << endl;
+//         cout << "Color Of Ball  : " << color << endl;
 //         cout << "Radius Of Ball : " << setprecision(2) << radius << endl;
 //         cout << "Volume Of Ball : " << setprecision(2) << getVolume() << endl;
 //     }
@@ -1340,7 +1340,7 @@ void line()
 //     payment1.display();
 // }
 
-// ======================Problem 15 ---- Chapter 13======================
+// ======================Problem 16 ---- Chapter 13======================
 // class Temperature
 // {
 //     float temperature;
@@ -1434,7 +1434,7 @@ void line()
 //     temp.pointChecker();
 // }
 
-// ======================Problem 15.1 ---- Chapter 13======================
+// ======================Problem 16.1 ---- Chapter 13======================
 // Improve version, litle bit
 
 // struct Substance
@@ -1523,15 +1523,13 @@ void line()
 //     Temperature::showSubstance();
 // } // a more scalable program
 
-// ======================Problem 16 ---- Chapter 13======================
+// ======================Problem 17 ---- Chapter 13======================
 // class Time
 // {
-//     int hours, minutes, seconds;
-//     string am_pm;
+//     int hours = 0, minutes = 0, seconds = 0;
+//     string am_pm = "am";
 
 // public:
-//     Time() : hours(0), minutes(0), seconds(0), am_pm("am") {};
-
 //     bool setAmPM(string am_pm)
 //     {
 //         for (auto &c : am_pm)
@@ -1775,7 +1773,8 @@ void line()
 //     number.display();
 // }
 
-// ======================Problem 16 ---- Chapter 13======================
+// ======================Problem 17 ---- Chapter 13======================
+// Improve Version
 // class Time
 // {
 //     int hours, minutes, seconds;
@@ -2024,143 +2023,143 @@ void line()
 
 // ======================Problem 19 ---- Chapter 13======================
 
-class QuestionBank
-{
-    string question;
-    vector<string> options;
-    char answer;
+// class QuestionBank
+// {
+//     string question;
+//     vector<string> options;
+//     char answer;
 
-public:
-    void setQuestion(string q) { question = q; }
-    void setOption(string op) { options.push_back(op); }
-    void setAnswer(char ans) { answer = ans; }
+// public:
+//     void setQuestion(string q) { question = q; }
+//     void setOption(string op) { options.push_back(op); }
+//     void setAnswer(char ans) { answer = ans; }
 
-    string getQuestion() const { return question; }
-    string getOption(int index) const
-    {
-        if (index >= 0 && index < options.size())
-            return options[index];
-        return "Invalid Index";
-    }
+//     string getQuestion() const { return question; }
+//     string getOption(int index) const
+//     {
+//         if (index >= 0 && index < options.size())
+//             return options[index];
+//         return "Invalid Index";
+//     }
 
-    char getAnswer() const { return answer; }
-};
+//     char getAnswer() const { return answer; }
+// };
 
-class trivaGame
-{
-    vector<QuestionBank> questions;
-    int score = 0;
+// class trivaGame
+// {
+//     vector<QuestionBank> questions;
+//     int score = 0;
 
-public:
-    void addQuestion()
-    {
-        QuestionBank q;
+// public:
+//     void addQuestion()
+//     {
+//         QuestionBank q;
 
-        string text;
+//         string text;
 
-        do
-        {
-            cout << "Enter Question: ";
-            getline(cin, text);
-        } while (text.empty());
+//         do
+//         {
+//             cout << "Enter Question: ";
+//             getline(cin, text);
+//         } while (text.empty());
 
-        cout << endl;
-        q.setQuestion(text);
+//         cout << endl;
+//         q.setQuestion(text);
 
-        for (int i = 0; i < 4; i++)
-        {
-            string option;
-            do
-            {
-                cout << "Option " << char('A' + i) << ": ";
-                getline(cin, option);
-            } while (option.empty());
+//         for (int i = 0; i < 4; i++)
+//         {
+//             string option;
+//             do
+//             {
+//                 cout << "Option " << char('A' + i) << ": ";
+//                 getline(cin, option);
+//             } while (option.empty());
 
-            q.setOption(option);
-        }
-        cout << endl;
+//             q.setOption(option);
+//         }
+//         cout << endl;
 
-        char answer;
-        do
-        {
-            cout << "Enter Answer(A-D): ";
-            cin >> answer;
-            answer = toupper(answer);
-        } while (answer < 'A' || answer > 'D');
+//         char answer;
+//         do
+//         {
+//             cout << "Enter Answer(A-D): ";
+//             cin >> answer;
+//             answer = toupper(answer);
+//         } while (answer < 'A' || answer > 'D');
 
-        cin.ignore();
-        cout << endl;
+//         cin.ignore();
+//         cout << endl;
 
-        q.setAnswer(answer);
-        questions.push_back(q);
-    }
+//         q.setAnswer(answer);
+//         questions.push_back(q);
+//     }
 
-    void play()
-    {
+//     void play()
+//     {
 
-        for (int i = 0; i < questions.size(); i++)
-        {
-            cout << "Question Number " << i + 1 << "\n";
-            line();
-            cout << questions[i].getQuestion() << endl;
-            line();
+//         for (int i = 0; i < questions.size(); i++)
+//         {
+//             cout << "Question Number " << i + 1 << "\n";
+//             line();
+//             cout << questions[i].getQuestion() << endl;
+//             line();
 
-            for (int j = 0; j < 4; j++)
-            {
-                cout << char('A' + j) << ") " << questions[i].getOption(j) << endl;
-            }
+//             for (int j = 0; j < 4; j++)
+//             {
+//                 cout << char('A' + j) << ") " << questions[i].getOption(j) << endl;
+//             }
 
-            char guess;
-            do
-            {
-                cout << "Answer: ";
-                cin >> guess;
-                guess = toupper(guess);
-            } while (guess < 'A' || guess > 'D');
+//             char guess;
+//             do
+//             {
+//                 cout << "Answer: ";
+//                 cin >> guess;
+//                 guess = toupper(guess);
+//             } while (guess < 'A' || guess > 'D');
 
-            if (guess == questions[i].getAnswer())
-            {
-                cout << "***************************************\n";
-                cout << "******         Correct         ********\n";
-                cout << "***************************************\n";
-                score++;
-            }
+//             if (guess == questions[i].getAnswer())
+//             {
+//                 cout << "***************************************\n";
+//                 cout << "******         Correct         ********\n";
+//                 cout << "***************************************\n";
+//                 score++;
+//             }
 
-            else
-            {
-                cout << "***************************************\n";
-                cout << "****     Wrong! Correct Answer: " << questions[i].getAnswer() << "  ****" << endl;
-                cout << "***************************************\n";
-            }
+//             else
+//             {
+//                 cout << "***************************************\n";
+//                 cout << "****     Wrong! Correct Answer: " << questions[i].getAnswer() << "  ****" << endl;
+//                 cout << "***************************************\n";
+//             }
 
-            cin.ignore();
-            cout << endl;
-        }
-    }
+//             cin.ignore();
+//             cout << endl;
+//         }
+//     }
 
-    void finalScore() const
-    {
-        cout << "Final Score: " << score << "/" << questions.size() << endl;
-    }
-};
+//     void finalScore() const
+//     {
+//         cout << "Final Score: " << score << "/" << questions.size() << endl;
+//     }
+// };
 
-int main()
-{
-    trivaGame quiz;
-    int numofQuestions;
+// int main()
+// {
+//     trivaGame quiz;
+//     int numofQuestions;
 
-    cout << "How Many Question?: ";
-    cin >> numofQuestions;
-    cin.ignore();
+//     cout << "How Many Question?: ";
+//     cin >> numofQuestions;
+//     cin.ignore();
 
-    for (int i = 0; i < numofQuestions; i++)
-    {
-        cout << "-----------Question " << i + 1 << " -------------------\n";
-        quiz.addQuestion();
-    }
+//     for (int i = 0; i < numofQuestions; i++)
+//     {
+//         cout << "-----------Question " << i + 1 << " -------------------\n";
+//         quiz.addQuestion();
+//     }
 
-    cout << "==============Quiz===============\n";
-    quiz.play();
-    quiz.finalScore();
-    return 0;
-}
+//     cout << "==============Quiz===============\n";
+//     quiz.play();
+//     quiz.finalScore();
+//     return 0;
+// }
