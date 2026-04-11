@@ -102,84 +102,115 @@ using namespace std;
 
 // ================================Chapter 14- Problem 2==========================================
 
-// class DayOfYear
-// {
+class DayOfYear
+{
 
-//     int day = 0;
-//     static string months[12];
-//     static int daysInMonths[12];
+    int day = 0;
+    static string months[12];
+    static int daysInMonths[12];
 
-// public:
-//     DayOfYear() {};
+public:
+    DayOfYear() {};
 
-//     DayOfYear(int day)
-//     {
-//         setDay(day);
-//     }
+    DayOfYear(int day)
+    {
+        setDay(day);
+    }
 
-//     void setDay(int d)
-//     {
-//         if (d > 0)
-//         {
-//             day = d % 365;
-//             if (d == 0)
-//             {
-//                 day = 365;
-//             }
-//         }
-//         else
-//             day = 1;
-//     }
+    void setDay(int d)
+    {
+        if (d > 0)
+        {
+            day = (d - 1) % 365 + 1;
+        }
+        else
+            day = 1;
+    }
 
-//     int getDay() const { return day; }
+    int getDay() const { return day; }
 
-//     // void printDay()
-//     // {
-//     //     int total = 0;
-//     //     int i = 0;
-//     //     while (i >= 0 && i < 12)
-//     //     {
+    // void printDay()
+    // {
+    //     int total = 0;
+    //     int i = 0;
+    //     while (i >= 0 && i < 12)
+    //     {
 
-//     //         for (int j = 1; j <= daysInMonths[i]; j++)
-//     //         {
-//     //             total++;
+    //         for (int j = 1; j <= daysInMonths[i]; j++)
+    //         {
+    //             total++;
 
-//     //             if (day == total)
-//     //             {
-//     //                 cout << months[i] << " " << j << endl;
-//     //             }
-//     //         }
-//     //         i++;
-//     //     }
-//     // }
+    //             if (day == total)
+    //             {
+    //                 cout << months[i] << " " << j << endl;
+    //             }
+    //         }
+    //         i++;
+    //     }
+    // }
 
-//     // Another Way
-//     void print() const
-//     {
-//         int remainingDays = day;
+    // Another Way
+    void print() const
+    {
+        int remainingDays = day;
 
-//         int i = 0;
-//         while (remainingDays > daysInMonths[i])
-//         {
-//             remainingDays -= daysInMonths[i];
-//             i++;
-//         }
+        int i = 0;
+        while (remainingDays > daysInMonths[i])
+        {
+            remainingDays -= daysInMonths[i];
+            i++;
+        }
 
-//         cout << months[i] << " " << remainingDays << endl;
-//     }
-// };
+        cout << months[i] << " " << remainingDays << endl;
+    }
 
-// string DayOfYear::months[12] = {"January", "February", "March", "April",
-//                                 "May", "June", "July", "August",
-//                                 "September", "October", "November", "December"};
-// int DayOfYear::daysInMonths[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    DayOfYear &operator++()
+    {
+        day++;
+        return *this;
+    }
 
-// int main()
-// {
+    DayOfYear operator++(int)
+    {
+        DayOfYear temp = *this;
+        ++(*this);
+        return temp;
+    }
 
-//     DayOfYear d;
-//     d.setDay(32);
-//     d.print();
+    DayOfYear &operator--()
+    {
+        day--;
+        return *this;
+    }
 
-//     return 0;
-// }
+    DayOfYear operator--(int)
+    {
+        DayOfYear temp = *this;
+        --(*this);
+        return temp;
+    }
+
+    friend ostream &operator<<(ostream &out, const DayOfYear &obj)
+    {
+        cout << obj.day << " ";
+        return out;
+    }
+};
+
+string DayOfYear::months[12] = {"January", "February", "March", "April",
+                                "May", "June", "July", "August",
+                                "September", "October", "November", "December"};
+int DayOfYear::daysInMonths[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+int main()
+{
+
+    DayOfYear d;
+
+    d.setDay(32);
+    d.print();
+
+    return 0;
+}
+
+// ================================Chapter 14- Problem 2==========================================

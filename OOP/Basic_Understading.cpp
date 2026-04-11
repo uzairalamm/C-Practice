@@ -1845,20 +1845,24 @@ public:
     Student() : name("Unknown"), rollNumber(0) {};
     Student(string name, int rollNO) : name(name), rollNumber(rollNO) {};
 
-    bool setName(string n)
+    bool setName(const string &n)
     {
         if (!n.empty())
+        {
             name = n;
-        else
-            return;
+            return true;
+        }
+        return false;
     }
 
-    void setRollNo(int rollNo)
+    bool setRollNo(int rollNo)
     {
         if (rollNo > 0)
+        {
             rollNumber = rollNo;
-        else
-            return;
+            return true;
+        }
+        return false;
     }
 
     string getName() const

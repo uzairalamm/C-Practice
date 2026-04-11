@@ -10,100 +10,71 @@ using namespace std;
 // Programming Challenges
 
 // ======================Problem 1 ---- Chapter 13======================
-// class Date
-// {
-//     int day, month, year;
+class Date
+{
+    int day, month, year;
 
-// public:
-//     Date(int day, int month, int year) : month((month >= 1 && month <= 12) ? month : 1), year(year)
-//     {
-//         // if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
-//         // {
-//         //     if (day <= 31)
-//         //         this->day = day;
-//         //     else
-//         //         this->day = 1;
-//         // }
+public:
+    Date(int day, int month, int year) : month((month >= 1 && month <= 12) ? month : 1), year(year)
+    {
 
-//         // else if (month == 4 || month == 6 || month == 9 || month == 11)
-//         // {
-//         //     if (day <= 30)
-//         //         this->day = day;
-//         //     else
-//         //         this->day = 1;
-//         // }
+        int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-//         // else if (month == 2)
-//         // {
-//         //     if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0)
-//         //     {
-//         //         if (day <= 29)
-//         //             this->day = day;
-//         //         else
-//         //             this->day = 1;
-//         //     }
-//         //     else
-//         //     {
-//         //         if (day <= 28)
-//         //             this->day = day;
-//         //         else
-//         //             this->day = 1;
-//         //     }
-//         // }
+        if (month == 2 && (year % 4 == 0 && year % 100 != 0 || year % 400 == 0))
+        {
+            daysInMonth[month - 1] = 29;
+        }
 
-// ......A much Cleaner Code
-//         int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        if (day <= 0)
+        {
+            this->day = 1;
+        }
 
-//         if (month == 2 && (year % 4 == 0 && year % 100 != 0 || year % 400 == 0))
-//         {
-//             daysInMonth[month - 1] = 29;
-//         }
+        else if (day >= 1 && day <= daysInMonth[month - 1])
+        {
+            this->day = day;
+        }
+        else
+            this->day = daysInMonth[month - 1];
+    }
 
-//         if (day >= 1 && day <= daysInMonth[month - 1])
-//         {
-//             this->day = day;
-//         }
-//         else
-//             this->day = daysInMonth[month - 1];
-//     }
+    int getDay() const
+    {
+        return day;
+    }
+    int getMonth() const
+    {
+        return month;
+    }
+    int getYear() const
+    {
+        return year;
+    }
 
-//     int getDay() const
-//     {
-//         return day;
-//     }
-//     int getMonth() const
-//     {
-//         return month;
-//     }
-//     int getYear() const
-//     {
-//         return year;
-//     }
+    void showDate() const
+    {
+        cout << day << "/" << month << "/" << year << endl;
+    }
 
-//     void showDate() const
-//     {
-//         cout << day << "/" << month << "/" << year << endl;
-//     }
+    void dateWithMonthName() const
+    {
+        static const string months[] = {"January", "February", "March", "April",
+                                        "May", "June", "July", "August",
+                                        "September", "October", "November", "December"};
 
-//     void dateWithMonthName() const
-//     {
-//         static const string months[] = {"January", "February", "March", "April",
-//                                         "May", "June", "July", "August",
-//                                         "September", "October", "November", "December"};
+        cout << months[month - 1] << " " << day << ", " << year << endl;
+    }
+};
 
-//         cout << months[month - 1] << " " << day << ", " << year << endl;
-//     }
-// };
+int main()
+{
+    Date today(28, 2, 2025);
+    cout << "Date Formate is (DD/MM/YY)\n";
+    today.showDate();
 
-// int main()
-// {
-//     Date today(28, 2, 2025);
-//     cout << "Date Formate is (DD/MM/YY)\n";
-//     today.showDate();
-
-//     cout << "Date Formate is (MonthName/Day/Year)\n";
-//     today.dateWithMonthName();
-// }
+    cout << "Date Formate is (MonthName/Day/Year)\n";
+    today.dateWithMonthName();
+}
 
 // ======================Problem 2 ---- Chapter 13======================
 // class Employee
@@ -1270,15 +1241,19 @@ void line()
 // ======================Problem 15 ---- Chapter 13======================
 // class MortgagePayment
 // {
-//     double loan, rate;
-//     int year;
+//     double loan = 0.00;
+//     double rate = 0.00;
+//     int year = 0;
 
 // public:
-//     MortgagePayment() : loan(0.00), rate(0.00), year(0) {};
+//     MortgagePayment() {};
 
-//     MortgagePayment(double loan, double rate, int year) : loan((loan > 0) ? loan : 0),
-//                                                           rate((rate > 0) ? rate / 100 : 0.01),
-//                                                           year((year > 0) ? year : 1) {};
+//     MortgagePayment(double loan, double rate, int year)
+//     {
+//         setLoanAmount(loan);
+//         setInterestRate(rate);
+//         setNumberOfYears(year);
+//     }
 
 //     void setLoanAmount(double loan)
 //     {
@@ -1319,10 +1294,10 @@ void line()
 //     {
 //         if (loan > 0 && year > 0 && rate >= 0)
 //         {
-//             double payment = getMonthlyPayment();
+//             double monthlyPayment = getMonthlyPayment();
 //             double totalPayment = getTotalPayment();
 
-//             cout << "Monthly Payment is: " << payment << endl;
+//             cout << "Monthly Payment is: " << monthlyPayment << endl;
 //             cout << "Total Payment is: " << totalPayment << endl;
 //         }
 //         else
