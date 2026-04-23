@@ -44,7 +44,22 @@ class Date
         return (y >= 1900) ? y : 1900;
     }
 
-    void setToToday()
+public:
+    Date()
+    {
+        currentDateTime();
+    }
+
+    Date(int d, int m, int y) { setDate(d, m, y); }
+
+    void setDate(int d, int m, int y)
+    {
+        month = validateMonth(m);
+        year = validateYear(y);
+        day = validateDay(d, month, year);
+    }
+
+    void currentDateTime()
     {
         time_t timeInSecond = time(nullptr); // get current time in second since Jan1, 1970
         tm *ltm = localtime(&timeInSecond);  // converts it into local broken-down time (tm structure)
@@ -57,29 +72,29 @@ class Date
                                     // But here as we showing the current date so we add 1900 again to get actual year
     }
 
-public:
-    Date()
-    {
-        setToToday();
-    }
-
-    Date(int d, int m, int y) { setDate(d, m, y); }
-
-    void setDate(int d, int m, int y)
-    {
-        month = validateMonth(m);
-        year = validateYear(y);
-        day = validateDay(d, month, year);
-    }
-
     int getDay() const { return day; }
     int getMonth() const { return month; }
     int getYear() const { return year; }
     void showDate() const
     {
-        cout << day << "/" << month << "/" << year << endl;
+        cout << right << setfill('0') << setw(2) << day << "-"
+             << setw(2) << month << "-"
+             << setw(4) << year << setfill(' ');
     }
 };
+void printLine(char ch = '-', int width = 70)
+{
+    for (int i = 0; i < width; i++)
+        cout << ch;
+    cout << endl;
+};
+void printTitle(const string &title)
+{
+    cout << "\n";
+    printLine('=');
+    cout << " " << title << endl;
+    printLine('=');
+}
 
 class Person
 {
@@ -103,7 +118,7 @@ public:
     string getName() const { return personName; }
     void display() const
     {
-        cout << "Name: " << personName << endl;
+        cout << left << setw(18) << "Name:" << personName << endl;
     }
 };
 
@@ -117,9 +132,10 @@ public:
 
     void displayInfo() const
     {
-        display();
-        cout << "Joining Date: ";
+        cout << left << setw(18) << "Customer Name:" << personName << endl;
+        cout << left << setw(18) << "Join Date:";
         joinDate.showDate();
+        cout << endl;
     }
 };
 
@@ -145,8 +161,8 @@ public:
 
     void displayEmployeeData() const
     {
-        display();
-        cout << "Role: " << employeeRole << endl;
+        cout << left << setw(18) << "Employee Name:" << personName << endl;
+        cout << left << setw(18) << "Role:" << employeeRole << endl;
     }
 };
 
@@ -278,7 +294,7 @@ public:
 
     bool reduceStock(int quantity)
     {
-        if (stock > 0 && stock - quantity >= 0)
+        if (quantity > 0 && stock >= quantity)
         {
             stock -= quantity;
             return true;
@@ -308,16 +324,20 @@ public:
 
     void displayMenuMember() const
     {
-        cout << left << setw(25) << dishName << setw(15) << dishPrice << setw(15) << stock << endl;
+        cout << left << setw(25) << dishName
+             << setw(15) << fixed << setprecision(2) << dishPrice
+             << setw(10) << stock << endl;
     }
 };
 
 void Menu::displayMenuTitle()
 {
-    cout << "------------------------------------------------\n";
-
-    cout << left << setw(25) << "Name" << setw(15) << "price" << setw(15) << "stock" << endl;
-    cout << "------------------------------------------------\n";
+    printLine();
+    cout << left
+         << setw(25) << "Dish Name"
+         << setw(15) << "Price"
+         << setw(10) << "Stock" << endl;
+    printLine();
 }
 
 void Menu::displayPurchasedTitle()
@@ -367,14 +387,17 @@ public:
     static void displayToppingTitle();
     void displayTopping() const
     {
-        cout << left << setw(30) << toppingName << setw(30) << toppingPrice << endl;
+        cout << left << setw(30) << toppingName
+             << setw(15) << fixed << setprecision(2) << toppingPrice << endl;
     }
 };
 void Topping::displayToppingTitle()
 {
-    cout << "------------------------------------------------\n";
-    cout << left << setw(30) << "Topping Name" << setw(30) << "Price" << endl;
-    cout << "------------------------------------------------\n";
+    printLine();
+    cout << left
+         << setw(30) << "Topping Name"
+         << setw(15) << "Price" << endl;
+    printLine();
 }
 
 class Cuisine
@@ -445,19 +468,10 @@ public:
         return nullptr;
     }
 
-    void displayCusineDishes() const
+    void displayCusine() const
     {
-        cout << cuisineName << "=========================\n";
-        cout << "--------------------------------------------------\n";
-        cout << "------               Dishes                  -----\n";
-        cout << "--------------------------------------------------\n";
-        showDishes();
-
-        cout << "--------------------------------------------------\n";
-        cout << "-----               Toppins                  -----\n";
-        cout << "--------------------------------------------------\n";
-        showToppings();
-    };
+        cout << cuisineName << endl;
+    }
 };
 
 class Order
@@ -548,29 +562,35 @@ public:
 
     void showOrder() const
     {
-        cout << "\n========== Order Details ==========\n";
-        cout << "Dish: " << selectedDish.getName() << endl;
-        cout << "Quantity: " << quantity << endl;
+        printLine('=');
+        cout << "Order Details\n";
+        printLine('=');
 
-        cout << "Order Date: ";
+        cout << left << setw(18) << "Dish:" << selectedDish.getName() << endl;
+        cout << left << setw(18) << "Quantity:" << quantity << endl;
+        cout << left << setw(18) << "Order Date:";
         orderDate.showDate();
+        cout << endl;
 
-        cout << "Toppings:\n";
+        cout << left << setw(18) << "Status:" << (completed ? "Completed" : "Pending") << endl;
+        cout << left << setw(18) << "Total Price:" << fixed << setprecision(2) << totalPrice << endl;
+
+        cout << left << setw(18) << "Toppings:";
         if (selectedToppings.empty())
         {
-            cout << "No toppings added\n";
+            cout << "None";
         }
         else
         {
-            for (const auto &topping : selectedToppings)
+            cout << endl;
+            for (int i = 0; i < selectedToppings.size(); i++)
             {
-                cout << "- " << topping.getToppingName()
-                     << " (" << topping.getToppingPrice() << ")\n";
+                cout << "   - " << selectedToppings[i].getToppingName()
+                     << " (" << fixed << setprecision(2)
+                     << selectedToppings[i].getToppingPrice() << ")\n";
             }
         }
-
-        cout << "Total Price: " << totalPrice << endl;
-        cout << "Status: " << (completed ? "Completed" : "Pending") << endl;
+        cout << endl;
     }
 };
 
@@ -674,11 +694,11 @@ public:
 
     void showAllCuisines() const
     {
-
         for (const auto &cuisine : cuisines)
         {
-            cuisine.displayCusineDishes();
-            cout << "------------------\n";
+            cuisine.displayCusine();
+            cuisine.showDishes();
+            cout << endl;
         }
     }
 
@@ -692,6 +712,22 @@ public:
     }
 
     void addPendingOrder(const Order &pendingOrder) { pendingOrders.push_back(pendingOrder); }
+    void showPendingOrdersCompact() const
+    {
+        if (pendingOrders.empty())
+        {
+            cout << "No pending orders!\n";
+            return;
+        }
+
+        for (size_t i = 0; i < pendingOrders.size(); i++)
+        {
+            cout << i + 1 << ". " << pendingOrders[i].getDish().getName()
+                 << " | Quantity: " << pendingOrders[i].getQuantity()
+                 << " | Price: " << fixed << setprecision(2)
+                 << pendingOrders[i].getTotalPrice() << endl;
+        }
+    }
 
     bool addCompleteOrder(int index)
     {
@@ -706,16 +742,6 @@ public:
         }
         return false;
     }
-
-    void showPendingOrder() const
-    {
-        for (const auto &pendingOrder : pendingOrders) // show All Remainng Pending Orders
-        {
-            pendingOrder.showOrder();
-            cout << "----------------------\n\n";
-        }
-    }
-
     void showCompleteOrder() const
     {
         for (const auto &completeOrder : completedOrders) // show All Completed Orders
@@ -724,67 +750,414 @@ public:
             cout << "----------------------\n\n";
         }
     }
+
+    int getBranchCount() const { return branches.size(); }
+    int getCustomerCount() const { return customers.size(); }
+    int getCuisineCount() const { return cuisines.size(); }
+    int getPendingOrderCount() const { return pendingOrders.size(); }
+    int getCompletedOrderCount() const { return completedOrders.size(); }
+
+    void loadDefaultData()
+    {
+        Cuisine italian("Italian");
+        italian.addDish(Menu("Pizza", 1200, 10));
+        italian.addDish(Menu("Pasta", 900, 15));
+        italian.addDish(Menu("Risotto", 1500, 8));
+
+        italian.addTopping(Topping("Tomato Sauce", 100));
+        italian.addTopping(Topping("Mozzarella", 150));
+        italian.addTopping(Topping("Basil", 120));
+
+        cuisines.push_back(italian);
+
+        Cuisine chinese("Chinese");
+        chinese.addDish(Menu("Dumplings", 700, 20));
+        chinese.addDish(Menu("Sweet and Sour", 800, 15));
+        chinese.addDish(Menu("Kung Pao Chicken", 500, 25));
+
+        chinese.addTopping(Topping("Soy Sauce", 80));
+        chinese.addTopping(Topping("Ginger", 70));
+        chinese.addTopping(Topping("Garlic", 60));
+
+        cuisines.push_back(chinese);
+
+        Cuisine mexican("Mexican");
+        mexican.addDish(Menu("Tacos", 600, 18));
+        mexican.addDish(Menu("Burritos", 1000, 12));
+        mexican.addDish(Menu("Enchiladas", 1100, 10));
+
+        mexican.addTopping(Topping("Salsa", 50));
+        mexican.addTopping(Topping("Guacamole", 70));
+        mexican.addTopping(Topping("Sour Cream", 60));
+
+        cuisines.push_back(mexican);
+    }
+
+    void placeOrder()
+    {
+        if (cuisines.empty())
+        {
+            cout << "No cuisines available.\n";
+            return;
+        }
+
+        int cuisineChoice, dishChoice, toppingChoice, quantity;
+        bool addMoreTopping;
+
+        cout << "\n========== Available Cuisines ==========\n";
+        for (int i = 0; i < cuisines.size(); i++)
+        {
+            cout << i + 1 << ". ";
+            Cuisine tempCuisine;
+            if (getCuisine(i, tempCuisine))
+                tempCuisine.displayCusine();
+        }
+
+        cout << "\nSelect Cuisine Number: ";
+        cin >> cuisineChoice;
+
+        if (cuisineChoice < 1 || cuisineChoice > cuisines.size())
+        {
+            cout << "Invalid cuisine choice.\n";
+            return;
+        }
+
+        Cuisine &selectedCuisine = cuisines[cuisineChoice - 1];
+
+        cout << "\nSelected Cuisine Dishes:\n";
+        selectedCuisine.showDishes();
+
+        cout << "Select Dish Number: ";
+        cin >> dishChoice;
+
+        Menu *selectedDish = selectedCuisine.findDishByIndex(dishChoice - 1);
+
+        if (selectedDish == nullptr)
+        {
+            cout << "Invalid dish choice.\n";
+            return;
+        }
+
+        cout << "Enter Quantity: ";
+        cin >> quantity;
+
+        if (quantity <= 0)
+        {
+            cout << "Invalid quantity.\n";
+            return;
+        }
+
+        if (!selectedDish->reduceStock(quantity))
+        {
+            cout << "Not enough stock available.\n";
+            return;
+        }
+
+        Order order(*selectedDish, quantity);
+
+        cout << "Do you want to add toppings? (1 for Yes, 0 for No): ";
+        cin >> addMoreTopping;
+
+        while (addMoreTopping)
+        {
+            cout << "\nAvailable Toppings:\n";
+            selectedCuisine.showToppings();
+
+            cout << "Select Topping Number: ";
+            cin >> toppingChoice;
+
+            Topping *selectedTopping = selectedCuisine.findToppingByIndex(toppingChoice - 1);
+
+            if (selectedTopping != nullptr)
+            {
+                order.addTopping(*selectedTopping);
+                cout << "Topping added.\n";
+            }
+            else
+            {
+                cout << "Invalid topping choice.\n";
+            }
+
+            cout << "Add another topping? (1 for Yes, 0 for No): ";
+            cin >> addMoreTopping;
+        }
+
+        order.calculateTotal();
+        addPendingOrder(order);
+
+        cout << "\nOrder placed successfully!\n";
+        order.showOrder();
+    }
+
+    void customerPortal()
+    {
+        int choice;
+
+        do
+        {
+            cout << "\n========== Customer Portal ==========\n";
+            cout << "1. Place Order\n";
+            cout << "2. View Pending Orders\n";
+            cout << "3. Back\n";
+            cout << "Enter Choice: ";
+            cin >> choice;
+
+            switch (choice)
+            {
+            case 1:
+                placeOrder();
+                break;
+
+            case 2:
+                showPendingOrdersCompact();
+                break;
+
+            case 3:
+                cout << "Returning...\n";
+                break;
+
+            default:
+                cout << "Invalid choice.\n";
+            }
+
+        } while (choice != 3);
+    }
+
+    void employeePortal()
+    {
+        cout << "\n--- Employee Portal ---\n";
+
+        if (pendingOrders.empty())
+        {
+            cout << "No pending orders!\n";
+            return;
+        }
+
+        showPendingOrdersCompact();
+
+        int idx;
+        cout << "Select order number to complete (0 to exit): ";
+        cin >> idx;
+
+        if (idx > 0 && idx <= pendingOrders.size())
+        {
+            addCompleteOrder(idx - 1);
+            cout << "Order completed!\n";
+        }
+    }
+
+    void managerPortal()
+    {
+        int choice;
+
+        do
+        {
+            cout << "\n========== Manager Portal ==========\n";
+            cout << "1. View All Cuisines and Dishes\n";
+            cout << "2. View Pending Orders\n";
+            cout << "3. View Completed Orders\n";
+            cout << "4. Restaurant Summary\n";
+            cout << "5. Back\n";
+            cout << "Enter Choice: ";
+            cin >> choice;
+
+            switch (choice)
+            {
+            case 1:
+                showAllCuisines();
+                break;
+
+            case 2:
+                showPendingOrdersCompact();
+                break;
+
+            case 3:
+                showCompleteOrder();
+                break;
+
+            case 4:
+                showRestaurantSummary();
+                break;
+
+            case 5:
+                cout << "Returning...\n";
+                break;
+
+            default:
+                cout << "Invalid choice.\n";
+            }
+
+        } while (choice != 5);
+    }
+
+    void adminPortal()
+    {
+        Admin admin("System Admin");
+
+        string username, password;
+        cout << "\n========== Admin Login ==========\n";
+        cout << "Enter Username: ";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        getline(cin, username);
+
+        cout << "Enter Password: ";
+        getline(cin, password);
+
+        if (!admin.login(username, password))
+        {
+            cout << "Invalid admin credentials.\n";
+            return;
+        }
+
+        int choice;
+
+        do
+        {
+            cout << "\n========== Admin Portal ==========\n";
+            cout << "1. Add Branch\n";
+            cout << "2. Remove Branch\n";
+            cout << "3. Show All Branches\n";
+            cout << "4. Add Customer\n";
+            cout << "5. Remove Customer\n";
+            cout << "6. Show All Customers\n";
+            cout << "7. Restaurant Summary\n";
+            cout << "8. Back\n";
+            cout << "Enter Choice: ";
+            cin >> choice;
+
+            switch (choice)
+            {
+            case 1:
+            {
+                string branchName;
+                double sales;
+
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Enter Branch Name: ";
+                getline(cin, branchName);
+
+                cout << "Enter Branch Sales: ";
+                cin >> sales;
+
+                addBranch(Branch(branchName, sales));
+                cout << "Branch added successfully.\n";
+                break;
+            }
+
+            case 2:
+            {
+                int index;
+                showAllBranches();
+                cout << "Enter Branch Index to Remove (starting from 1): ";
+                cin >> index;
+
+                if (removeBranch(index - 1))
+                    cout << "Branch removed successfully.\n";
+                else
+                    cout << "Invalid branch index.\n";
+                break;
+            }
+
+            case 3:
+                showAllBranches();
+                break;
+
+            case 4:
+            {
+                string customerName;
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Enter Customer Name: ";
+                getline(cin, customerName);
+
+                addCustomer(Customer(customerName));
+                cout << "Customer added successfully.\n";
+                break;
+            }
+
+            case 5:
+            {
+                int index;
+                showAllCustomers();
+                cout << "Enter Customer Index to Remove (starting from 1): ";
+                cin >> index;
+
+                if (removeCustomer(index - 1))
+                    cout << "Customer removed successfully.\n";
+                else
+                    cout << "Invalid customer index.\n";
+                break;
+            }
+
+            case 6:
+                showAllCustomers();
+                break;
+
+            case 7:
+                showRestaurantSummary();
+                break;
+
+            case 8:
+                cout << "Returning...\n";
+                break;
+
+            default:
+                cout << "Invalid choice.\n";
+            }
+
+        } while (choice != 8);
+    }
+
+    void showRestaurantSummary() const
+    {
+        cout << "\n===== Restaurant Summary =====\n";
+        cout << "Restaurant Name: " << restaurantName << endl;
+        cout << "Total Branches: " << getBranchCount() << endl;
+        cout << "Total Customers: " << getCustomerCount() << endl;
+        cout << "Total Cuisines: " << getCuisineCount() << endl;
+        cout << "Pending Orders: " << getPendingOrderCount() << endl;
+        cout << "Completed Orders: " << getCompletedOrderCount() << endl;
+    }
 };
 
 int main()
 {
+    Restaurant r("My Restaurant");
+    r.loadDefaultData();
 
-    // ===== 1. Create Cuisine =====
-    Cuisine italian("Italian Cuisine");
-
-    italian.addDish(Menu("Pasta", 500, 10));
-    italian.addDish(Menu("Pizza", 800, 5));
-
-    italian.addTopping(Topping("Cheese", 100));
-    italian.addTopping(Topping("Sauce", 50));
-
-    // ===== 2. Display Cuisine =====
-    cout << "\n===== Cuisine Menu =====\n";
-    italian.displayCusineDishes();
-
-    // ===== 3. Select Dish =====
-    Menu *selectedDish = italian.findDishByIndex(0); // Pasta
-
-    if (selectedDish == nullptr)
+    int choice;
+    do
     {
-        cout << "Invalid dish selection!\n";
-        return 0;
-    }
+        cout << "\n========== Main Menu ==========\n";
+        cout << "1. Admin\n";
+        cout << "2. Manager\n";
+        cout << "3. Employee\n";
+        cout << "4. Customer\n";
+        cout << "5. Exit\n";
+        cout << "Enter Choice: ";
+        cin >> choice;
 
-    // ===== 4. Create Order =====
-    Order order(*selectedDish, 2); // 2 Pasta
+        switch (choice)
+        {
+        case 1:
+            r.adminPortal();
+            break;
+        case 2:
+            r.managerPortal();
+            break;
+        case 3:
+            r.employeePortal();
+            break;
+        case 4:
+            r.customerPortal();
+            break;
+        case 5:
+            cout << "Exiting...\n";
+            break;
+        default:
+            cout << "Invalid choice.\n";
+        }
 
-    // ===== 5. Select Toppings =====
-    Topping *t1 = italian.findToppingByIndex(0); // Cheese
-    Topping *t2 = italian.findToppingByIndex(1); // Sauce
-
-    if (t1)
-        order.addTopping(*t1);
-    if (t2)
-        order.addTopping(*t2);
-
-    // ===== 6. Calculate Total =====
-    order.calculateTotal();
-
-    // ===== 7. Show Order =====
-    order.showOrder();
-
-    // ===== 8. Complete Order =====
-    order.markCompleted();
-
-    cout << "\nAfter completing order:\n";
-    order.showOrder();
-
-    // ===== 9. Branch Sales Test =====
-    Branch branch("Main Branch", 10000);
-
-    cout << "\nBefore Sales Update:\n";
-    branch.displayBranch();
-
-    branch.addSales(order.getTotalPrice());
-
-    cout << "\nAfter Sales Update:\n";
-    branch.displayBranch();
+    } while (choice != 5);
 
     return 0;
 }
