@@ -1,192 +1,185 @@
-#include <iostream>
-#include <ctime>
-#include <iomanip>
-#include <vector>
-#include <limits>
-using namespace std;
+#include <iostream>  // include standard input/output stream
+#include <ctime>     // include time/date utilities
+#include <iomanip>   // include IO manipulators for formatting
+#include <vector>    // include vector container
+#include <limits>    // include numeric limits for cin.ignore
+using namespace std; // use standard namespace to avoid std:: prefix
 
-// date class to manage date related operations
 class Date
 {
-    int day = 1, month = 1, year = 1970; // default date is set to 1st Jan 1970
+    int day = 1, month = 1, year = 1970; // store date values with defaults
 
-    bool isLeapYear(int year) // check if the year is leap year or not
+    bool isLeapYear(int year) // check if year is leap year
     {
-        return ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0); // if leap year then return true otherwise false
+        return ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0); // return leap year condition
     }
 
-    int daysInMonth(int m, int y) // check how many days in a month of a specific year
+    int daysInMonth(int m, int y) // return number of days in given month/year
     {
-        int days[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}; // array to store number of days in each month
+        int days[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}; // days per month
 
-        if (m == 2 && isLeapYear(y)) // if month is February and year is leap year
-            return 29;               // then return 29 days for February
+        if (m == 2 && isLeapYear(y)) // if February in leap year
+            return 29;               // February has 29 days
 
-        return days[m - 1]; // return the number of days for the given month (m-1 because array index starts from 0)
+        return days[m - 1]; // return days for month
     }
 
-    int validateMonth(int m) // validate month input
+    int validateMonth(int m) // ensure month is valid
     {
-        return (m >= 1 && m <= 12) ? m : 1; // if month is between 1 and 12 return month otherwise return default month 1
+        return (m >= 1 && m <= 12) ? m : 1; // return valid month or default 1
     }
 
-    int validateDay(int d, int m, int y) // validate day input based on the month and year
+    int validateDay(int d, int m, int y) // ensure day is valid for month/year
     {
-        int maxDays = daysInMonth(m, y);         // to get the maximum number of days in the given month and year
-        return (d >= 1 && d <= maxDays) ? d : 1; // if day is between 1 and maxDays return day otherwise return default day 1
+        int maxDays = daysInMonth(m, y);         // get max days in month
+        return (d >= 1 && d <= maxDays) ? d : 1; // return valid day or default 1
     }
 
-    int validateYear(int y) // validate year input and return valid year (1970 or above), if invalid return default year 1970
+    int validateYear(int y) // ensure year is valid
     {
-        return (y >= 1970) ? y : 1970;
+        return (y >= 1970) ? y : 1970; // return valid year or default 1970
     }
 
 public:
-    Date() // default constructor to set current date as default date
+    Date() // default constructor
     {
-        currentDateTime(); // set current date as default date when object is created using default constructor
+        currentDateTime(); // initialize with current system date
     }
 
-    Date(int d, int m, int y) { setDate(d, m, y); } // parameterized constructor to set date based on user input
+    Date(int d, int m, int y) { setDate(d, m, y); } // constructor with initial date
 
-    void setDate(int d, int m, int y) // set date based on user input after validating the input values
+    void setDate(int d, int m, int y) // set date values
     {
-        month = validateMonth(m);
-        year = validateYear(y);
-        day = validateDay(d, month, year); // validate day based on the month and year and set the date
+        month = validateMonth(m);          // validate month
+        year = validateYear(y);            // validate year
+        day = validateDay(d, month, year); // validate day based on month/year
     }
 
-    void currentDateTime()
+    void currentDateTime() // set date to current system date
     {
-        time_t timeInSecond = time(nullptr); // get current time in second since Jan1, 1970
-        tm *ltm = localtime(&timeInSecond);  // convert time in seconds to local time structure
-                                             //(tm structure contains various fields to represent date and time components)
+        time_t timeInSecond = time(nullptr); // get current time in seconds
+        tm *ltm = localtime(&timeInSecond);  // convert to local time structure
 
-        day = ltm->tm_mday;         // we get current day of the month (1-31) from tm structure
-        month = ltm->tm_mon + 1;    // get current month (0-11) from tm structure and add 1 to get actual month (1-12)
-        year = ltm->tm_year + 1900; // get Current Year from tm structure, as tm_year gives us the number of years since 1900
-                                    // tm_year does this = current year - 1900
-                                    // so we get how many years has passed since 1900
-                                    // But here as we showing the current date so we add 1900 again to get actual year
+        day = ltm->tm_mday;         // set day
+        month = ltm->tm_mon + 1;    // set month (tm_mon is 0-based)
+        year = ltm->tm_year + 1900; // set year
     }
 
-    int getDay() const { return day; }     // get day
-    int getMonth() const { return month; } // get month
-    int getYear() const { return year; }   // get year
+    int getDay() const { return day; }     // return day
+    int getMonth() const { return month; } // return month
+    int getYear() const { return year; }   // return year
 
-    void showDate() const // display date in DD-MM-YYYY format with leading zeros for day and month if they are single digit
+    void showDate() const // print date in dd-mm-yyyy format
     {
-        cout << right << setfill('0') << setw(2) << day << "-"
-             << setw(2) << month << "-"
-             << setw(4) << year << setfill(' ');
+        cout << right << setfill('0') << setw(2) << day << "-" // print day with leading zeros
+             << setw(2) << month << "-"                        // print month with leading zeros
+             << setw(4) << year << setfill(' ');               // print year and restore fill char
     }
 };
 
-void printLine(char ch = '-', int width = 100) // line function to print a line
+void printLine(char ch = '-', int width = 100) // print separator line
 {
-    for (int i = 0; i < width; i++) // loop to print the line character 'ch' for the specified width
-        cout << ch;
-    cout << endl;
+    for (int i = 0; i < width; i++) // loop width times
+        cout << ch;                 // print character
+    cout << endl;                   // new line after line
 };
 
-// Base class Person to store common attributes and functions for all types of people (Customer, Staff, Employee, Manager, Admin)
 class Person
 {
 protected:
-    string personName = "Unknown"; // default name is set to "Unknown"
-    string phone = "Unknown";      //  default phone number is set to "Unknown"
+    string personName = "Unknown"; // store person name
+    string phone = "Unknown";      // store phone number
 
 public:
-    Person() {};                                    // default constructor for Person class
-    Person(const string &name) { setName(name); }   // parameterized constructor to set name based on user input
-    Person(const string &name, const string &phone) // parameterized constructor to set name and phone based on user input
+    Person() {};                                  // default constructor
+    Person(const string &name) { setName(name); } // constructor with name
+    Person(const string &name, const string &phone)
     {
-        setName(name);   // set name using setName function with validation
-        setPhone(phone); // set phone using setPhone function with validation
+        setName(name);   // set name
+        setPhone(phone); // set phone
     }
 
-    bool setName(const string &name) // using const reference to avoid unnecessary copying of string
+    bool setName(const string &name) // set person name if not empty
     {
-        if (!name.empty()) // if string is not empty then set the name and return true
+        if (!name.empty())
         {
-            personName = name;
-            return true;
+            personName = name; // store name
+            return true;       // success
         }
-        return false; // otherwise return false
+        return false; // fail on empty name
     }
 
-    bool setPhone(const string &phone) // to set phone number with validation
+    bool setPhone(const string &phone) // set phone if numeric and not empty
     {
-        if (phone.empty()) // if phone number is empty then return false
-            return false;
+        if (phone.empty())
+            return false; // fail on empty
 
-        for (char c : phone) // to ensure it contains only digits
+        for (char c : phone) // iterate characters
         {
-            if (!isdigit(c)) // if any character is not a digit then return false
+            if (!isdigit(c))
             {
-                return false;
+                return false; // fail if any non-digit
             }
         }
 
-        this->phone = phone; // otherwise set the phone number
-        return true;         // and return true
+        this->phone = phone; // store phone
+        return true;         // success
     }
 
-    string getName() const { return personName; } // get name
-    string getPhone() const { return phone; }     // get phone number
+    string getName() const { return personName; } // return name
+    string getPhone() const { return phone; }     // return phone
 
-    void displayBasicInfo() const // function to display basic information of a person
+    void displayBasicInfo() const // print basic info
     {
         cout << "Name:" << personName << "   | ";
         cout << "Phone:" << phone << endl;
     }
 };
 
-// Derived class Customer to represent customers of the restaurant, inherits from Person class
 class Customer : public Person
 {
-    Date joinDate; // to store join date of customer
+    Date joinDate; // record join date
 
 public:
-    Customer() {};
-    Customer(const string &name) : Person(name) {};
-    Customer(const string &name, const string &phone) : Person(name, phone) {};
+    Customer() {};                                                              // default constructor
+    Customer(const string &name) : Person(name) {};                             // constructor with name
+    Customer(const string &name, const string &phone) : Person(name, phone) {}; // constructor with name and phone
 
-    void displayCustomer() const
+    void displayCustomer() const // display customer info
     {
-        printLine();
+        printLine(); // separator
         cout << "Join Date: ";
-        joinDate.showDate();
+        joinDate.showDate(); // show join date
 
         cout << "   | ";
-        displayBasicInfo();
+        displayBasicInfo(); // show inherited person info
     }
 };
 
 class Staff : public Person
 {
 protected:
-    double salary = 0.00;
+    double salary = 0.00; // staff salary
 
 public:
-    Staff() {};
-    Staff(const string &name) : Person(name) {};
-    Staff(const string &name, const string &phone) : Person(name, phone) {};
-    Staff(const string &name, const string &phone, double salary) : Person(name, phone) { setSalary(salary); }
+    Staff() {};                                                                                                // default constructor
+    Staff(const string &name) : Person(name) {};                                                               // constructor with name
+    Staff(const string &name, const string &phone) : Person(name, phone) {};                                   // constructor with name and phone
+    Staff(const string &name, const string &phone, double salary) : Person(name, phone) { setSalary(salary); } // constructor with salary
 
-    bool setSalary(double salary)
+    bool setSalary(double salary) // set salary if positive
     {
         if (salary > 0)
         {
-            this->salary = salary;
-            return true;
+            this->salary = salary; // store salary
+            return true;           // success
         }
-        return false;
+        return false; // fail on non-positive salary
     }
 
-    double getSalary() const { return salary; }
+    double getSalary() const { return salary; } // return salary
 
-    void displayStaffInfo() const
+    void displayStaffInfo() const // print staff info
     {
         cout << "Name: " << getName() << "   | ";
         cout << "Phone No: " << getPhone() << "   | ";
@@ -196,59 +189,58 @@ public:
 
 class Employee : public Staff
 {
-    string designation = "Unknown";
+    string designation = "Unknown"; // employee designation
 
 public:
-    Employee() : Staff() {}
-    Employee(const string &name, const string &phone, double salary) : Staff(name, phone, salary) {}
-    Employee(const string &name, const string &phone, double salary, const string &designation) : Staff(name, phone, salary) { setDesignation(designation); }
+    Employee() : Staff() {}                                                                                                                                   // default constructor
+    Employee(const string &name, const string &phone, double salary) : Staff(name, phone, salary) {}                                                          // constructor
+    Employee(const string &name, const string &phone, double salary, const string &designation) : Staff(name, phone, salary) { setDesignation(designation); } // constructor with designation
 
-    bool setDesignation(const string &designation)
+    bool setDesignation(const string &designation) // set designation if not empty
     {
         if (designation.empty())
-            return false;
+            return false; // fail if empty
 
-        this->designation = designation;
-        return true;
+        this->designation = designation; // store designation
+        return true;                     // success
     }
 
-    void displayEmployee() const
+    void displayEmployee() const // print employee info
     {
         cout << "Designation: " << designation << "   | ";
-        displayStaffInfo();
+        displayStaffInfo(); // print staff info
     }
 };
 
 class Manager : public Staff
 {
 public:
-    Manager() : Staff() {}
-    Manager(const string &name, const string &phone, double salary) : Staff(name, phone, salary) {}
+    Manager() : Staff() {}                                                                          // default constructor
+    Manager(const string &name, const string &phone, double salary) : Staff(name, phone, salary) {} // constructor
 
-    void displayManager() const
+    void displayManager() const // print manager info
     {
-        displayStaffInfo();
+        displayStaffInfo(); // print inherited staff info
     };
 };
 
 class Admin : public Staff
 {
-    string username = "Admin";
-    string password = "1234";
+    string username = "Admin"; // admin username
+    string password = "1234";  // admin password
 
 public:
-    Admin() : Staff() {}
-    Admin(const string &name) : Staff(name) {}
-    Admin(const string &name, const string &phone, double income) : Staff(name, phone, income) {}
+    Admin() : Staff() {}                                                                          // default constructor
+    Admin(const string &name) : Staff(name) {}                                                    // constructor with name
+    Admin(const string &name, const string &phone, double income) : Staff(name, phone, income) {} // constructor
 
-    bool login(const string &username, const string &password) const
+    bool login(const string &username, const string &password) const // validate credentials
     {
-
         if (username == this->username && password == this->password)
-            return true;
-        return false;
+            return true; // correct login
+        return false;    // fail otherwise
     };
-    void displayAdmin() const
+    void displayAdmin() const // print admin info
     {
         cout << "Name: " << getName() << endl;
         cout << "Phone Number: " << getPhone() << endl;
@@ -258,91 +250,91 @@ public:
 
 class Menu
 {
-    string dishName = "Unknown";
-    double dishPrice = 0.00;
-    int stock = 0;
+    string dishName = "Unknown"; // dish name
+    double dishPrice = 0.00;     // dish price
+    int stock = 0;               // available stock
 
 public:
-    Menu() {}
-    Menu(const string &name) { setName(name); }
+    Menu() {}                                   // default constructor
+    Menu(const string &name) { setName(name); } // constructor with name
     Menu(const string &name, double price)
     {
-        setName(name);
-        setPrice(price);
+        setName(name);   // set name
+        setPrice(price); // set price
     }
 
     Menu(const string &name, double price, int stock)
     {
-        setName(name);
-        setPrice(price);
-        setStock(stock);
+        setName(name);   // set name
+        setPrice(price); // set price
+        setStock(stock); // set stock
     }
 
-    bool setName(const string &name)
+    bool setName(const string &name) // set dish name if not empty
     {
         if (!name.empty())
         {
-            dishName = name;
-            return true;
+            dishName = name; // store name
+            return true;     // success
         }
-        return false;
+        return false; // fail on empty name
     }
 
-    bool setPrice(double price)
+    bool setPrice(double price) // set dish price if positive
     {
         if (price > 0)
         {
-            dishPrice = price;
-            return true;
+            dishPrice = price; // store price
+            return true;       // success
         }
-        return false;
+        return false; // fail on invalid price
     }
 
-    bool setStock(int stock)
+    bool setStock(int stock) // set stock if non-negative
     {
         if (stock >= 0)
         {
-            this->stock = stock;
-            return true;
+            this->stock = stock; // store stock
+            return true;         // success
         }
-        return false;
+        return false; // fail on negative stock
     }
 
-    string getName() const { return dishName; }
-    double getPrice() const { return dishPrice; }
-    int getStock() const { return stock; }
+    string getName() const { return dishName; }   // return dish name
+    double getPrice() const { return dishPrice; } // return dish price
+    int getStock() const { return stock; }        // return stock
 
-    bool reduceStock(int quantity)
+    bool reduceStock(int quantity) // decrease stock for an order
     {
         if (quantity > 0 && stock >= quantity)
         {
-            stock -= quantity;
-            return true;
+            stock -= quantity; // reduce stock
+            return true;       // success
         }
-        return false;
+        return false; // fail on invalid quantity or insufficient stock
     }
 
-    bool increaseStock(int amount)
+    bool increaseStock(int amount) // increase stock
     {
         if (amount > 0)
         {
-            stock += amount;
-            return true;
+            stock += amount; // add amount
+            return true;     // success
         }
-        return false;
+        return false; // fail on invalid amount
     }
 
-    bool isAvailable() const
+    bool isAvailable() const // check if dish is in stock
     {
         if (stock > 0)
             return true;
         return false;
     }
 
-    static void displayMenuTitle();
-    static void displayPurchasedTitle();
+    static void displayMenuTitle();      // declare menu title printer
+    static void displayPurchasedTitle(); // declare purchased title printer
 
-    void displayMenuMember() const
+    void displayMenuMember() const // print menu item line
     {
         cout << left
              << setw(25) << dishName
@@ -351,17 +343,17 @@ public:
     }
 };
 
-void Menu::displayMenuTitle()
+void Menu::displayMenuTitle() // print menu table header
 {
-    printLine();
+    printLine(); // separator
     cout << left
          << setw(25) << "Dish Name"
          << setw(15) << "Price"
          << setw(10) << "Stock" << endl;
-    printLine();
+    printLine(); // separator
 }
 
-void Menu::displayPurchasedTitle()
+void Menu::displayPurchasedTitle() // print purchased item table header
 {
     cout << "------------------------------------------------\n";
     cout << left << setw(25) << "Name" << setw(15) << "price " << setw(15) << "Qunatity" << endl;
@@ -370,49 +362,49 @@ void Menu::displayPurchasedTitle()
 
 class Topping
 {
-    string toppingName = "Unknown";
-    double toppingPrice = 0.00;
+    string toppingName = "Unknown"; // topping name
+    double toppingPrice = 0.00;     // topping price
 
 public:
-    Topping() {}
-    Topping(const string &name) { setToppingName(name); }
+    Topping() {}                                          // default constructor
+    Topping(const string &name) { setToppingName(name); } // constructor with name
     Topping(const string &name, double price)
     {
-        setToppingName(name);
-        setToppingPrice(price);
+        setToppingName(name);   // set name
+        setToppingPrice(price); // set price
     }
 
-    bool setToppingName(const string &name)
+    bool setToppingName(const string &name) // set topping name if not empty
     {
         if (!name.empty())
         {
-            toppingName = name;
-            return true;
+            toppingName = name; // store name
+            return true;        // success
         }
-        return false;
+        return false; // fail on empty
     }
 
-    bool setToppingPrice(double price)
+    bool setToppingPrice(double price) // set topping price if positive
     {
         if (price > 0)
         {
-            toppingPrice = price;
-            return true;
+            toppingPrice = price; // store price
+            return true;          // success
         }
-        return false;
+        return false; // fail on invalid price
     }
 
-    string getToppingName() const { return toppingName; }
-    double getToppingPrice() const { return toppingPrice; }
+    string getToppingName() const { return toppingName; }   // return topping name
+    double getToppingPrice() const { return toppingPrice; } // return topping price
 
-    static void displayToppingTitle();
-    void displayTopping() const
+    static void displayToppingTitle(); // declare header function
+    void displayTopping() const        // print topping row
     {
         cout << left << setw(30) << toppingName
              << setw(15) << fixed << setprecision(2) << toppingPrice << endl;
     }
 };
-void Topping::displayToppingTitle()
+void Topping::displayToppingTitle() // print topping table header
 {
     printLine();
     cout << left << setw(30) << "Topping Name"
@@ -422,90 +414,90 @@ void Topping::displayToppingTitle()
 
 class Cuisine
 {
-    string cuisineName = "Unknown";
-    vector<Menu> dishes;
-    vector<Topping> toppings;
+    string cuisineName = "Unknown"; // cuisine name
+    vector<Menu> dishes;            // dishes in cuisine
+    vector<Topping> toppings;       // toppings in cuisine
 
 public:
-    Cuisine() {}
-    Cuisine(const string &name) { setCuisineName(name); }
+    Cuisine() {}                                          // default constructor
+    Cuisine(const string &name) { setCuisineName(name); } // constructor with name
 
-    bool setCuisineName(const string &name)
+    bool setCuisineName(const string &name) // set cuisine name if valid
     {
         if (!name.empty())
         {
-            cuisineName = name;
-            return true;
+            cuisineName = name; // store name
+            return true;        // success
         }
-        return false;
+        return false; // fail on empty
     }
 
-    void addDish(const Menu &dish) { dishes.push_back(dish); }
-    void addTopping(const Topping &topping) { toppings.push_back(topping); }
+    void addDish(const Menu &dish) { dishes.push_back(dish); }               // add dish
+    void addTopping(const Topping &topping) { toppings.push_back(topping); } // add topping
 
-    bool removeDish(int index)
+    bool removeDish(int index) // remove dish by index
     {
         if (index >= 0 && index < dishes.size())
         {
-            dishes.erase(dishes.begin() + index);
-            return true;
+            dishes.erase(dishes.begin() + index); // erase dish
+            return true;                          // success
         }
-        return false;
+        return false; // fail invalid index
     }
-    bool removeTopping(int index)
+    bool removeTopping(int index) // remove topping by index
     {
         if (index >= 0 && index < toppings.size())
         {
-            toppings.erase(toppings.begin() + index);
-            return true;
+            toppings.erase(toppings.begin() + index); // erase topping
+            return true;                              // success
         }
-        return false;
+        return false; // fail invalid index
     }
 
-    void showDishes() const
+    void showDishes() const // display all dishes
     {
-        Menu::displayMenuTitle();
+        Menu::displayMenuTitle(); // print header
         int index = 0;
         for (const auto &dish : dishes)
         {
-            cout << left << setw(8) << ++index;
-            dish.displayMenuMember();
+            cout << left << setw(8) << ++index; // print item number
+            dish.displayMenuMember();           // print dish details
         }
     };
 
-    void showToppings() const
+    void showToppings() const // display all toppings
     {
-        Topping::displayToppingTitle();
+        Topping::displayToppingTitle(); // print header
         int index = 0;
         for (const auto &topping : toppings)
         {
-            cout << left << setw(8) << ++index;
-            topping.displayTopping();
+            cout << left << setw(8) << ++index; // print item number
+            topping.displayTopping();           // print topping details
         }
     };
 
-    int getDishCount() const { return dishes.size(); };
-    int getToppingCount() const { return toppings.size(); }
+    int getDishCount() const { return dishes.size(); };     // return dish count
+    int getToppingCount() const { return toppings.size(); } // return topping count
 
-    Menu *findDishByIndex(int index)
+    Menu *findDishByIndex(int index) // find dish pointer by index
     {
         if (index >= 0 && index < dishes.size())
         {
-            return &dishes[index];
+            return &dishes[index]; // return pointer
         }
-        return nullptr;
+        return nullptr; // invalid index
     };
 
-    Topping *findToppingByIndex(int index)
+    Topping *findToppingByIndex(int index) // find topping pointer by index
     {
         if (index >= 0 && index < toppings.size())
         {
-            return &toppings[index];
+            return &toppings[index]; // return pointer
         }
-        return nullptr;
+        return nullptr; // invalid index
     }
 
-    void displayCuisineName() const
+    void displayCuisineName() const // print cuisine name
     {
         cout << cuisineName << endl;
     }
@@ -513,52 +505,52 @@ public:
 
 class OrderItem
 {
-    Menu selectedDish;
-    vector<Topping> selectedToppings;
-    int quantity = 1;
-    double itemTotal = 0.0;
+    Menu selectedDish;                // dish selected in order
+    vector<Topping> selectedToppings; // toppings selected
+    int quantity = 1;                 // quantity ordered
+    double itemTotal = 0.0;           // total cost for item
 
 public:
-    OrderItem() {}
+    OrderItem() {} // default constructor
     OrderItem(const Menu &dish, int quantity = 1)
     {
-        setDish(dish);
-        setQuantity(quantity);
+        setDish(dish);         // set dish
+        setQuantity(quantity); // set quantity
     };
 
-    bool setDish(const Menu &dish)
+    bool setDish(const Menu &dish) // set selected dish
     {
         selectedDish = dish;
         return true;
     }
-    bool setQuantity(int q)
+    bool setQuantity(int q) // set quantity if positive
     {
         if (q <= 0)
-            return false;
-        quantity = q;
-        return true;
+            return false; // invalid quantity
+        quantity = q;     // store quantity
+        return true;      // success
     }
 
-    const Menu &getDish() const { return selectedDish; }
-    int getQuantity() const { return quantity; }
-    double getItemTotal() const { return itemTotal; }
+    const Menu &getDish() const { return selectedDish; } // return dish
+    int getQuantity() const { return quantity; }         // return quantity
+    double getItemTotal() const { return itemTotal; }    // return item total
 
-    void addTopping(const Topping &topping) { selectedToppings.push_back(topping); }
-    int getToppingCount() const { return selectedToppings.size(); }
+    void addTopping(const Topping &topping) { selectedToppings.push_back(topping); } // add topping
+    int getToppingCount() const { return selectedToppings.size(); }                  // return topping count
 
-    bool calculateItemTotal()
+    bool calculateItemTotal() // compute item total
     {
         if (quantity <= 0)
-            return false;
-        itemTotal = selectedDish.getPrice() * quantity;
+            return false;                               // invalid quantity
+        itemTotal = selectedDish.getPrice() * quantity; // base cost
 
         for (const auto &topping : selectedToppings)
-            itemTotal += topping.getToppingPrice() * quantity;
+            itemTotal += topping.getToppingPrice() * quantity; // add toppings cost
 
-        return true;
+        return true; // success
     }
 
-    void displayItem() const
+    void displayItem() const // print order item details
     {
         cout << left << setw(18) << "Dish:" << selectedDish.getName() << endl;
         cout << left << setw(18) << "Quantity:" << quantity << endl;
@@ -567,7 +559,7 @@ public:
         cout << left << setw(18) << "Toppings:";
         if (selectedToppings.empty())
         {
-            cout << "None";
+            cout << "None"; // no toppings selected
         }
         else
         {
@@ -576,7 +568,7 @@ public:
             {
                 cout << "   - " << topping.getToppingName()
                      << " (" << fixed << setprecision(2)
-                     << topping.getToppingPrice() << ")\n";
+                     << topping.getToppingPrice() << ")\n"; // print each topping
             }
         }
         cout << endl;
@@ -585,57 +577,56 @@ public:
 
 class Order
 {
-    string customerName = "Unknown";
-    vector<OrderItem> items;
-    Date orderDate;
-    double totalPrice = 0.0;
-    bool completed = false;
+    string customerName = "Unknown"; // customer name for order
+    vector<OrderItem> items;         // ordered items
+    Date orderDate;                  // order date
+    double totalPrice = 0.0;         // total order price
+    bool completed = false;          // order status
 
 public:
-    Order() {};
+    Order() {}; // default constructor
     Order(const string &customerName)
     {
-        setCustomerName(customerName);
+        setCustomerName(customerName); // set customer name
     }
 
-    bool setCustomerName(const string &name)
+    bool setCustomerName(const string &name) // set customer name if valid
     {
         if (name.empty())
-            return false;
+            return false; // fail empty name
 
-        customerName = name;
-        return true;
+        customerName = name; // store name
+        return true;         // success
     }
 
-    string getCustomerName() const { return customerName; }
-    int getItemCount() const { return items.size(); }
-    double getTotalPrice() const { return totalPrice; }
-    bool isCompleted() const { return completed; }
+    string getCustomerName() const { return customerName; } // return customer name
+    int getItemCount() const { return items.size(); }       // return item count
+    double getTotalPrice() const { return totalPrice; }     // return total price
+    bool isCompleted() const { return completed; }          // return completion status
 
-    void addItem(const OrderItem &item) { items.push_back(item); }
-    bool removeItem(int index)
+    void addItem(const OrderItem &item) { items.push_back(item); } // add item to order
+    bool removeItem(int index)                                     // remove item by index
     {
         if (index < 0 || index >= items.size())
-            return false;
+            return false; // invalid index
 
-        items.erase(items.begin() + index);
-        return true;
+        items.erase(items.begin() + index); // erase item
+        return true;                        // success
     }
 
-    bool calculateTotal()
+    bool calculateTotal() // compute order total
     {
         if (items.size() <= 0)
-            return false;
-
+            return false; // no items
         for (const auto &item : items)
         {
-            totalPrice += item.getItemTotal();
+            totalPrice += item.getItemTotal(); // accumulate item totals
         }
-        return true;
+        return true; // success
     }
-    void markCompleted() { completed = true; }
+    void markCompleted() { completed = true; } // mark order as completed
 
-    void displayOrderCompact() const
+    void displayOrderCompact() const // print compact order summary
     {
         cout << "Customer: " << customerName
              << " | Items: " << items.size()
@@ -643,338 +634,333 @@ public:
              << " | Status: " << (completed ? "Completed" : "Pending") << endl;
     }
 
-    void displayOrder() const
+    void displayOrder() const // print full order details
     {
-        printLine('=');
+        printLine('='); // separator
         cout << "Order Details\n";
         printLine('=');
 
         cout << left << setw(18) << "Customer Name:" << customerName << endl;
         cout << left << setw(18) << "Order Date:";
-        orderDate.showDate();
+        orderDate.showDate(); // show order date
         cout << endl;
 
         cout << left << setw(18) << "Status:" << (completed ? "Completed" : "Pending") << endl;
-        cout << left << setw(18) << "Total Price:" << fixed << setprecision(2) << totalPrice << endl;
 
         cout << "\nOrdered Items:\n";
         for (int i = 0; i < items.size(); i++)
         {
-            printLine('-', 50);
+            printLine('-', 50); // item separator
             cout << "Item " << i + 1 << endl;
-            items[i].displayItem();
+            items[i].displayItem(); // display each item
         }
+
+        printLine('-', 50);
+        cout << left << setw(18) << "Total Price:" << fixed << setprecision(2) << totalPrice << endl;
+        printLine('-', 50);
     }
 };
 
 class Branch
 {
-    string branchName = "Unknown";
-    double branchSales = 0.0;
+    string branchName = "Unknown"; // branch name
+    double branchSales = 0.0;      // branch sales amount
 
-    Manager manager;
-    bool hasManager = false;
+    Manager manager;         // branch manager
+    bool hasManager = false; // manager assigned flag
 
-    vector<Employee> employees;
-    vector<Customer> customers;
-    vector<Cuisine> cuisines;
-    vector<Order> pendingOrders;
-    vector<Order> completedOrders;
+    vector<Employee> employees;    // employees list
+    vector<Customer> customers;    // customers list
+    vector<Cuisine> cuisines;      // cuisines list
+    vector<Order> pendingOrders;   // pending orders
+    vector<Order> completedOrders; // completed orders
 
 public:
-    Branch() {}
-    Branch(const string &name) { setName(name); }
+    Branch() {}                                   // default constructor
+    Branch(const string &name) { setName(name); } // constructor with name
     Branch(const string &name, double sales)
     {
-        setName(name);
-        setSales(sales);
+        setName(name);   // set branch name
+        setSales(sales); // set sales
     }
 
-    bool setName(const string &name)
+    bool setName(const string &name) // set branch name if valid
     {
         if (!name.empty())
         {
-            branchName = name;
-            return true;
+            branchName = name; // store name
+            return true;       // success
         }
-        return false;
+        return false; // fail empty name
     }
 
-    bool setSales(double sales)
+    bool setSales(double sales) // set branch sales if positive
     {
         if (sales > 0)
         {
-            branchSales = sales;
-            return true;
+            branchSales = sales; // store sales
+            return true;         // success
         }
-        return false;
+        return false; // fail invalid sales
     }
 
-    string getName() const { return branchName; }
-    double getSales() const { return branchSales; }
-    bool addSales(double amount)
+    string getName() const { return branchName; }   // return branch name
+    double getSales() const { return branchSales; } // return branch sales
+    bool addSales(double amount)                    // add amount to sales
     {
         if (amount > 0)
         {
-            branchSales += amount;
-            return true;
+            branchSales += amount; // increment sales
+            return true;           // success
         }
-        return false;
+        return false; // fail invalid amount
     }
 
-    // Manager functions
-    void assignManager(const Manager &manager)
+    void assignManager(const Manager &manager) // assign manager
     {
         this->manager = manager;
-        hasManager = true;
+        hasManager = true; // mark assigned
     }
-    bool removeManager()
+    bool removeManager() // remove manager assignment
     {
         if (!hasManager)
-            return false;
+            return false; // no manager to remove
 
-        hasManager = false;
-        return true;
+        hasManager = false; // clear flag
+        return true;        // success
     }
-    bool managerAssigned() const { return hasManager; }
-    Manager getManager() const { return manager; }
+    bool managerAssigned() const { return hasManager; } // check manager assigned
+    Manager getManager() const { return manager; }      // return manager
 
-    // Employee functions
-    void addEmployee(const Employee &employee) { employees.push_back(employee); }
-    bool removeEmployee(int index)
+    void addEmployee(const Employee &employee) { employees.push_back(employee); } // add employee
+    bool removeEmployee(int index)                                                // remove employee by index
     {
         if (index < 0 || index >= employees.size())
-            return false;
+            return false; // invalid index
 
-        employees.erase(employees.begin() + index);
-        return true;
+        employees.erase(employees.begin() + index); // erase employee
+        return true;                                // success
     }
 
-    int getEmployeeCount() const { return employees.size(); }
-
-    void showEmployees() const
+    int getEmployeeCount() const { return employees.size(); } // return count
+    void showEmployees() const                                // display all employees
     {
         for (const auto &employee : employees)
         {
-            printLine();
-            employee.displayEmployee();
+            printLine();                // separator
+            employee.displayEmployee(); // show employee info
         }
     }
 
-    Employee *findEmployeeByIndex(int index)
+    Employee *findEmployeeByIndex(int index) // find employee pointer by index
     {
         if (index < 0 || index >= employees.size())
-            return nullptr;
+            return nullptr; // invalid index
 
-        return &employees[index];
+        return &employees[index]; // return pointer
     }
 
-    // Customer functions
-    void addCustomer(const Customer &customer) { customers.push_back(customer); }
-    bool removeCustomer(int index)
+    void addCustomer(const Customer &customer) { customers.push_back(customer); } // add customer
+    bool removeCustomer(int index)                                                // remove customer by index
     {
         if (index < 0 || index >= customers.size())
-            return false;
+            return false; // invalid index
 
-        customers.erase(customers.begin() + index);
-        return true;
+        customers.erase(customers.begin() + index); // erase customer
+        return true;                                // success
     }
-    int getCustomerCount() const { return customers.size(); }
+    int getCustomerCount() const { return customers.size(); } // return count
 
-    void showCustomers() const
+    void showCustomers() const // display all customers
     {
         for (const auto &customer : customers)
         {
-            customer.displayCustomer();
+            customer.displayCustomer(); // show customer info
         }
     }
 
-    Customer *findCustomerByIndex(int index)
+    Customer *findCustomerByIndex(int index) // find customer pointer
     {
         if (index <= 0 || index > customers.size())
-            return nullptr;
-
-        return &customers[index];
+            return nullptr;       // invalid index
+        return &customers[index]; // BUG: indexing mistake, should be index - 1
     }
 
-    // Cuisine functions
-    void addCuisine(const Cuisine &cuisine) { cuisines.push_back(cuisine); }
-    bool removeCuisine(int index)
+    void addCuisine(const Cuisine &cuisine) { cuisines.push_back(cuisine); } // add cuisine
+    bool removeCuisine(int index)                                            // remove cuisine by index
     {
         if (index < 0 || index >= cuisines.size())
-            return false;
+            return false; // invalid index
 
-        cuisines.erase(cuisines.begin() + index);
-        return true;
+        cuisines.erase(cuisines.begin() + index); // erase cuisine
+        return true;                              // success
     }
-    int getCuisineCount() const { return cuisines.size(); }
+    int getCuisineCount() const { return cuisines.size(); } // return count
 
-    void showCuisines() const
+    void showCuisines() const // display cuisines list
     {
         for (int i = 0; i < cuisines.size(); i++)
         {
-            printLine('-', 50);
+            printLine('-', 50); // separator
             cout << i + 1 << ". ";
-            cuisines[i].displayCuisineName();
+            cuisines[i].displayCuisineName(); // show cuisine name
         }
     }
 
-    Cuisine *findCuisineByIndex(int index)
+    Cuisine *findCuisineByIndex(int index) // find cuisine pointer
     {
         if (index < 0 || index >= cuisines.size())
-            return nullptr;
+            return nullptr; // invalid index
 
-        return &cuisines[index];
+        return &cuisines[index]; // return pointer
     }
 
-    // Order functions
-    void addPendingOrder(const Order &order) { pendingOrders.push_back(order); }
-    bool completeOrder(int index)
+    void addPendingOrder(const Order &order) { pendingOrders.push_back(order); } // add pending order
+    bool completeOrder(int index)                                                // complete pending order
     {
         if (index < 0 || index >= pendingOrders.size())
-            return false;
+            return false; // invalid index
 
-        pendingOrders[index].markCompleted();
-        completedOrders.push_back(pendingOrders[index]);
-        pendingOrders.erase(pendingOrders.begin() + index);
-        return true;
+        double orderTotal = pendingOrders[index].getTotalPrice(); // get order total
+        pendingOrders[index].markCompleted();                     // mark order complete
+        completedOrders.push_back(pendingOrders[index]);          // move to completed
+        addSales(orderTotal);                                     // add sales
+        pendingOrders.erase(pendingOrders.begin() + index);       // remove from pending
+        return true;                                              // success
     }
 
-    int getPendingOrderCount() const { return pendingOrders.size(); }
-    int getCompletedOrderCount() const { return completedOrders.size(); }
+    int getPendingOrderCount() const { return pendingOrders.size(); }     // return pending count
+    int getCompletedOrderCount() const { return completedOrders.size(); } // return completed count
 
-    void showPendingOrders() const
+    void showPendingOrders() const // display pending orders
     {
         for (const auto &pendingOrder : pendingOrders)
         {
-            pendingOrder.displayOrderCompact();
+            pendingOrder.displayOrderCompact(); // compact display
         }
     }
-    void showCompletedOrders() const
+    void showCompletedOrders() const // display completed orders
     {
         for (auto &completeOrder : completedOrders)
         {
-            completeOrder.displayOrderCompact();
+            completeOrder.displayOrderCompact(); // compact display
         }
     }
 
-    void placeOrder(const Customer &customer)
+    void placeOrder(const Customer &customer) // interactive order placement
     {
         if (cuisines.empty())
         {
-            cout << "No cuisines available in this branch.\n";
+            cout << "No cuisines available in this branch.\n"; // no cuisines
             return;
         }
 
-        Order order(customer.getName());
+        Order order(customer.getName()); // create order
+        bool addAnotherDish = true;      // loop flag
 
-        bool addAnotherDish = true;
-
-        while (addAnotherDish)
+        while (addAnotherDish) // add dishes loop
         {
             cout << "\n========== Available Cuisines ==========\n";
             for (int i = 0; i < cuisines.size(); i++)
             {
                 cout << i + 1 << ". ";
-                cuisines[i].displayCuisineName();
+                cuisines[i].displayCuisineName(); // list cuisines
             }
 
             int cuisineChoice;
             cout << "Select Cuisine Number: ";
-            cin >> cuisineChoice;
+            cin >> cuisineChoice; // choose cuisine
 
-            Cuisine *selectedCuisine = findCuisineByIndex(cuisineChoice - 1);
+            Cuisine *selectedCuisine = findCuisineByIndex(cuisineChoice - 1); // find cuisine
 
             if (selectedCuisine == nullptr)
             {
-                cout << "Invalid cuisine choice.\n";
+                cout << "Invalid cuisine choice.\n"; // invalid selection
                 continue;
             }
 
             cout << "\n========== Available Dishes ==========\n";
-            selectedCuisine->showDishes();
+            selectedCuisine->showDishes(); // show dishes
 
             int dishChoice;
             cout << "Select Dish Number: ";
-            cin >> dishChoice;
+            cin >> dishChoice; // choose dish
 
-            Menu *selectedDish = selectedCuisine->findDishByIndex(dishChoice - 1);
+            Menu *selectedDish = selectedCuisine->findDishByIndex(dishChoice - 1); // find dish
 
             if (selectedDish == nullptr)
             {
-                cout << "Invalid dish choice.\n";
+                cout << "Invalid dish choice.\n"; // invalid dish
                 continue;
             }
 
             int quantity;
             cout << "Enter Quantity: ";
-            cin >> quantity;
+            cin >> quantity; // read quantity
 
             if (quantity <= 0)
             {
-                cout << "Invalid quantity.\n";
+                cout << "Invalid quantity.\n"; // invalid quantity
                 continue;
             }
 
             if (!selectedDish->reduceStock(quantity))
             {
-                cout << "Not enough stock available.\n";
+                cout << "Not enough stock available.\n"; // not enough stock
                 continue;
             }
 
-            OrderItem item(*selectedDish, quantity);
+            OrderItem item(*selectedDish, quantity); // create order item
 
             bool addMoreTopping;
             cout << "Do you want to add toppings? (1 for Yes, 0 for No): ";
-            cin >> addMoreTopping;
+            cin >> addMoreTopping; // ask topping choice
 
-            while (addMoreTopping)
+            while (addMoreTopping) // loop toppings
             {
                 cout << "\n========== Available Toppings ==========\n";
-                selectedCuisine->showToppings();
+                selectedCuisine->showToppings(); // show toppings
 
                 int toppingChoice;
                 cout << "Select Topping Number: ";
-                cin >> toppingChoice;
+                cin >> toppingChoice; // choose topping
 
-                Topping *selectedTopping = selectedCuisine->findToppingByIndex(toppingChoice - 1);
+                Topping *selectedTopping = selectedCuisine->findToppingByIndex(toppingChoice - 1); // find topping
 
                 if (selectedTopping != nullptr)
                 {
-                    item.addTopping(*selectedTopping);
+                    item.addTopping(*selectedTopping); // add topping
                     cout << "Topping added.\n";
                 }
                 else
                 {
-                    cout << "Invalid topping choice.\n";
+                    cout << "Invalid topping choice.\n"; // invalid topping
                 }
 
                 cout << "Add another topping? (1 for Yes, 0 for No): ";
-                cin >> addMoreTopping;
+                cin >> addMoreTopping; // continue topping loop
             }
 
-            item.calculateItemTotal();
-            order.addItem(item);
+            item.calculateItemTotal(); // compute item total
+            order.addItem(item);       // add item to order
 
             cout << "Do you want to add another dish? (1 for Yes, 0 for No): ";
-            cin >> addAnotherDish;
+            cin >> addAnotherDish; // continue order loop
         }
 
         if (order.getItemCount() == 0)
         {
-            cout << "No items selected. Order cancelled.\n";
+            cout << "No items selected. Order cancelled.\n"; // cancel empty order
             return;
         }
 
-        order.calculateTotal();
-        addPendingOrder(order);
-
+        order.calculateTotal(); // compute order total
+        addPendingOrder(order); // add order to pending
         cout << "\n========== Order Placed Successfully ==========\n";
-        order.displayOrder();
+        order.displayOrder(); // show order details
     }
 
-    // Show Branch Summary
-    void displayBranchSummary() const
+    void displayBranchSummary() const // display branch summary
     {
         printLine('=');
         cout << "Branch Summary\n";
@@ -992,47 +978,45 @@ public:
 
 class Restaurant
 {
-    string restaurantName = "Unknown";
-    vector<Branch> branches;
+    string restaurantName = "Unknown"; // restaurant name
+    vector<Branch> branches;           // branch list
 
 public:
-    Restaurant();
-    Restaurant(const string &name) { setRestaurantName(name); }
+    Restaurant();                                               // constructor declaration
+    Restaurant(const string &name) { setRestaurantName(name); } // constructor with name
 
-    bool setRestaurantName(const string &name)
+    bool setRestaurantName(const string &name) // set restaurant name if valid
     {
         if (name.empty())
-            return false;
-
-        restaurantName = name;
-        return true;
+            return false;      // fail empty name
+        restaurantName = name; // store name
+        return true;           // success
     }
-    string getRestaurantName() const { return restaurantName; };
+    string getRestaurantName() const { return restaurantName; }; // return restaurant name
 
-    // Branch management functions
-    void addBranch(const Branch &branch) { branches.push_back(branch); }
-    bool removeBranch(int index)
+    void addBranch(const Branch &branch) { branches.push_back(branch); } // add branch
+    bool removeBranch(int index)                                         // remove branch by index
     {
         if (index < 0 || index >= branches.size())
-            return false;
+            return false; // invalid index
 
-        branches.erase(branches.begin() + index);
-        return true;
+        branches.erase(branches.begin() + index); // erase branch
+        return true;                              // success
     }
-    int getBranchCount() const { return branches.size(); }
+    int getBranchCount() const { return branches.size(); } // return branch count
 
-    void showBranchesName() const
+    void showBranchesName() const // display branch names
     {
         string branchName;
         for (int i = 0; i < branches.size(); i++)
         {
-            branchName = branches[i].getName();
-            printLine();
-            cout << i + 1 << ": " << branchName << endl;
+            branchName = branches[i].getName();          // get branch name
+            printLine();                                 // separator
+            cout << i + 1 << ": " << branchName << endl; // print branch line
         }
     }
 
-    void showAllBranches() const
+    void showAllBranches() const // display all branches with details
     {
         int totalCustomers = 0;
         string ManagerName;
@@ -1041,58 +1025,55 @@ public:
 
         for (int i = 0; i < branches.size(); i++)
         {
-            ManagerName = branches[i].getManager().getName();
-            branchName = branches[i].getName();
-            branchSales = branches[i].getSales();
+            ManagerName = branches[i].getManager().getName(); // get manager name
+            branchName = branches[i].getName();               // get branch name
+            branchSales = branches[i].getSales();             // get sales
 
             printLine();
             cout << i + 1 << ": " << branchName;
             cout << "  | Sales: " << branchSales;
-            cout << "  | Manager: " << (branches[i].managerAssigned() ? ManagerName : "No Manager Assigned") << endl;
-            totalCustomers += branches[i].getCustomerCount();
+            cout << "  | Manager: " << (branches[i].managerAssigned() ? ManagerName : "No Manager Assigned") << endl; // show manager status
+            totalCustomers += branches[i].getCustomerCount();                                                         // accumulate customers
         }
     }
-    Branch *findBranchByIndex(int index)
+    Branch *findBranchByIndex(int index) // find branch pointer by index
     {
         if (index < 0 || index >= branches.size())
-            return nullptr;
-
-        return &branches[index];
+            return nullptr;      // invalid index
+        return &branches[index]; // return pointer
     }
 
-    // Default Data To test If Program is Working Properly
-    void loadDefaultData()
+    void loadDefaultData() // populate default data
     {
-        Branch b1("Main Branch", 0.0);
+        Branch b1("Main Branch", 0.0); // create default branch
 
-        Cuisine italian("Italian");
-        italian.addDish(Menu("Pizza", 1200, 10));
-        italian.addDish(Menu("Pasta", 900, 15));
+        Cuisine italian("Italian");               // create Italian cuisine
+        italian.addDish(Menu("Pizza", 1200, 10)); // add dish
+        italian.addDish(Menu("Pasta", 900, 15));  // add dish
 
-        italian.addTopping(Topping("Cheese", 150));
-        italian.addTopping(Topping("Sauce", 100));
+        italian.addTopping(Topping("Cheese", 150)); // add topping
+        italian.addTopping(Topping("Sauce", 100));  // add topping
 
-        Cuisine mexican("Mexican");
-        mexican.addDish(Menu("Tacos", 600, 18));
-        mexican.addDish(Menu("Burritos", 1000, 12));
-        mexican.addDish(Menu("Enchiladas", 1100, 10));
+        Cuisine mexican("Mexican");                    // create Mexican cuisine
+        mexican.addDish(Menu("Tacos", 600, 18));       // add dish
+        mexican.addDish(Menu("Burritos", 1000, 12));   // add dish
+        mexican.addDish(Menu("Enchiladas", 1100, 10)); // add dish
 
-        mexican.addTopping(Topping("Salsa", 50));
-        mexican.addTopping(Topping("Guacamole", 70));
-        mexican.addTopping(Topping("Sour Cream", 60));
+        mexican.addTopping(Topping("Salsa", 50));      // add topping
+        mexican.addTopping(Topping("Guacamole", 70));  // add topping
+        mexican.addTopping(Topping("Sour Cream", 60)); // add topping
 
-        b1.addCuisine(italian);
-        b1.addCuisine(mexican);
+        b1.addCuisine(italian); // add cuisine to branch
+        b1.addCuisine(mexican); // add cuisine to branch
 
-        b1.assignManager(Manager("Hamza", "03001234567", 50000));
-        b1.addEmployee(Employee("Ali", "03001111111", 25000, "Chef"));
-        b1.addCustomer(Customer("Ahmad"));
+        b1.assignManager(Manager("Hamza", "03001234567", 50000));      // assign manager
+        b1.addEmployee(Employee("Ali", "03001111111", 25000, "Chef")); // add employee
+        b1.addCustomer(Customer("Ahmad"));                             // add customer
 
-        addBranch(b1);
+        addBranch(b1); // add branch to restaurant
     }
 
-    // Our Resturant Whole Summary
-    void showRestaurantSummary() const
+    void showRestaurantSummary() const // display restaurant summary
     {
         int totalEmployees = 0;
         int totalCustomers = 0;
@@ -1102,10 +1083,10 @@ public:
 
         for (const auto &branch : branches)
         {
-            totalEmployees += branch.getEmployeeCount();
-            totalCustomers += branch.getCustomerCount();
-            totalCompletedOrders += branch.getCompletedOrderCount();
-            totalSales += branch.getSales();
+            totalEmployees += branch.getEmployeeCount();             // accumulate employees
+            totalCustomers += branch.getCustomerCount();             // accumulate customers
+            totalCompletedOrders += branch.getCompletedOrderCount(); // accumulate completed orders
+            totalSales += branch.getSales();                         // accumulate sales
         }
 
         printLine('=');
@@ -1119,60 +1100,59 @@ public:
         cout << "Completed Orders: " << totalCompletedOrders << endl;
         cout << "Total Sales: " << fixed << setprecision(2) << totalSales << endl;
         cout << "Overall Cuisines Offered: " << endl;
-        branches[0].showCuisines();
+        branches[0].showCuisines(); // show cuisines of first branch
     }
 
-    bool branchValidation()
+    bool branchValidation() // check if any branch exists
     {
         if (branches.empty())
         {
-            cout << "No branches available. Add a branch first.\n";
-            return false;
+            cout << "No branches available. Add a branch first.\n"; // no branches
+            return false;                                           // invalid
         }
-        return true;
+        return true; // valid
     }
 
-    // Admin functions
-    void addBranchFromInput()
+    void addBranchFromInput() // input branch details and add
     {
         string branchName;
         double sales;
 
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear input buffer
         cout << "Enter Branch Name: ";
-        getline(cin, branchName);
+        getline(cin, branchName); // read name
 
         cout << "Enter Branch Sales: ";
-        cin >> sales;
+        cin >> sales; // read sales
 
-        addBranch(Branch(branchName, sales));
+        addBranch(Branch(branchName, sales)); // add branch
         cout << "Branch added successfully.\n";
     }
 
-    void removeBranchFromInput()
+    void removeBranchFromInput() // remove branch chosen by user
     {
         int index;
-        showAllBranches();
+        showAllBranches(); // show branches
         cout << "Enter Branch Index to Remove (starting from 1): ";
-        cin >> index;
+        cin >> index; // read index
 
-        if (removeBranch(index - 1))
+        if (removeBranch(index - 1)) // remove branch
             cout << "Branch removed successfully.\n";
         else
             cout << "Invalid branch index.\n";
     }
 
-    void assignManagerFromInput()
+    void assignManagerFromInput() // assign manager via user input
     {
         if (!branchValidation())
-            return;
+            return; // no branches
 
-        showAllBranches();
+        showAllBranches(); // show branches
         int branchIndex;
         cout << "Enter Branch Number: ";
-        cin >> branchIndex;
+        cin >> branchIndex; // read branch number
 
-        Branch *selectedBranch = findBranchByIndex(branchIndex - 1);
+        Branch *selectedBranch = findBranchByIndex(branchIndex - 1); // find branch
         if (selectedBranch == nullptr)
         {
             cout << "Invalid branch number.\n";
@@ -1180,39 +1160,39 @@ public:
         }
         string name, phone;
         double salary;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear buffer
 
         cout << "Enter Manager Name: ";
-        getline(cin, name);
+        getline(cin, name); // read name
         cout << "Enter Manager Phone: ";
-        getline(cin, phone);
+        getline(cin, phone); // read phone
         cout << "Enter Manager Salary: ";
-        cin >> salary;
+        cin >> salary; // read salary
 
         if (selectedBranch->managerAssigned())
         {
-            cout << "Branch already has a manager. Remove the current manager first.\n";
+            cout << "Branch already has a manager. Remove the current manager first.\n"; // already assigned
             return;
         }
         else
         {
-            selectedBranch->assignManager(Manager(name, phone, salary));
+            selectedBranch->assignManager(Manager(name, phone, salary)); // assign manager
             cout << "Manager assigned successfully.\n";
         }
     }
 
-    void removeManagerFromInput()
+    void removeManagerFromInput() // remove manager by input
     {
         if (!branchValidation())
-            return;
+            return; // no branches
 
-        showAllBranches();
+        showAllBranches(); // show branches
 
         int branchIndex;
         cout << "Enter Branch Number: ";
-        cin >> branchIndex;
+        cin >> branchIndex; // read branch number
 
-        Branch *selectedBranch = findBranchByIndex(branchIndex - 1);
+        Branch *selectedBranch = findBranchByIndex(branchIndex - 1); // find branch
 
         if (selectedBranch == nullptr)
         {
@@ -1220,34 +1200,34 @@ public:
             return;
         }
 
-        if (selectedBranch->removeManager())
+        if (selectedBranch->removeManager()) // remove manager
             cout << "Manager removed successfully.\n";
         else
             cout << "No manager assigned to this branch.\n";
     }
 
-    void addCuisineFromInput()
+    void addCuisineFromInput() // input cuisine data and add to branches
     {
         if (branches.empty())
         {
-            cout << "No branches available. Add a branch first.\n";
+            cout << "No branches available. Add a branch first.\n"; // no branches
             return;
         }
 
-        showAllBranches();
+        showAllBranches(); // show branches
 
         string cuisineName;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear buffer
         cout << "Enter Cuisine Name: ";
-        getline(cin, cuisineName);
+        getline(cin, cuisineName); // read cuisine name
 
-        Cuisine cuisine(cuisineName);
+        Cuisine cuisine(cuisineName); // create cuisine
 
         int dishCount;
         cout << "How many dishes do you want to add? ";
-        cin >> dishCount;
+        cin >> dishCount; // read dish count
 
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear buffer
         for (int i = 0; i < dishCount; i++)
         {
             string dishName;
@@ -1255,68 +1235,68 @@ public:
             int stock;
 
             cout << "\nDish " << i + 1 << " Name: ";
-            getline(cin, dishName);
+            getline(cin, dishName); // read dish name
 
             cout << "Price: ";
-            cin >> price;
+            cin >> price; // read price
 
             cout << "Stock: ";
-            cin >> stock;
+            cin >> stock; // read stock
 
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cuisine.addDish(Menu(dishName, price, stock));
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear buffer
+            cuisine.addDish(Menu(dishName, price, stock));       // add dish
         }
 
         int toppingCount;
         cout << "\nHow many toppings do you want to add? ";
-        cin >> toppingCount;
+        cin >> toppingCount; // read topping count
 
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear buffer
         for (int i = 0; i < toppingCount; i++)
         {
             string toppingName;
             double toppingPrice;
 
             cout << "\nTopping " << i + 1 << " Name: ";
-            getline(cin, toppingName);
+            getline(cin, toppingName); // read topping name
 
             cout << "Price: ";
-            cin >> toppingPrice;
+            cin >> toppingPrice; // read topping price
 
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cuisine.addTopping(Topping(toppingName, toppingPrice));
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');    // clear buffer
+            cuisine.addTopping(Topping(toppingName, toppingPrice)); // add topping
         }
 
         for (auto &branch : branches)
         {
-            branch.addCuisine(cuisine);
+            branch.addCuisine(cuisine); // add cuisine to each branch
         }
         cout << "Cuisine added successfully.\n";
     }
 
-    void adminPortal();
-    void managerPortal();
-    void employeePortal();
-    void customerPortal();
+    void adminPortal();    // declare admin portal
+    void managerPortal();  // declare manager portal
+    void employeePortal(); // declare employee portal
+    void customerPortal(); // declare customer portal
 };
 
-void Restaurant::adminPortal()
+void Restaurant::adminPortal() // admin interface
 {
-    Admin admin("System Admin");
+    Admin admin("System Admin"); // create default admin
 
     string username, password;
     cout << "\n========== Admin Login ==========\n";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear buffer
 
     cout << "Enter Username: ";
-    getline(cin, username);
+    getline(cin, username); // read username
 
     cout << "Enter Password: ";
-    getline(cin, password);
+    getline(cin, password); // read password
 
     if (!admin.login(username, password))
     {
-        cout << "Invalid admin credentials.\n";
+        cout << "Invalid admin credentials.\n"; // login failed
         return;
     }
 
@@ -1333,60 +1313,60 @@ void Restaurant::adminPortal()
         cout << "7. Show Restaurant Summary\n";
         cout << "8. Back\n";
         cout << "Enter Choice: ";
-        cin >> choice;
+        cin >> choice; // read choice
 
         switch (choice)
         {
         case 1:
-            addBranchFromInput();
+            addBranchFromInput(); // add branch
             break;
         case 2:
-            removeBranchFromInput();
+            removeBranchFromInput(); // remove branch
             break;
         case 3:
-            showAllBranches();
+            showAllBranches(); // list branches
             break;
         case 4:
-            assignManagerFromInput();
+            assignManagerFromInput(); // assign manager
             break;
         case 5:
-            removeManagerFromInput();
+            removeManagerFromInput(); // remove manager
             break;
         case 6:
-            addCuisineFromInput();
+            addCuisineFromInput(); // add cuisine
             break;
         case 7:
-            showRestaurantSummary();
+            showRestaurantSummary(); // show summary
             break;
         case 8:
-            cout << "Returning...\n";
+            cout << "Returning...\n"; // exit
             return;
         default:
-            cout << "Invalid choice.\n";
+            cout << "Invalid choice.\n"; // invalid option
         }
 
     } while (choice != 8);
 }
 
-void Restaurant::managerPortal()
+void Restaurant::managerPortal() // manager interface
 {
     if (branches.empty())
     {
-        cout << "No branches available.\n";
+        cout << "No branches available.\n"; // no branches
         return;
     }
 
     int branchIndex;
     cout << "\n========== Manager Portal ==========\n";
-    showAllBranches();
+    showAllBranches(); // show branches
     cout << "Select Branch Number: ";
-    cin >> branchIndex;
+    cin >> branchIndex; // read branch
 
-    Branch *selectedBranch = findBranchByIndex(branchIndex - 1);
+    Branch *selectedBranch = findBranchByIndex(branchIndex - 1); // find branch
 
     if (selectedBranch == nullptr)
     {
-        cout << "Invalid branch number.\n";
+        cout << "Invalid branch number.\n"; // invalid
         return;
     }
 
@@ -1405,53 +1385,53 @@ void Restaurant::managerPortal()
         cout << "8. View Completed Orders\n";
         cout << "9. Back\n";
         cout << "Enter Choice: ";
-        cin >> choice;
+        cin >> choice; // read manager choice
 
         switch (choice)
         {
         case 1:
-            selectedBranch->displayBranchSummary();
+            selectedBranch->displayBranchSummary(); // show summary
             break;
         case 2:
         {
             string name, phone, designation;
             double salary;
 
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear buffer
             cout << "Enter Employee Name: ";
-            getline(cin, name);
+            getline(cin, name); // read employee name
 
             cout << "Enter Employee Phone: ";
-            getline(cin, phone);
+            getline(cin, phone); // read phone
 
             cout << "Enter Employee Salary: ";
-            cin >> salary;
+            cin >> salary; // read salary
 
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear buffer
             cout << "Enter Employee Designation: ";
-            getline(cin, designation);
+            getline(cin, designation); // read designation
 
-            Employee employee(name, phone, salary, designation);
-            selectedBranch->addEmployee(employee);
+            Employee employee(name, phone, salary, designation); // create employee
+            selectedBranch->addEmployee(employee);               // add employee
 
             cout << "Employee added successfully.\n";
             break;
         }
         case 3:
-            selectedBranch->showEmployees();
+            selectedBranch->showEmployees(); // show employees
             break;
         case 4:
         {
             if (selectedBranch->getEmployeeCount() == 0)
             {
-                cout << "No employees to remove.\n";
+                cout << "No employees to remove.\n"; // none to remove
                 break;
             }
 
-            selectedBranch->showEmployees();
+            selectedBranch->showEmployees(); // list employees
             int empIndex;
             cout << "Enter Employee Number to Remove: ";
-            cin >> empIndex;
+            cin >> empIndex; // read index
 
             if (selectedBranch->removeEmployee(empIndex - 1))
             {
@@ -1459,51 +1439,63 @@ void Restaurant::managerPortal()
             }
             else
             {
-                cout << "Invalid employee number.\n";
+                cout << "Invalid employee number.\n"; // invalid index
             }
             break;
         }
         case 5:
-            selectedBranch->showCustomers();
+            selectedBranch->showCustomers(); // show customers
             break;
         case 6:
-            selectedBranch->showCuisines();
+            selectedBranch->showCuisines(); // show cuisines
             break;
         case 7:
-            selectedBranch->showPendingOrders();
+            if (selectedBranch->getPendingOrderCount() == 0)
+            {
+                cout << "No pending orders.\n"; // none pending
+                break;
+            }
+
+            selectedBranch->showPendingOrders(); // show pending orders
             break;
         case 8:
-            selectedBranch->showCompletedOrders();
+            if (selectedBranch->getCompletedOrderCount() == 0)
+            {
+                cout << "No completed orders.\n"; // none completed
+                break;
+            }
+
+            selectedBranch->showCompletedOrders(); // show completed
             break;
         case 9:
-            cout << "Returning...\n";
+            cout << "Returning...\n"; // exit manager portal
             break;
         default:
-            cout << "Invalid choice.\n";
+            cout << "Invalid choice.\n"; // invalid option
         }
 
     } while (choice != 9);
 }
 
-void Restaurant::employeePortal()
+void Restaurant::employeePortal() // employee interface
 {
     if (branches.empty())
     {
-        cout << "No branches available.\n";
+        cout << "No branches available.\n"; // no branches
         return;
     }
 
     int branchIndex;
     cout << "\n========== Employee Portal ==========\n";
-    showAllBranches();
+    showAllBranches(); // show branches
     cout << "Select Branch Number: ";
-    cin >> branchIndex;
+    cin >> branchIndex; // read branch index
 
-    Branch *selectedBranch = findBranchByIndex(branchIndex - 1);
+    Branch *selectedBranch = findBranchByIndex(branchIndex - 1); // find branch
 
     if (selectedBranch == nullptr)
     {
-        cout << "Invalid branch number.\n";
+        cout << "Invalid branch number.\n"; // invalid
         return;
     }
 
@@ -1517,32 +1509,31 @@ void Restaurant::employeePortal()
         cout << "2. Complete Order\n";
         cout << "3. Back\n";
         cout << "Enter Choice: ";
-        cin >> choice;
+        cin >> choice; // read option
 
         switch (choice)
         {
         case 1:
             if (selectedBranch->getPendingOrderCount() == 0)
             {
-                cout << "No pending orders.\n";
+                cout << "No pending orders.\n"; // none pending
                 break;
             }
 
-            selectedBranch->showPendingOrders();
+            selectedBranch->showPendingOrders(); // show pending orders
             break;
         case 2:
         {
             if (selectedBranch->getPendingOrderCount() == 0)
             {
-                cout << "No pending orders.\n";
+                cout << "No pending orders.\n"; // none pending
                 break;
             }
 
-            selectedBranch->showPendingOrders();
-
+            selectedBranch->showPendingOrders(); // show pending
             int orderIndex;
             cout << "Enter Pending Order Number to Complete: ";
-            cin >> orderIndex;
+            cin >> orderIndex; // read order index
 
             if (selectedBranch->completeOrder(orderIndex - 1))
             {
@@ -1550,55 +1541,55 @@ void Restaurant::employeePortal()
             }
             else
             {
-                cout << "Invalid order number.\n";
+                cout << "Invalid order number.\n"; // invalid index
             }
             break;
         }
         case 3:
-            cout << "Returning...\n";
+            cout << "Returning...\n"; // exit portal
             return;
         default:
-            cout << "Invalid choice.\n";
+            cout << "Invalid choice.\n"; // invalid option
         }
 
     } while (choice != 3);
 }
 
-void Restaurant::customerPortal()
+void Restaurant::customerPortal() // customer interface
 {
     if (branches.empty())
     {
-        cout << "No branches available.\n";
+        cout << "No branches available.\n"; // no branches
         return;
     }
 
     string customerName, customerPhone;
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear buffer
     cout << "\n========== Customer Details ==========\n";
     cout << "Enter Customer Name: ";
-    getline(cin, customerName);
+    getline(cin, customerName); // read customer name
 
     cout << "Enter Customer Phone: ";
-    getline(cin, customerPhone);
+    getline(cin, customerPhone); // read customer phone
 
     cout << "\n========== Available Branches ==========\n";
-    showBranchesName();
+    showBranchesName(); // show branch list
 
     int branchIndex;
     cout << "Select Branch Number: ";
-    cin >> branchIndex;
+    cin >> branchIndex; // read selected branch
 
-    Branch *selectedBranch = findBranchByIndex(branchIndex - 1);
+    Branch *selectedBranch = findBranchByIndex(branchIndex - 1); // find branch
 
     if (selectedBranch == nullptr)
     {
-        cout << "Invalid branch number.\n";
+        cout << "Invalid branch number.\n"; // invalid
         return;
     }
 
-    Customer customer(customerName, customerPhone);
-    selectedBranch->addCustomer(customer);
+    Customer customer(customerName, customerPhone); // create customer
+    selectedBranch->addCustomer(customer);          // add to branch
 
     int choice;
     do
@@ -1609,18 +1600,18 @@ void Restaurant::customerPortal()
         cout << "1. Place Order\n";
         cout << "2. Back\n";
         cout << "Enter Choice: ";
-        cin >> choice;
+        cin >> choice; // read option
 
         switch (choice)
         {
         case 1:
-            selectedBranch->placeOrder(customer);
+            selectedBranch->placeOrder(customer); // place order
             break;
         case 2:
-            cout << "Returning...\n";
+            cout << "Returning...\n"; // exit portal
             return;
         default:
-            cout << "Invalid choice.\n";
+            cout << "Invalid choice.\n"; // invalid option
         }
 
     } while (choice != 2);
@@ -1628,8 +1619,8 @@ void Restaurant::customerPortal()
 
 int main()
 {
-    Restaurant r("My Restaurant");
-    r.loadDefaultData();
+    Restaurant r("My Restaurant"); // create restaurant
+    r.loadDefaultData();           // populate default data
 
     int choice;
     do
@@ -1641,35 +1632,35 @@ int main()
         cout << "4. Customer\n";
         cout << "5. Exit\n";
         cout << "Enter Choice: ";
-        cin >> choice;
+        cin >> choice; // read main menu choice
 
         switch (choice)
         {
         case 1:
-            r.adminPortal();
+            r.adminPortal(); // admin portal
             break;
 
         case 2:
-            r.managerPortal();
+            r.managerPortal(); // manager portal
             break;
 
         case 3:
-            r.employeePortal();
+            r.employeePortal(); // employee portal
             break;
 
         case 4:
-            r.customerPortal();
+            r.customerPortal(); // customer portal
             break;
 
         case 5:
-            cout << "Exiting...\n";
+            cout << "Exiting...\n"; // exit program
             break;
 
         default:
-            cout << "Invalid choice.\n";
+            cout << "Invalid choice.\n"; // invalid option
         }
 
-    } while (choice != 5);
+    } while (choice != 5); // repeat until exit
 
-    return 0;
+    return 0; // end program
 }

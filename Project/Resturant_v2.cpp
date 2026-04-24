@@ -655,7 +655,6 @@ public:
         cout << endl;
 
         cout << left << setw(18) << "Status:" << (completed ? "Completed" : "Pending") << endl;
-        cout << left << setw(18) << "Total Price:" << fixed << setprecision(2) << totalPrice << endl;
 
         cout << "\nOrdered Items:\n";
         for (int i = 0; i < items.size(); i++)
@@ -664,6 +663,10 @@ public:
             cout << "Item " << i + 1 << endl;
             items[i].displayItem();
         }
+
+        printLine('-', 50);
+        cout << left << setw(18) << "Total Price:" << fixed << setprecision(2) << totalPrice << endl;
+        printLine('-', 50);
     }
 };
 
@@ -1472,9 +1475,21 @@ void Restaurant::managerPortal()
             selectedBranch->showCuisines();
             break;
         case 7:
+            if (selectedBranch->getPendingOrderCount() == 0)
+            {
+                cout << "No pending orders.\n";
+                break;
+            }
+
             selectedBranch->showPendingOrders();
             break;
         case 8:
+            if (selectedBranch->getCompletedOrderCount() == 0)
+            {
+                cout << "No completed orders.\n";
+                break;
+            }
+
             selectedBranch->showCompletedOrders();
             break;
         case 9:
