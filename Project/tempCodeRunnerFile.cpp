@@ -1,1 +1,1 @@
-
+getline(cin, name);

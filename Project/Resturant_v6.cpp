@@ -2,6 +2,7 @@
 #include <ctime>     // include time/date utilities
 #include <iomanip>   // include IO manipulators for formatting
 #include <vector>    // include vector container
+#include <fstream>   // include file handling
 #include <limits>    // include numeric limits for cin.ignore
 using namespace std; // use standard namespace to avoid std:: prefix
 
@@ -68,6 +69,23 @@ public:
     int getDay() const { return day; }     // return day
     int getMonth() const { return month; } // return month
     int getYear() const { return year; }   // return year
+
+    void saveToFile(ofstream &fout) const // save date to file
+    {
+        fout << day << "|" << month << "|" << year << endl; // save in dd|mm|yyyy format
+    }
+
+    void loadFromFile(ifstream &fin) // load date from file
+    {
+        int d, m, y;
+        fin >> d;
+        fin.ignore(1, '|'); // ingnore the '|' delimiter, and store day value in d
+        fin >> m;
+        fin.ignore(1, '|');
+        fin >> y;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+        setDate(d, m, y);
+    }
 
     void showDate() const // print date in dd-mm-yyyy format
     {
@@ -142,7 +160,7 @@ class Customer : public Person
     Date joinDate; // record join date
 
 public:
-    Customer() {};                                                              // default constructor
+    Customer() : Person() {};                                                   // default constructor
     Customer(const string &name) : Person(name) {};                             // constructor with name
     Customer(const string &name, const string &phone) : Person(name, phone) {}; // constructor with name and phone
 
@@ -163,7 +181,7 @@ protected:
     double salary = 0.00; // staff salary
 
 public:
-    Staff() {};                                                                                                // default constructor
+    Staff() : Person() {};                                                                                     // default constructor
     Staff(const string &name) : Person(name) {};                                                               // constructor with name
     Staff(const string &name, const string &phone) : Person(name, phone) {};                                   // constructor with name and phone
     Staff(const string &name, const string &phone, double salary) : Person(name, phone) { setSalary(salary); } // constructor with salary
@@ -206,6 +224,8 @@ public:
         return true;                     // success
     }
 
+    string getDesignation() const { return designation; } // return designation
+
     void displayEmployee() const // print employee info
     {
         cout << "Designation: " << designation << "   | ";
@@ -221,7 +241,8 @@ public:
 
     void displayManager() const // print manager info
     {
-        displayStaffInfo(); // print inherited staff info
+        cout << "Role: Manager   | ";
+        displayStaffInfo();
     };
 };
 
@@ -231,9 +252,9 @@ class Admin : public Staff
     string password = "1234";  // admin password
 
 public:
-    Admin() : Staff() {}                                                                          // default constructor
-    Admin(const string &name) : Staff(name) {}                                                    // constructor with name
-    Admin(const string &name, const string &phone, double income) : Staff(name, phone, income) {} // constructor
+    Admin() : Staff() {}                                                   // default constructor
+    Admin(const string &name) : Staff(name) {}                             // constructor with name
+    Admin(const string &name, const string &phone) : Staff(name, phone) {} // constructor
 
     bool login(const string &username, const string &password) const // validate credentials
     {
@@ -241,11 +262,11 @@ public:
             return true; // correct login
         return false;    // fail otherwise
     };
+
     void displayAdmin() const // print admin info
     {
-        cout << "Name: " << getName() << endl;
-        cout << "Phone Number: " << getPhone() << endl;
-        cout << "Income: " << getSalary() << endl;
+        cout << "Role: Admin   | ";
+        displayBasicInfo(); // print basic person info
     };
 };
 
@@ -305,9 +326,23 @@ public:
     double getPrice() const { return dishPrice; } // return dish price
     int getStock() const { return stock; }        // return stock
 
+    void saveToFile(ofstream &fout) const // save dish to file
+    {
+        fout << dishName << "|" << dishPrice << "|" << stock << endl;
+    }
+
+    void loadFromFile(ifstream &fin) // load dish from file
+    {
+        getline(fin, dishName, '|');
+        fin >> dishPrice;
+        fin.ignore(1, '|');
+        fin >> stock;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+
     bool reduceStock(int quantity) // decrease stock for an order
     {
-        if (quantity > 0 && stock >= quantity)
+        if (quantity > 0 && quantity <= stock)
         {
             stock -= quantity; // reduce stock
             return true;       // success
@@ -339,7 +374,7 @@ public:
     {
         cout << left
              << setw(25) << dishName
-             << setw(15) << fixed << setprecision(2) << dishPrice
+             << setw(15) << fixed << setprecision(2) << dishPrice // 9.99 format
              << setw(10) << stock << endl;
     }
 };
@@ -347,7 +382,7 @@ public:
 void Menu::displayMenuTitle() // print menu table header
 {
     printLine(); // separator
-    cout << left
+    cout << left << setw(8) << "No."
          << setw(25) << "Dish Name"
          << setw(15) << "Price"
          << setw(10) << "Stock" << endl;
@@ -356,9 +391,9 @@ void Menu::displayMenuTitle() // print menu table header
 
 void Menu::displayPurchasedTitle() // print purchased item table header
 {
-    cout << "------------------------------------------------\n";
+    printLine();
     cout << left << setw(25) << "Name" << setw(15) << "price " << setw(15) << "Qunatity" << endl;
-    cout << "------------------------------------------------\n";
+    printLine();
 }
 
 class Topping
@@ -398,18 +433,28 @@ public:
     string getToppingName() const { return toppingName; }   // return topping name
     double getToppingPrice() const { return toppingPrice; } // return topping price
 
+    void saveToFile(ofstream &fout) const // save topping to file
+    {
+        fout << toppingName << "|" << toppingPrice << endl;
+    }
+
+    void loadFromFile(ifstream &fin) // load topping from file
+    {
+        getline(fin, toppingName, '|');
+        fin >> toppingPrice;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+
     static void displayToppingTitle(); // declare header function
     void displayTopping() const        // print topping row
     {
-        cout << left << setw(30) << toppingName
-             << setw(15) << fixed << setprecision(2) << toppingPrice << endl;
+        cout << left << setw(30) << toppingName << setw(15) << fixed << setprecision(2) << toppingPrice << endl;
     }
 };
 void Topping::displayToppingTitle() // print topping table header
 {
     printLine();
-    cout << left << setw(30) << "Topping Name"
-         << setw(15) << "Price" << endl;
+    cout << left << setw(8) << "No." << setw(30) << "Topping Name" << setw(15) << "Price" << endl;
     printLine();
 }
 
@@ -445,6 +490,7 @@ public:
         }
         return false; // fail invalid index
     }
+
     bool removeTopping(int index) // remove topping by index
     {
         if (index >= 0 && index < toppings.size())
@@ -482,7 +528,7 @@ public:
 
     Menu *findDishByIndex(int index) // find dish pointer by index
     {
-        if (index >= 0 && index < dishes.size())
+        if (index >= 0 && index < dishes.size()) // user 3, findUserIndex(3-1 = 2) , if (2 >= 0 && 2 < 2) return &dishes[2] else return nullptr
         {
             return &dishes[index]; // return pointer
         }
@@ -496,6 +542,48 @@ public:
             return &toppings[index]; // return pointer
         }
         return nullptr; // invalid index
+    }
+
+    string getCuisineName() const { return cuisineName; } // return cuisine name
+
+    void saveToFile(ofstream &fout) const // save cuisine, dishes, and toppings
+    {
+        fout << cuisineName << endl;
+        fout << dishes.size() << endl;
+        for (const auto &dish : dishes)
+            dish.saveToFile(fout);
+
+        fout << toppings.size() << endl;
+        for (const auto &topping : toppings)
+            topping.saveToFile(fout);
+    }
+
+    void loadFromFile(ifstream &fin) // load cuisine, dishes, and toppings
+    {
+        dishes.clear();
+        toppings.clear();
+
+        getline(fin, cuisineName);
+
+        int dishCount;
+        fin >> dishCount;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+        for (int i = 0; i < dishCount; i++)
+        {
+            Menu dish;
+            dish.loadFromFile(fin);
+            dishes.push_back(dish);
+        }
+
+        int toppingCount;
+        fin >> toppingCount;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+        for (int i = 0; i < toppingCount; i++)
+        {
+            Topping topping;
+            topping.loadFromFile(fin);
+            toppings.push_back(topping);
+        }
     }
 
     void displayCuisineName() const // print cuisine name
@@ -519,11 +607,11 @@ public:
         setQuantity(quantity); // set quantity
     };
 
-    bool setDish(const Menu &dish) // set selected dish
+    void setDish(const Menu &dish) // set selected dish
     {
         selectedDish = dish;
-        return true;
     }
+
     bool setQuantity(int q) // set quantity if positive
     {
         if (q <= 0)
@@ -551,11 +639,46 @@ public:
         return true; // success
     }
 
+    void saveToFile(ofstream &fout) const // save one order item
+    {
+        selectedDish.saveToFile(fout); // save selected dish name, price, stock
+        fout << quantity << endl;      // save quantity
+        fout << itemTotal << endl;     // save item total
+
+        fout << selectedToppings.size() << endl; // save topping count
+        for (const auto &topping : selectedToppings)
+        {
+            topping.saveToFile(fout); // save each selected topping
+        }
+    }
+
+    void loadFromFile(ifstream &fin) // load one order item
+    {
+        selectedToppings.clear();
+
+        selectedDish.loadFromFile(fin); // load selected dish
+        fin >> quantity;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        fin >> itemTotal;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        int toppingCount;
+        fin >> toppingCount;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        for (int i = 0; i < toppingCount; i++)
+        {
+            Topping topping;
+            topping.loadFromFile(fin);
+            selectedToppings.push_back(topping);
+        }
+    }
+
     void displayItem() const // print order item details
     {
         cout << left << setw(18) << "Dish:" << selectedDish.getName() << endl;
         cout << left << setw(18) << "Quantity:" << quantity << endl;
-        cout << left << setw(18) << "Item Total:" << fixed << setprecision(2) << itemTotal << endl;
 
         cout << left << setw(18) << "Toppings:";
         if (selectedToppings.empty())
@@ -573,6 +696,7 @@ public:
             }
         }
         cout << endl;
+        cout << left << setw(18) << "Item Total:" << fixed << setprecision(2) << itemTotal << endl;
     }
 };
 
@@ -606,25 +730,60 @@ public:
     bool isCompleted() const { return completed; }          // return completion status
 
     void addItem(const OrderItem &item) { items.push_back(item); } // add item to order
-    bool removeItem(int index)                                     // remove item by index
-    {
-        if (index < 0 || index >= items.size())
-            return false; // invalid index
-
-        items.erase(items.begin() + index); // erase item
-        return true;                        // success
-    }
 
     bool calculateTotal() // compute order total
     {
         if (items.size() <= 0)
             return false; // no items
+
+        totalPrice = 0.0; // reset total before calculating again
+
         for (const auto &item : items)
         {
             totalPrice += item.getItemTotal(); // accumulate item totals
         }
         return true; // success
     }
+
+    void saveToFile(ofstream &fout) const // save full order
+    {
+        fout << customerName << endl; // save customer name
+        orderDate.saveToFile(fout);   // save order date
+        fout << totalPrice << endl;   // save total price
+        fout << completed << endl;    // save order status
+
+        fout << items.size() << endl; // save item count
+        for (const auto &item : items)
+        {
+            item.saveToFile(fout); // save each order item
+        }
+    }
+
+    void loadFromFile(ifstream &fin) // load full order
+    {
+        items.clear();
+
+        getline(fin, customerName);  // load customer name
+        orderDate.loadFromFile(fin); // load order date
+
+        fin >> totalPrice;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        fin >> completed;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        int itemCount;
+        fin >> itemCount;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        for (int i = 0; i < itemCount; i++)
+        {
+            OrderItem item;
+            item.loadFromFile(fin);
+            items.push_back(item);
+        }
+    }
+
     void markCompleted() { completed = true; } // mark order as completed
 
     void displayOrderCompact() const // print compact order summary
@@ -665,7 +824,7 @@ public:
 class Branch
 {
     string branchName = "Unknown"; // branch name
-    double branchSales = 0.0;      // branch sales amount
+    double branchSales = 0.00;     // branch sales amount
 
     Manager manager;         // branch manager
     bool hasManager = false; // manager assigned flag
@@ -697,7 +856,7 @@ public:
 
     bool setSales(double sales) // set branch sales if positive
     {
-        if (sales > 0)
+        if (sales >= 0)
         {
             branchSales = sales; // store sales
             return true;         // success
@@ -722,6 +881,7 @@ public:
         this->manager = manager;
         hasManager = true; // mark assigned
     }
+
     bool removeManager() // remove manager assignment
     {
         if (!hasManager)
@@ -770,6 +930,7 @@ public:
         customers.erase(customers.begin() + index); // erase customer
         return true;                                // success
     }
+
     int getCustomerCount() const { return customers.size(); } // return count
 
     void showCustomers() const // display all customers
@@ -782,9 +943,9 @@ public:
 
     Customer *findCustomerByIndex(int index) // find customer pointer
     {
-        if (index <= 0 || index > customers.size())
+        if (index < 0 || index >= customers.size())
             return nullptr;       // invalid index
-        return &customers[index]; // BUG: indexing mistake, should be index - 1
+        return &customers[index]; // return pointer
     }
 
     void addCuisine(const Cuisine &cuisine) { cuisines.push_back(cuisine); } // add cuisine
@@ -796,6 +957,7 @@ public:
         cuisines.erase(cuisines.begin() + index); // erase cuisine
         return true;                              // success
     }
+
     int getCuisineCount() const { return cuisines.size(); } // return count
 
     void showCuisines() const // display cuisines list
@@ -822,12 +984,13 @@ public:
         if (index < 0 || index >= pendingOrders.size())
             return false; // invalid index
 
-        double orderTotal = pendingOrders[index].getTotalPrice(); // get order total
-        pendingOrders[index].markCompleted();                     // mark order complete
-        completedOrders.push_back(pendingOrders[index]);          // move to completed
-        addSales(orderTotal);                                     // add sales
-        pendingOrders.erase(pendingOrders.begin() + index);       // remove from pending
-        return true;                                              // success
+        double orderTotal = pendingOrders[index].getTotalPrice();
+        // get order total
+        pendingOrders[index].markCompleted();               // mark order complete
+        completedOrders.push_back(pendingOrders[index]);    // move to completed
+        addSales(orderTotal);                               // add sales
+        pendingOrders.erase(pendingOrders.begin() + index); // remove from pending
+        return true;                                        // success
     }
 
     int getPendingOrderCount() const { return pendingOrders.size(); }     // return pending count
@@ -848,6 +1011,149 @@ public:
         }
     }
 
+    void saveToFile(ofstream &fout) const // save full branch data
+    {
+        fout << "BRANCH" << endl;
+        fout << branchName << endl;
+        fout << branchSales << endl;
+
+        fout << hasManager << endl;
+        if (hasManager)
+        {
+            fout << manager.getName() << "|" << manager.getPhone() << "|" << manager.getSalary() << endl;
+        }
+
+        fout << employees.size() << endl;
+        for (const auto &employee : employees)
+        {
+            fout << employee.getName() << "|" << employee.getPhone() << "|"
+                 << employee.getSalary() << "|" << employee.getDesignation() << endl;
+        }
+
+        fout << customers.size() << endl;
+        for (const auto &customer : customers)
+        {
+            fout << customer.getName() << "|" << customer.getPhone() << endl;
+        }
+
+        fout << cuisines.size() << endl;
+        for (const auto &cuisine : cuisines)
+        {
+            cuisine.saveToFile(fout);
+        }
+
+        fout << pendingOrders.size() << endl; // save pending order count
+        for (const auto &order : pendingOrders)
+        {
+            order.saveToFile(fout); // save each pending order
+        }
+
+        fout << completedOrders.size() << endl; // save completed order count
+        for (const auto &order : completedOrders)
+        {
+            order.saveToFile(fout); // save each completed order
+        }
+    }
+
+    bool loadFromFile(ifstream &fin) // load full branch data
+    {
+        string tag;
+        getline(fin, tag);
+        if (tag != "BRANCH")
+            return false;
+
+        employees.clear();
+        customers.clear();
+        cuisines.clear();
+        pendingOrders.clear();
+        completedOrders.clear();
+
+        getline(fin, branchName);
+        fin >> branchSales;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        fin >> hasManager;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+        if (hasManager)
+        {
+            string name, phone;
+            double salary;
+            getline(fin, name, '|');
+            getline(fin, phone, '|');
+            fin >> salary;
+            fin.ignore(numeric_limits<streamsize>::max(), '\n');
+            manager = Manager(name, phone, salary);
+        }
+
+        int employeeCount;
+        fin >> employeeCount;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+        for (int i = 0; i < employeeCount; i++)
+        {
+            string name, phone, designation;
+            double salary;
+            getline(fin, name, '|');
+            getline(fin, phone, '|');
+            fin >> salary;
+            fin.ignore(1, '|');
+            getline(fin, designation);
+            employees.push_back(Employee(name, phone, salary, designation));
+        }
+
+        int customerCount;
+        fin >> customerCount;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+        for (int i = 0; i < customerCount; i++)
+        {
+            string name, phone;
+            getline(fin, name, '|');
+            getline(fin, phone);
+            customers.push_back(Customer(name, phone));
+        }
+
+        int cuisineCount;
+        fin >> cuisineCount;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+        for (int i = 0; i < cuisineCount; i++)
+        {
+            Cuisine cuisine;
+            cuisine.loadFromFile(fin);
+            cuisines.push_back(cuisine);
+        }
+
+        int pendingCount;
+        if (!(fin >> pendingCount)) // if old file has no orders saved, stop safely
+        {
+            fin.clear();
+            return true;
+        }
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        for (int i = 0; i < pendingCount; i++)
+        {
+            Order order;
+            order.loadFromFile(fin);
+            pendingOrders.push_back(order);
+        }
+
+        int completedCount;
+        if (!(fin >> completedCount)) // if completed orders are missing, stop safely
+        {
+            fin.clear();
+            return true;
+        }
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        for (int i = 0; i < completedCount; i++)
+        {
+            Order order;
+            order.loadFromFile(fin);
+            completedOrders.push_back(order);
+        }
+
+        return true;
+    }
+
     void placeOrder(const Customer &customer) // interactive order placement
     {
         if (cuisines.empty())
@@ -862,7 +1168,7 @@ public:
         while (addAnotherDish) // add dishes loop
         {
             cout << "\n========== Available Cuisines ==========\n";
-            for (int i = 0; i < cuisines.size(); i++)
+            for (int i = 0; i < cuisines.size(); i++) // 5 cuisines, i = 0 to 4
             {
                 cout << i + 1 << ". ";
                 cuisines[i].displayCuisineName(); // list cuisines
@@ -892,7 +1198,7 @@ public:
             if (selectedDish == nullptr)
             {
                 cout << "Invalid dish choice.\n"; // invalid dish
-                continue;
+                continue;                         // skip to next iteration
             }
 
             int quantity;
@@ -1012,7 +1318,7 @@ public:
         for (int i = 0; i < branches.size(); i++)
         {
             branchName = branches[i].getName();          // get branch name
-            printLine();                                 // separator
+            printLine('-', 60);                          // separator
             cout << i + 1 << ": " << branchName << endl; // print branch line
         }
     }
@@ -1030,19 +1336,23 @@ public:
             branchName = branches[i].getName();               // get branch name
             branchSales = branches[i].getSales();             // get sales
 
-            printLine();
+            printLine('-', 60);
             cout << i + 1 << ": " << branchName;
             cout << "  | Sales: " << branchSales;
             cout << "  | Manager: " << (branches[i].managerAssigned() ? ManagerName : "No Manager Assigned") << endl; // show manager status
             totalCustomers += branches[i].getCustomerCount();                                                         // accumulate customers
         }
     }
+
     Branch *findBranchByIndex(int index) // find branch pointer by index
     {
         if (index < 0 || index >= branches.size())
             return nullptr;      // invalid index
         return &branches[index]; // return pointer
     }
+
+    bool saveData(const string &fileName = "restaurant_data.csv") const; // save restaurant data
+    bool loadData(const string &fileName = "restaurant_data.csv");       // load restaurant data
 
     void loadDefaultData() // populate default data
     {
@@ -1101,6 +1411,7 @@ public:
         cout << "Completed Orders: " << totalCompletedOrders << endl;
         cout << "Total Sales: " << fixed << setprecision(2) << totalSales << endl;
         cout << "Overall Cuisines Offered: " << endl;
+        printLine('-', 60);
         branches[0].showCuisines(); // show cuisines of first branch
     }
 
@@ -1126,7 +1437,32 @@ public:
         cout << "Enter Branch Sales: ";
         cin >> sales; // read sales
 
-        addBranch(Branch(branchName, sales)); // add branch
+        // Create a new branch object
+        Branch newBranch(branchName, sales);
+
+        if (!branches.empty()) // If there are already existing branches
+        {
+            // Take the first branch as reference
+            // (we assume all cuisines are same across branches)
+            Branch firstBranch = branches[0];
+            int cuisineCount = firstBranch.getCuisineCount(); // get cuisine count from first branch
+
+            for (int i = 0; i < cuisineCount; i++) // Loop through all cuisines of first branch
+            {
+
+                Cuisine *cuisine = firstBranch.findCuisineByIndex(i); // Get cuisine pointer by index
+
+                if (cuisine != nullptr) // If cuisine exists (safety check)
+                {
+                    // Copy that cuisine into new branch
+                    // This copies dishes + toppings inside it as well
+                    newBranch.addCuisine(*cuisine);
+                }
+            }
+        }
+
+        // Finally add the new branch into restaurant
+        addBranch(newBranch);
         cout << "Branch added successfully.\n";
     }
 
@@ -1209,13 +1545,6 @@ public:
 
     void addCuisineFromInput() // input cuisine data and add to branches
     {
-        if (branches.empty())
-        {
-            cout << "No branches available. Add a branch first.\n"; // no branches
-            return;
-        }
-
-        showAllBranches(); // show branches
 
         string cuisineName;
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear buffer
@@ -1281,9 +1610,49 @@ public:
     void customerPortal(); // declare customer portal
 };
 
+bool Restaurant::saveData(const string &fileName) const // save all restaurant data
+{
+    ofstream fout(fileName);
+    if (!fout)
+        return false;
+
+    fout << restaurantName << endl;
+    fout << branches.size() << endl;
+
+    for (const auto &branch : branches)
+    {
+        branch.saveToFile(fout);
+    }
+
+    return true;
+}
+
+bool Restaurant::loadData(const string &fileName) // load all restaurant data
+{
+    ifstream fin(fileName);
+    if (!fin)
+        return false;
+
+    branches.clear();
+    getline(fin, restaurantName);
+
+    int branchCount;
+    fin >> branchCount;
+    fin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    for (int i = 0; i < branchCount; i++)
+    {
+        Branch branch;
+        if (branch.loadFromFile(fin))
+            branches.push_back(branch);
+    }
+
+    return true;
+}
+
 void Restaurant::adminPortal() // admin interface
 {
-    Admin admin("System Admin"); // create default admin
+    Admin admin("System Admin", "0300040040");
 
     string username, password;
     cout << "\n========== Admin Login ==========\n";
@@ -1305,6 +1674,7 @@ void Restaurant::adminPortal() // admin interface
     do
     {
         cout << "\n========== Admin Portal ==========\n";
+
         cout << "1. Add Branch\n";
         cout << "2. Remove Branch\n";
         cout << "3. Show All Branches\n";
@@ -1312,7 +1682,8 @@ void Restaurant::adminPortal() // admin interface
         cout << "5. Remove Manager from Branch\n";
         cout << "6. Add Cuisine to Branch\n";
         cout << "7. Show Restaurant Summary\n";
-        cout << "8. Back\n";
+        cout << "8. Show Admin Info\n";
+        cout << "9. Back\n";
         cout << "Enter Choice: ";
         cin >> choice; // read choice
 
@@ -1340,13 +1711,19 @@ void Restaurant::adminPortal() // admin interface
             showRestaurantSummary(); // show summary
             break;
         case 8:
+            printLine('-', 60);
+            admin.displayAdmin(); // show admin info
+            printLine('-', 60);
+
+            break;
+        case 9:
             cout << "Returning...\n"; // exit
             return;
         default:
             cout << "Invalid choice.\n"; // invalid option
         }
 
-    } while (choice != 8);
+    } while (choice != 9);
 }
 
 void Restaurant::managerPortal() // manager interface
@@ -1358,8 +1735,7 @@ void Restaurant::managerPortal() // manager interface
     }
 
     int branchIndex;
-    cout << "\n========== Manager Portal ==========\n";
-    showAllBranches(); // show branches
+    showBranchesName(); // show branches
     cout << "Select Branch Number: ";
     cin >> branchIndex; // read branch
 
@@ -1371,12 +1747,13 @@ void Restaurant::managerPortal() // manager interface
         return;
     }
 
+    cout << "\n========== Manager Portal ==========\n";
+    cout << "Selected Branch: " << selectedBranch->getName() << endl;
+
     int choice;
     do
     {
-        cout << "\n========== Manager Portal ==========\n";
-        cout << "Branch: " << selectedBranch->getName() << endl;
-        cout << "1. View Branch Summary\n";
+        cout << "\n1. View Branch Summary\n";
         cout << "2. Add Employee\n";
         cout << "3. View Employees\n";
         cout << "4. Remove Employee\n";
@@ -1384,8 +1761,10 @@ void Restaurant::managerPortal() // manager interface
         cout << "6. View Cuisines\n";
         cout << "7. View Pending Orders\n";
         cout << "8. View Completed Orders\n";
-        cout << "9. Add Stock to Dish\n";
-        cout << "10. Back\n";
+        cout << "9. Show Admin Info\n";
+        cout << "10. Add Stock to Dish\n";
+        cout << "11. View Cuisine Details\n";
+        cout << "12. Back\n";
         cout << "Enter Choice: ";
         cin >> choice; // read manager choice
 
@@ -1394,6 +1773,7 @@ void Restaurant::managerPortal() // manager interface
         case 1:
             selectedBranch->displayBranchSummary(); // show summary
             break;
+
         case 2:
         {
             string name, phone, designation;
@@ -1419,11 +1799,12 @@ void Restaurant::managerPortal() // manager interface
             cout << "Employee added successfully.\n";
             break;
         }
+
         case 3:
             selectedBranch->showEmployees(); // show employees
             break;
+
         case 4:
-        {
             if (selectedBranch->getEmployeeCount() == 0)
             {
                 cout << "No employees to remove.\n"; // none to remove
@@ -1444,13 +1825,15 @@ void Restaurant::managerPortal() // manager interface
                 cout << "Invalid employee number.\n"; // invalid index
             }
             break;
-        }
+
         case 5:
             selectedBranch->showCustomers(); // show customers
             break;
+
         case 6:
             selectedBranch->showCuisines(); // show cuisines
             break;
+
         case 7:
             if (selectedBranch->getPendingOrderCount() == 0)
             {
@@ -1460,6 +1843,7 @@ void Restaurant::managerPortal() // manager interface
 
             selectedBranch->showPendingOrders(); // show pending orders
             break;
+
         case 8:
             if (selectedBranch->getCompletedOrderCount() == 0)
             {
@@ -1469,7 +1853,15 @@ void Restaurant::managerPortal() // manager interface
 
             selectedBranch->showCompletedOrders(); // show completed
             break;
+
         case 9:
+            printLine('-', 90);
+            selectedBranch->getManager().displayManager(); // show manager info
+            printLine('-', 90);
+
+            break;
+
+        case 10:
         {
             int cusineIndex, dishIndex, quantity;
             selectedBranch->showCuisines(); // show cuisines
@@ -1497,18 +1889,48 @@ void Restaurant::managerPortal() // manager interface
 
             cout << "Enter Quantity to Add: ";
             cin >> quantity; // read quantity
+            if (quantity <= 0)
+            {
+                cout << "Invalid quantity.\n";
+                break;
+            }
 
             selectedDish->increaseStock(quantity); // add stock
             cout << "Stock added successfully.\n";
+
+            break;
         }
-        case 10:
+
+        case 11:
+        {
+            int cuisineIndex;
+            selectedBranch->showCuisines(); // show cuisines
+            cout << "Select Cuisine Number to View Details: ";
+            cin >> cuisineIndex; // read cuisine index
+
+            Cuisine *selectedCuisine = selectedBranch->findCuisineByIndex(cuisineIndex - 1); // find cuisine
+
+            if (selectedCuisine == nullptr)
+            {
+                cout << "Invalid cuisine number.\n"; // invalid cuisine
+                break;
+            }
+
+            printLine('-', 60);
+            selectedCuisine->showDishes(); // show cuisine Dishes
+            printLine('-', 60);
+
+            break;
+        }
+
+        case 12:
             cout << "Returning...\n"; // exit manager portal
             break;
         default:
             cout << "Invalid choice.\n"; // invalid option
         }
 
-    } while (choice != 9);
+    } while (choice != 12);
 }
 
 void Restaurant::employeePortal() // employee interface
@@ -1521,7 +1943,7 @@ void Restaurant::employeePortal() // employee interface
 
     int branchIndex;
     cout << "\n========== Employee Portal ==========\n";
-    showAllBranches(); // show branches
+    showBranchesName(); // show branches
     cout << "Select Branch Number: ";
     cin >> branchIndex; // read branch index
 
@@ -1537,7 +1959,8 @@ void Restaurant::employeePortal() // employee interface
     do
     {
         cout << "\n========== Employee Portal ==========\n";
-        cout << "Branch: " << selectedBranch->getName() << endl;
+        cout << "Selected Branch: " << selectedBranch->getName() << endl;
+        printLine('-', 60);
 
         cout << "1. View Pending Orders\n";
         cout << "2. Complete Order\n";
@@ -1654,7 +2077,12 @@ void Restaurant::customerPortal() // customer interface
 int main()
 {
     Restaurant r("My Restaurant"); // create restaurant
-    r.loadDefaultData();           // populate default data
+
+    if (!r.loadData()) // load saved data; if file does not exist, create default data once
+    {
+        r.loadDefaultData();
+        r.saveData();
+    }
 
     int choice;
     do
@@ -1687,7 +2115,8 @@ int main()
             break;
 
         case 5:
-            cout << "Exiting...\n"; // exit program
+            r.saveData();                       // save all changes before exit
+            cout << "Data saved. Exiting...\n"; // exit program
             break;
 
         default:
