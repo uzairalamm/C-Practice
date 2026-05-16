@@ -21,21 +21,21 @@ StaffID INT PRIMARY KEY IDENTITY(1,1),
 BranchID INT FOREIGN KEY REFERENCES Branch(BranchID),
 Name NVARCHAR(70) NOT NULL,
 
-Phone NVARCHAR(20) 
+Phone NVARCHAR(20)  NOT NULL
 CONSTRAINT CHECK_StaffPhone CHECK (PHONE NOT LIKE '%[^0-9]%'),
 
-Salary DECIMAL (8,2) 
-CONSTRAINT CHECK_StaffSalary CHECK (Salary > 35000),
+Salary DECIMAL (8,2) NOT NULL
+CONSTRAINT CHECK_StaffSalary CHECK (Salary > 0),
 
-Role NVARCHAR(30)
+Role NVARCHAR(30) NOT NULL
 CONSTRAINT CHECK_StaffRole CHECK (Role IN ('Admin', 'Manager', 'Employee')),
 
 
-Designation NVARCHAR(70)
-CONSTRAINT CHECK_StaffDesignation  CHECK (Designation IN ('Chef', 'Waiter', 'Helper')),
+Designation NVARCHAR(70) NULL
+CONSTRAINT CHECK_StaffDesignation  CHECK (Designation IS NULL OR Designation IN ('Chef', 'Waiter', 'Helper')),
 
-Username NVARCHAR(70) UNIQUE,
-Password NVARCHAR(70) 
+Username NVARCHAR(70) UNIQUE NULL,
+Password NVARCHAR(70)  NULL
 )
 
 
@@ -43,14 +43,85 @@ CREATE TABLE Customer(
 CustomerID INT PRIMARY KEY IDENTITY(1,1),
 Name NVARCHAR(70) NOT NULL,
 
-Phone NVARCHAR(20) 
+Phone NVARCHAR(20) UNIQUE NOT NULL
 CONSTRAINT CHECK_CustomerPhone CHECK (PHONE NOT LIKE '%[^0-9]%'),
 
 JoinDate DATE DEFAULT (GETDATE())
 )
 
-CREATE BranchCustomer(
+CREATE TABLE BranchCustomer(
 BranchID INT FOREIGN KEY REFERENCES Branch(BranchID),
-CustomerID INT FOREIGN KEY REFERENCE Customer(CustomerID),
-PRIMARY KEY (BranchID, CustomerID)
+CustomerID INT FOREIGN KEY REFERENCES Customer(CustomerID),
+PRIMARY KEY  (BranchID, CustomerID)  
 )
+
+CREATE TABLE Cuisine(
+CuisineID INT PRIMARY KEY IDENTITY(1,1),
+CuisineName NVARCHAR(70) UNIQUE NOT NULL
+)
+
+CREATE TABLE BranchCuisine(
+BranchCuisineID INT PRIMARY KEY IDENTITY(1,1),
+
+BranchID INT FOREIGN KEY REFERENCES Branch(BranchID),
+CuisineID INT FOREIGN KEY REFERENCES Cuisine(CuisineID) 
+
+CONSTRAINT UQ_BranchCuisine UNIQUE(BranchID, CuisineID)
+)
+
+CREATE TABLE MenuItem(
+MenuItemID INT PRIMARY KEY IDENTITY(1,1),
+BranchCuisineID INT FOREIGN KEY REFERENCES BranchCuisine(BranchCuisineID),
+DishName NVARCHAR(70) NOT NULL,
+Price DECIMAL(8,2) NOT NULL CHECK (Price > 0),
+Stock INT NOT NULL DEFAULT(0) CHECK (Stock >= 0)  
+
+CONSTRAINT UQ_MenuItem UNIQUE(BranchCuisineID, DishName)
+)
+
+CREATE TABLE Topping(
+ToppingID INT PRIMARY KEY IDENTITY(1,1),
+BranchCuisineID INT FOREIGN KEY REFERENCES BranchCuisine(BranchCuisineID),
+ToppingName NVARCHAR(70) NOT NULL,
+Price DECIMAL(8,2) NOT NULL CHECK (Price > 0)
+
+CONSTRAINT UQ_Topping  UNIQUE(BranchCuisineID, ToppingName)
+
+)
+
+CREATE TABLE Orders(
+OrderID INT PRIMARY KEY IDENTITY(1,1),
+BranchID INT FOREIGN KEY REFERENCES Branch(BranchID),
+CustomerID INT FOREIGN KEY REFERENCES Customer(CustomerID),
+
+OrderDate DATE DEFAULT (GETDATE()),
+TotalPrice DECIMAL(8,2) NOT NULL DEFAULT 0
+CHECK (TotalPrice >= 0),
+
+Status NVARCHAR(50) NOT NULL DEFAULT 'Pending'
+CONSTRAINT CHECK_ORDER_STATUS CHECK (Status IN ('Pending', 'Completed', 'Cancelled'))
+)
+
+CREATE TABLE OrderItem(
+OrderItemID INT PRIMARY KEY IDENTITY(1,1),
+
+OrderID INT FOREIGN KEY REFERENCES Orders(OrderID),
+MenuItemID INT FOREIGN KEY REFERENCES MenuItem(MenuItemID),
+
+Quantity INT NOT NULL CHECK (Quantity > 0),
+ItemTotal DECIMAL(8,2) NOT NULL CHECK (ItemTotal >= 0) 
+)
+
+CREATE TABLE OrderItemTopping(
+OrderItemID INT FOREIGN KEY REFERENCES OrderItem(OrderItemID),
+
+ToppingID INT FOREIGN KEY REFERENCES Topping(ToppingID),
+PRIMARY KEY (OrderItemID, ToppingID)
+)
+
+ALTER TABLE Restaurant
+ADD AdminID INT FOREIGN KEY REFERENCES Staff(StaffID)
+
+
+ALTER TABLE Branch
+ADD ManagerID INT FOREIGN KEY REFERENCES Staff(StaffID)

@@ -7,47 +7,37 @@ private:
     int value;
 
 public:
-    // Constructor
     Number(int v = 0)
     {
         value = v;
     }
 
-    // Getter
     int getValue() const
     {
         return value;
     }
 
-    // ---------------- MEMBER FUNCTION VERSION ----------------
-    // Overload + operator using member function
     Number operator+(const Number &other) const
     {
         cout << "Member + called: " << value << " + " << other.value << endl;
         return Number(value + other.value);
     }
 
-    // Overload == operator using member function
     bool operator==(const Number &other) const
     {
         return value == other.value;
     }
 
-    // Display function
     void display() const
     {
         cout << value;
     }
 
-    // ---------------- FRIEND FUNCTION VERSION ----------------
-    // Friend function to overload +
     friend Number addFriend(const Number &n1, const Number &n2);
 
-    // Friend function to overload operator+
     friend Number operator-(const Number &n1, const Number &n2); // optional example
 };
 
-// Friend function for addition
 Number addFriend(const Number &n1, const Number &n2)
 {
     cout << "Friend add called: " << n1.value << " + " << n2.value << endl;
@@ -67,7 +57,6 @@ int main()
     n3.display();
     cout << "\n\n";
 
-    // Member function + operator
     cout << "Expression: n1 + n2 + n3\n";
     Number result = n1 + n2 + n3;
 
@@ -75,7 +64,6 @@ int main()
     result.display();
     cout << "\n\n";
 
-    // Comparison using ==
     Number n4(60);
 
     cout << "Comparing result with n4:\n";

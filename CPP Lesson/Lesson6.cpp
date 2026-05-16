@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <limits>
 using namespace std;
 
 // =======================Lets Start With Good Practice the below code is too Messy========================= //
@@ -760,38 +761,74 @@ using namespace std;
 //     cout << "Score          : " << (score / double(size)) * 100 << "% \n";
 // }
 
+// int main()
+// {
+// int n = 7;
+// int mid = n / 2 + 1;
+
+// for (int i = 1; i <= n; i++)
+// {
+//     for (int j = 1; j <= n; j++)
+//     {
+//         if (i == mid || j == mid || (i == 1 && j >= mid) || (i <= mid && j == 1) || (i == n & j <= mid) || (j == n && i >= mid))
+//         {
+//             cout << " *";
+//         }
+//         else
+//             cout << "  ";
+//     }
+//     cout << endl;
+// }
+
+// string str = "Hey Uzair, Whats Up!";
+// int lenght = str.length();
+// string reverse = "";
+
+// for (int i = lenght - 1; i >= 0; i--)
+// {
+//     reverse += str[i];
+// }
+// cout << reverse << endl;
+// cout << endl;
+
+// for (char &n : str)
+// {
+//     cout << n << " ";
+// }
+// }
+
+bool inputValidator(int &input)
+{
+    if (cin.fail())
+    {
+        cin.clear();                                         // clear the error state
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
+        return false;                                        // indicate invalid input
+    }
+
+    if (cin.peek() != '\n')
+    {                                                        // check if there is any non-numeric input
+        cin.clear();                                         // clear the error state
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
+        return false;                                        // indicate invalid input
+    }
+
+    return true; // indicate valid input
+}
+
 int main()
 {
-    // int n = 7;
-    // int mid = n / 2 + 1;
+    int num;
 
-    // for (int i = 1; i <= n; i++)
-    // {
-    //     for (int j = 1; j <= n; j++)
-    //     {
-    //         if (i == mid || j == mid || (i == 1 && j >= mid) || (i <= mid && j == 1) || (i == n & j <= mid) || (j == n && i >= mid))
-    //         {
-    //             cout << " *";
-    //         }
-    //         else
-    //             cout << "  ";
-    //     }
-    //     cout << endl;
-    // }
-
-    string str = "Hey Uzair, Whats Up!";
-    int lenght = str.length();
-    string reverse = "";
-
-    for (int i = lenght - 1; i >= 0; i--)
+    do
     {
-        reverse += str[i];
-    }
-    cout << reverse << endl;
-    cout << endl;
-
-    for (char &n : str)
-    {
-        cout << n << " ";
-    }
+        cout << "Enter a number: ";
+        cin >> num;
+        if (!inputValidator(num))
+        {
+            cout << "Invalid input. Please enter a valid number.\n";
+            continue;
+        }
+        break;
+    } while (true);
 }

@@ -70,6 +70,23 @@ public:
     int getMonth() const { return month; } // return month
     int getYear() const { return year; }   // return year
 
+    void saveToFile(ofstream &fout) const // save date to file
+    {
+        fout << day << "|" << month << "|" << year << endl; // save in dd|mm|yyyy format
+    }
+
+    void loadFromFile(ifstream &fin) // load date from file
+    {
+        int d, m, y;
+        fin >> d;
+        fin.ignore(1, '|'); // ingnore the '|' delimiter, and store day value in d
+        fin >> m;
+        fin.ignore(1, '|');
+        fin >> y;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+        setDate(d, m, y);
+    }
+
     void showDate() const // print date in dd-mm-yyyy format
     {
         cout << right << setfill('0') << setw(2) << day << "-" // print day with leading zeros
@@ -84,6 +101,25 @@ void printLine(char ch = '-', int width = 100) // print separator line
         cout << ch;                 // print character
     cout << endl;                   // new line after line
 };
+
+bool inputValidator(int &input)
+{
+    if (cin.fail())
+    {
+        cin.clear();                                         // clear the error state
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
+        return false;                                        // indicate invalid input
+    }
+
+    if (cin.peek() != '\n')
+    {                                                        // check if there is any non-numeric input
+        cin.clear();                                         // clear the error state
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
+        return false;                                        // indicate invalid input
+    }
+
+    return true; // indicate valid input
+}
 
 // base class Person to represent common attributes of people in the restaurant
 class Person
@@ -622,6 +658,42 @@ public:
         return true; // success
     }
 
+    void saveToFile(ofstream &fout) const // save one order item
+    {
+        selectedDish.saveToFile(fout); // save selected dish name, price, stock
+        fout << quantity << endl;      // save quantity
+        fout << itemTotal << endl;     // save item total
+
+        fout << selectedToppings.size() << endl; // save topping count
+        for (const auto &topping : selectedToppings)
+        {
+            topping.saveToFile(fout); // save each selected topping
+        }
+    }
+
+    void loadFromFile(ifstream &fin) // load one order item
+    {
+        selectedToppings.clear();
+
+        selectedDish.loadFromFile(fin); // load selected dish
+        fin >> quantity;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        fin >> itemTotal;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        int toppingCount;
+        fin >> toppingCount;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        for (int i = 0; i < toppingCount; i++)
+        {
+            Topping topping;
+            topping.loadFromFile(fin);
+            selectedToppings.push_back(topping);
+        }
+    }
+
     void displayItem() const // print order item details
     {
         cout << left << setw(18) << "Dish:" << selectedDish.getName() << endl;
@@ -683,11 +755,52 @@ public:
         if (items.size() <= 0)
             return false; // no items
 
+        totalPrice = 0.0; // reset total before calculating again
+
         for (const auto &item : items)
         {
             totalPrice += item.getItemTotal(); // accumulate item totals
         }
         return true; // success
+    }
+
+    void saveToFile(ofstream &fout) const // save full order
+    {
+        fout << customerName << endl; // save customer name
+        orderDate.saveToFile(fout);   // save order date
+        fout << totalPrice << endl;   // save total price
+        fout << completed << endl;    // save order status
+
+        fout << items.size() << endl; // save item count
+        for (const auto &item : items)
+        {
+            item.saveToFile(fout); // save each order item
+        }
+    }
+
+    void loadFromFile(ifstream &fin) // load full order
+    {
+        items.clear();
+
+        getline(fin, customerName);  // load customer name
+        orderDate.loadFromFile(fin); // load order date
+
+        fin >> totalPrice;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        fin >> completed;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        int itemCount;
+        fin >> itemCount;
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        for (int i = 0; i < itemCount; i++)
+        {
+            OrderItem item;
+            item.loadFromFile(fin);
+            items.push_back(item);
+        }
     }
 
     void markCompleted() { completed = true; } // mark order as completed
@@ -849,9 +962,9 @@ public:
 
     Customer *findCustomerByIndex(int index) // find customer pointer
     {
-        if (index <= 0 || index > customers.size())
+        if (index < 0 || index >= customers.size())
             return nullptr;       // invalid index
-        return &customers[index]; // BUG: indexing mistake, should be index - 1
+        return &customers[index]; // return pointer
     }
 
     void addCuisine(const Cuisine &cuisine) { cuisines.push_back(cuisine); } // add cuisine
@@ -947,6 +1060,18 @@ public:
         {
             cuisine.saveToFile(fout);
         }
+
+        fout << pendingOrders.size() << endl; // save pending order count
+        for (const auto &order : pendingOrders)
+        {
+            order.saveToFile(fout); // save each pending order
+        }
+
+        fout << completedOrders.size() << endl; // save completed order count
+        for (const auto &order : completedOrders)
+        {
+            order.saveToFile(fout); // save each completed order
+        }
     }
 
     bool loadFromFile(ifstream &fin) // load full branch data
@@ -1015,6 +1140,36 @@ public:
             cuisines.push_back(cuisine);
         }
 
+        int pendingCount;
+        if (!(fin >> pendingCount)) // if old file has no orders saved, stop safely
+        {
+            fin.clear();
+            return true;
+        }
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        for (int i = 0; i < pendingCount; i++)
+        {
+            Order order;
+            order.loadFromFile(fin);
+            pendingOrders.push_back(order);
+        }
+
+        int completedCount;
+        if (!(fin >> completedCount)) // if completed orders are missing, stop safely
+        {
+            fin.clear();
+            return true;
+        }
+        fin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        for (int i = 0; i < completedCount; i++)
+        {
+            Order order;
+            order.loadFromFile(fin);
+            completedOrders.push_back(order);
+        }
+
         return true;
     }
 
@@ -1039,8 +1194,20 @@ public:
             }
 
             int cuisineChoice;
-            cout << "Select Cuisine Number: ";
-            cin >> cuisineChoice; // choose cuisine
+
+            do
+            {
+                cout << "Select Cuisine Number: ";
+                cin >> cuisineChoice; // choose cuisine
+
+                if (!inputValidator(cuisineChoice))
+                {
+                    cout << "Invalid input. Please enter a valid cuisine number.\n";
+                    continue;
+                }
+
+                break;
+            } while (true);
 
             Cuisine *selectedCuisine = findCuisineByIndex(cuisineChoice - 1); // find cuisine
 
@@ -1054,8 +1221,18 @@ public:
             selectedCuisine->showDishes(); // show dishes
 
             int dishChoice;
-            cout << "Select Dish Number: ";
-            cin >> dishChoice; // choose dish
+
+            do
+            {
+                cout << "Select Dish Number: ";
+                cin >> dishChoice; // choose dish
+                if (!inputValidator(dishChoice))
+                {
+                    cout << "Invalid input. Please enter a valid dish number.\n";
+                    continue;
+                }
+                break;
+            } while (true);
 
             Menu *selectedDish = selectedCuisine->findDishByIndex(dishChoice - 1); // find dish
 
@@ -1066,8 +1243,20 @@ public:
             }
 
             int quantity;
-            cout << "Enter Quantity: ";
-            cin >> quantity; // read quantity
+
+            do
+            {
+                cout << "Enter Quantity: ";
+                cin >> quantity; // read quantity
+
+                if (!inputValidator(quantity))
+                {
+                    cout << "Invalid input. Please enter a valid quantity.\n";
+                    continue;
+                }
+
+                break;
+            } while (true);
 
             if (quantity <= 0)
             {
@@ -1334,8 +1523,19 @@ public:
     {
         int index;
         showAllBranches(); // show branches
-        cout << "Enter Branch Index to Remove (starting from 1): ";
-        cin >> index; // read index
+        do
+        {
+            cout << "Enter Branch Index to Remove (starting from 1): ";
+            cin >> index; // read index
+
+            if (!inputValidator(index))
+            {
+                cout << "Invalid input. Please enter a valid branch index.\n";
+                continue;
+            }
+
+            break;
+        } while (true);
 
         if (removeBranch(index - 1)) // remove branch
             cout << "Branch removed successfully.\n";
@@ -1350,8 +1550,19 @@ public:
 
         showAllBranches(); // show branches
         int branchIndex;
-        cout << "Enter Branch Number: ";
-        cin >> branchIndex; // read branch number
+        do
+        {
+            cout << "Enter Branch Number: ";
+            cin >> branchIndex; // read branch number
+
+            if (!inputValidator(branchIndex))
+            {
+                cout << "Invalid input. Please enter a valid branch index.\n";
+                continue;
+            }
+
+            break;
+        } while (true);
 
         Branch *selectedBranch = findBranchByIndex(branchIndex - 1); // find branch
         if (selectedBranch == nullptr)
@@ -1390,8 +1601,19 @@ public:
         showAllBranches(); // show branches
 
         int branchIndex;
-        cout << "Enter Branch Number: ";
-        cin >> branchIndex; // read branch number
+        do
+        {
+            cout << "Enter Branch Number: ";
+            cin >> branchIndex; // read branch number
+
+            if (!inputValidator(branchIndex))
+            {
+                cout << "Invalid input. Please enter a valid branch index.\n";
+                continue;
+            }
+
+            break;
+        } while (true);
 
         Branch *selectedBranch = findBranchByIndex(branchIndex - 1); // find branch
 
@@ -1418,8 +1640,19 @@ public:
         Cuisine cuisine(cuisineName); // create cuisine
 
         int dishCount;
-        cout << "How many dishes do you want to add? ";
-        cin >> dishCount; // read dish count
+        do
+        {
+            cout << "How many dishes do you want to add? ";
+            cin >> dishCount; // read dish count
+
+            if (!inputValidator(dishCount))
+            {
+                cout << "Invalid input. Please enter a valid dish count.\n";
+                continue;
+            }
+
+            break;
+        } while (true);
 
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear buffer
         for (int i = 0; i < dishCount; i++)
@@ -1434,16 +1667,37 @@ public:
             cout << "Price: ";
             cin >> price; // read price
 
-            cout << "Stock: ";
-            cin >> stock; // read stock
+            do
+            {
+                cout << "Stock: ";
+                cin >> stock; // read stock
+                if (!inputValidator(stock))
+                {
+                    cout << "Invalid input. Please enter a valid stock quantity.\n";
+                    continue;
+                }
+                break;
+            } while (true);
 
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear buffer
             cuisine.addDish(Menu(dishName, price, stock));       // add dish
         }
 
         int toppingCount;
-        cout << "\nHow many toppings do you want to add? ";
-        cin >> toppingCount; // read topping count
+
+        do
+        {
+            cout << "\nHow many toppings do you want to add? ";
+            cin >> toppingCount; // read topping count
+
+            if (!inputValidator(toppingCount))
+            {
+                cout << "Invalid input. Please enter a valid topping count.\n";
+                continue;
+            }
+
+            break;
+        } while (true);
 
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear buffer
         for (int i = 0; i < toppingCount; i++)
@@ -1548,8 +1802,20 @@ void Restaurant::adminPortal() // admin interface
         cout << "7. Show Restaurant Summary\n";
         cout << "8. Show Admin Info\n";
         cout << "9. Back\n";
-        cout << "Enter Choice: ";
-        cin >> choice; // read choice
+
+        do
+        {
+            cout << "Enter Choice: ";
+            cin >> choice; // read choice
+
+            if (!inputValidator(choice))
+            {
+                cout << "Invalid input. Please enter a valid choice.\n";
+                continue;
+            }
+
+            break;
+        } while (true);
 
         switch (choice)
         {
@@ -1599,9 +1865,20 @@ void Restaurant::managerPortal() // manager interface
     }
 
     int branchIndex;
+
     showBranchesName(); // show branches
-    cout << "Select Branch Number: ";
-    cin >> branchIndex; // read branch
+    do
+    {
+        cout << "Select Branch Number: ";
+        cin >> branchIndex; // read branch
+        if (!inputValidator(branchIndex))
+        {
+            cout << "Invalid input. Please enter a valid branch number.\n";
+            continue;
+        }
+        break;
+
+    } while (true);
 
     Branch *selectedBranch = findBranchByIndex(branchIndex - 1); // find branch
 
@@ -1626,9 +1903,23 @@ void Restaurant::managerPortal() // manager interface
         cout << "7. View Pending Orders\n";
         cout << "8. View Completed Orders\n";
         cout << "9. Show Admin Info\n";
-        cout << "10. Back\n";
-        cout << "Enter Choice: ";
-        cin >> choice; // read manager choice
+        cout << "10. Add Stock to Dish\n";
+        cout << "11. View Cuisine Details\n";
+        cout << "12. Back\n";
+
+        do
+        {
+            cout << "Enter Choice: ";
+            cin >> choice; // read manager choice
+
+            if (!inputValidator(choice))
+            {
+                cout << "Invalid input. Please enter a valid choice.\n";
+                continue;
+            }
+
+            break;
+        } while (true);
 
         switch (choice)
         {
@@ -1675,8 +1966,20 @@ void Restaurant::managerPortal() // manager interface
 
             selectedBranch->showEmployees(); // list employees
             int empIndex;
-            cout << "Enter Employee Number to Remove: ";
-            cin >> empIndex; // read index
+
+            do
+            {
+                cout << "Enter Employee Number to Remove: ";
+                cin >> empIndex; // read index
+
+                if (!inputValidator(empIndex))
+                {
+                    cout << "Invalid input. Please enter a valid employee number.\n";
+                    continue;
+                }
+
+                break;
+            } while (true);
 
             if (selectedBranch->removeEmployee(empIndex - 1))
             {
@@ -1724,13 +2027,120 @@ void Restaurant::managerPortal() // manager interface
             break;
 
         case 10:
+        {
+            int cusineIndex, dishIndex, quantity;
+            selectedBranch->showCuisines(); // show cuisines
+            do
+            {
+                cout << "Select Cuisine Number: ";
+                cin >> cusineIndex; // read cuisine index
+
+                if (!inputValidator(cusineIndex))
+                {
+                    cout << "Invalid input. Please enter a valid cuisine number.\n";
+                    continue;
+                }
+
+                break;
+            } while (true);
+
+            Cuisine *selectedCuisine = selectedBranch->findCuisineByIndex(cusineIndex - 1); // find cuisine
+
+            if (selectedCuisine == nullptr)
+            {
+                cout << "Invalid cuisine number.\n"; // invalid cuisine
+                break;
+            }
+
+            selectedCuisine->showDishes(); // show dishes
+
+            do
+            {
+                cout << "Select Dish Number: ";
+                cin >> dishIndex; // read dish index
+
+                if (!inputValidator(dishIndex))
+                {
+                    cout << "Invalid input. Please enter a valid dish number.\n";
+                    continue;
+                }
+
+                break;
+            } while (true);
+
+            Menu *selectedDish = selectedCuisine->findDishByIndex(dishIndex - 1); // find dish
+            if (selectedDish == nullptr)
+            {
+                cout << "Invalid dish number.\n"; // invalid dish
+                break;
+            }
+
+            do
+            {
+                cout << "Enter Quantity to Add: ";
+                cin >> quantity; // read quantity
+
+                if (!inputValidator(quantity))
+                {
+                    cout << "Invalid input. Please enter a valid quantity.\n";
+                    continue;
+                }
+
+                break;
+            } while (true);
+
+            if (quantity <= 0)
+            {
+                cout << "Invalid quantity.\n";
+                break;
+            }
+
+            selectedDish->increaseStock(quantity); // add stock
+            cout << "Stock added successfully.\n";
+
+            break;
+        }
+
+        case 11:
+        {
+            int cuisineIndex;
+            selectedBranch->showCuisines(); // show cuisines
+
+            do
+            {
+                cout << "Select Cuisine Number to View Details: ";
+                cin >> cuisineIndex; // read cuisine index
+                if (!inputValidator(cuisineIndex))
+                {
+                    cout << "Invalid input. Please enter a valid cuisine number.\n";
+                    continue;
+                }
+                break;
+            } while (true);
+
+            Cuisine *selectedCuisine = selectedBranch->findCuisineByIndex(cuisineIndex - 1); // find cuisine
+
+            if (selectedCuisine == nullptr)
+            {
+                cout << "Invalid cuisine number.\n"; // invalid cuisine
+                break;
+            }
+
+            printLine('-', 60);
+            selectedCuisine->showDishes(); // show cuisine Dishes
+            printLine('-', 60);
+
+            break;
+        }
+
+        case 12:
             cout << "Returning...\n"; // exit manager portal
             break;
         default:
             cout << "Invalid choice.\n"; // invalid option
         }
 
-    } while (choice != 10);
+    } while (choice != 12);
 }
 
 void Restaurant::employeePortal() // employee interface

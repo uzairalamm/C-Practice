@@ -1,2 +1,1 @@
-
-        if (i == size && serial != participant[i].getMySerial())
+ virtual void sound() const = 0
