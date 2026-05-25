@@ -1,1 +1,2 @@
- virtual void sound() const = 0
+
+    void display() const

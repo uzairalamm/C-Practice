@@ -427,3 +427,119 @@ using namespace std;
 //     // so Dog dogPtr = &animal is not allowed
 //     return 0;
 // }
+
+// class Student
+// {
+//     static int count;
+//     int id = 0;
+//     string name = "Unknown";
+
+// public:
+//     Student() { id = ++count; }
+//     Student(string name) : name(name) { id = ++count; };
+//     Student(int id, string name) : Student(name) { this->id = id; }
+
+//     static void displayCount()
+//     {
+//         cout << "Total Students: " << count << endl;
+//     }
+
+//     void display() const
+//     {
+//         cout << "Count: " << count << endl;
+//         cout << "Student ID: " << id << ", Name: " << name << endl;
+//     }
+// };
+// int Student::count = 0;
+
+// int main()
+// {
+//     Student s1;
+//     s1.display();
+
+//     Student s2("Alice");
+//     s2.display();
+
+//     Student s3(10, "Bob");
+//     s3.display();
+
+//     Student::displayCount();
+
+//     return 0;
+// }
+
+// class A
+// {
+// public:
+//     static int count;
+//     const int id = 0;
+//     A() : id(++count) {}
+//     void display() const
+//     {
+//         cout << "Object ID: " << id << endl;
+//     }
+// };
+
+// int A::count = 0;
+
+// int main()
+// {
+//     A a1, a2, a3;
+
+//     a1.display();                                          // Output: Object ID: 1
+//     a2.display();                                          // Output: Object ID: 2
+//     a3.display();                                          // Output: Object ID: 3
+//     cout << "Total Objects Created: " << A::count << endl; // This will cause a compilation error because static member variables must be defined outside the class.
+//     return 0;
+// }
+
+// class A
+// {
+//     int id = 0;
+//     string name = "Unknown";
+//     static int count;
+
+// public:
+//     A() : id(++count) {};
+//     A(string n, int id) : name(n), id(++count) { this->id = id; };
+
+//     static void displayCount()
+//     {
+//         cout << "Total Objects Created: " << count << endl;
+//     }
+
+//     void display() const
+//     {
+//         cout << "ID: " << id << ", Name: " << name << endl;
+//     }
+// };
+
+// int A::count = 0;
+// int main()
+// {
+//     const A a1;
+//     a1.display(); // Output: ID: 0, Name: Unknown
+
+//     A a2("Alice", 10);
+//     a2.display(); // Output: ID: 10, Name: Alice
+
+//     return 0;
+// }
+
+class A
+{
+public:
+    virtual void show() { cout << "Base\n"; }
+};
+
+class B : public A
+{
+public:
+    void show() override { cout << "Derived\n"; }
+};
+
+int main()
+{
+    A *ptr = new B;
+    ptr->show();
+}

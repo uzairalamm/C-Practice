@@ -797,38 +797,54 @@ using namespace std;
 // }
 // }
 
-bool inputValidator(int &input)
+// bool inputValidator(int &input)
+// {
+//     if (cin.fail())
+//     {
+//         cin.clear();                                         // clear the error state
+//         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
+//         return false;                                        // indicate invalid input
+//     }
+
+//     if (cin.peek() != '\n')
+//     {                                                        // check if there is any non-numeric input
+//         cin.clear();                                         // clear the error state
+//         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
+//         return false;                                        // indicate invalid input
+//     }
+
+//     return true; // indicate valid input
+// }
+
+// int main()
+// {
+//     int num;
+
+//     do
+//     {
+//         cout << "Enter a number: ";
+//         cin >> num;
+//         if (!inputValidator(num))
+//         {
+//             cout << "Invalid input. Please enter a valid number.\n";
+//             continue;
+//         }
+//         break;
+//     } while (true);
+// }
+int x = 100; // Global Variable
+
+int funtion()
 {
-    if (cin.fail())
-    {
-        cin.clear();                                         // clear the error state
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
-        return false;                                        // indicate invalid input
-    }
-
-    if (cin.peek() != '\n')
-    {                                                        // check if there is any non-numeric input
-        cin.clear();                                         // clear the error state
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard invalid input
-        return false;                                        // indicate invalid input
-    }
-
-    return true; // indicate valid input
+    int x = 10;
+    return x;
 }
 
 int main()
 {
-    int num;
+    int x = 20;
+    cout << "Local x: " << x << endl;
+    cout << "Global X: " << ::x << endl;
 
-    do
-    {
-        cout << "Enter a number: ";
-        cin >> num;
-        if (!inputValidator(num))
-        {
-            cout << "Invalid input. Please enter a valid number.\n";
-            continue;
-        }
-        break;
-    } while (true);
+    cout << "Function x: " << funtion() << endl;
 }
